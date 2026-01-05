@@ -110,23 +110,20 @@ export default function Home() {
               cy={CY}
               r={R}
               fill="none"
-              stroke="rgba(197,97,74,0.15)"
-              strokeWidth={1.2}
+              stroke="#C5614A"
+              strokeWidth={4}
             />
             <circle
               cx={CX}
               cy={CY}
               r={R}
               fill="none"
-              stroke="#C5614A"
-              strokeWidth={1.4}
-              strokeLinecap="round"
+              stroke="#edeae3"
+              strokeWidth={4.2}
               strokeDasharray={CIRC}
               strokeDashoffset={offset}
               transform={`rotate(-90 ${CX} ${CY})`}
-              opacity={0.7}
             />
-            <circle cx={dotX} cy={dotY} r={5.5} fill="#C5614A" />
           </svg>
 
           <div className="timer-center">

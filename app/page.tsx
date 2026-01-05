@@ -10,6 +10,12 @@ const MODES = {
 
 type Mode = keyof typeof MODES;
 
+const BG_COLORS: Record<Mode, string> = {
+  pomodoro: "#edeae3",     // keep your current / neutral
+  shortBreak: "#dfe7e4",   // mild blue
+  longBreak: "#e3edf2",    // mild green
+};
+
 const R = 145;
 const CX = 180;
 const CY = 180;
@@ -24,8 +30,12 @@ export default function Home() {
 
   const total = MODES[mode].duration;
   const progress = (total - timeLeft) / total;
-  const offset = CIRC * (1 - progress);
-  const angle = -Math.PI / 2 + 2 * Math.PI * progress;
+
+  const isReverse = mode === "shortBreak" || mode === "longBreak";
+  const visualprogress = isReverse ? progress -1: progress;
+
+  const offset = CIRC * (1 - visualprogress);
+  const angle = -Math.PI / 2 + 2 * Math.PI * visualprogress;
   const dotX = CX + R * Math.cos(angle);
   const dotY = CY + R * Math.sin(angle);
 
@@ -61,7 +71,7 @@ export default function Home() {
   };
 
   return (
-    <main className="pomodoro-app">
+    <main className="pomodoro-app" style={{ backgroundColor: BG_COLORS[mode] }}>
       <header className="pomodoro-header">
         <button className="icon-btn" aria-label="Menu">
           <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
@@ -71,7 +81,7 @@ export default function Home() {
           </svg>
         </button>
 
-        <span className="brand-name">Pomodoro</span>
+        <span className="brand-name"></span>
 
         <button className="icon-btn" aria-label="Settings">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -119,7 +129,7 @@ export default function Home() {
               r={R}
               fill="none"
               stroke="#edeae3"
-              strokeWidth={4.2}
+              strokeWidth={5}
               strokeDasharray={CIRC}
               strokeDashoffset={offset}
               transform={`rotate(-90 ${CX} ${CY})`}

@@ -149,12 +149,12 @@ export default function Home() {
       </div>
 
       <div className="pomodoro-footer">
-        <input
-          className="task-name"
-          value={task}
-          onChange={(e) => setTask(e.target.value)}
-          placeholder="CURRENT TASK"
-        />
+          <input
+            className="task-name"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+            placeholder="CURRENT TASK"
+          />
 
         <button
           className="add-task-btn"

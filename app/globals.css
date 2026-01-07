@@ -144,7 +144,7 @@ button {
 
 .task-name {
   flex: 1;
-    min-width: 0;  /* ← prevents flex overflow edge cases */
+  min-width: 0;  /* ← prevents flex overflow edge cases */
   width: 0;
   font-size: 12px;
   letter-spacing: 0.12em;

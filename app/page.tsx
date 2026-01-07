@@ -25,7 +25,7 @@ export default function Home() {
   const [mode, setMode] = useState<Mode>("pomodoro");
   const [timeLeft, setTimeLeft] = useState(MODES.pomodoro.duration);
   const [running, setRunning] = useState(false);
-  const [task, setTask] = useState("CURRENT TASK");
+  const [task, setTask] = useState("");
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const total = MODES[mode].duration;

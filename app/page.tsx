@@ -26,6 +26,15 @@ export default function Home() {
   const [timeLeft, setTimeLeft] = useState(MODES.pomodoro.duration);
   const [running, setRunning] = useState(false);
   const [task, setTask] = useState("");
+
+  const [tasks, setTasks] = useState<string[]>([]);
+  const addTask = () => {
+    const trimmed = task.trim();
+    if (!trimmed) return;
+      setTasks((prev) => [...prev, trimmed]);
+      setTask("");
+    };
+
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const total = MODES[mode].duration;
@@ -154,18 +163,35 @@ export default function Home() {
             value={task}
             onChange={(e) => setTask(e.target.value)}
             placeholder="CURRENT TASK"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                addTask(); // ← ENTER works here
+              }
+            }}
           />
 
         <button
-          className="add-task-btn"
-          onClick={() => {
-            const name = window.prompt("Task name:");
-            if (name) setTask(name);
-          }}
-          aria-label="Add task"
+        className="add-task-btn"
+        onClick={addTask} // ← PLUS button works here
+        aria-label="Add task"
         >
           +
         </button>
+        
+        <div className="task-list">
+          {tasks.map((item, index) => (
+            <div key={index}>
+              {item}
+              <button
+                onClick={() =>
+                  setTasks((prev) => prev.filter((_, i) => i !== index))
+                }
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </main>
   );

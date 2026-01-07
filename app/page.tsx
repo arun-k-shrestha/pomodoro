@@ -13,7 +13,7 @@ type Mode = keyof typeof MODES;
 const BG_COLORS: Record<Mode, string> = {
   pomodoro: "#edeae3",     // keep your current / neutral
   shortBreak: "#dfe7e4",   // mild blue
-  longBreak: "#e3edf2",    // mild green
+  longBreak: "#dbe9df",    // mild green
 };
 
 const R = 145;
@@ -25,7 +25,7 @@ export default function Home() {
   const [mode, setMode] = useState<Mode>("pomodoro");
   const [timeLeft, setTimeLeft] = useState(MODES.pomodoro.duration);
   const [running, setRunning] = useState(false);
-  const [task, setTask] = useState("Time to focus!");
+  const [task, setTask] = useState("CURRENT TASK");
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const total = MODES[mode].duration;
@@ -128,7 +128,7 @@ export default function Home() {
               cy={CY}
               r={R}
               fill="none"
-              stroke="#edeae3"
+              stroke={BG_COLORS[mode]}
               strokeWidth={5}
               strokeDasharray={CIRC}
               strokeDashoffset={offset}
@@ -149,10 +149,12 @@ export default function Home() {
       </div>
 
       <div className="pomodoro-footer">
-        <div>
-          <div className="task-label">Current task</div>
-          <div className="task-name">{task}</div>
-        </div>
+        <input
+          className="task-name"
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          placeholder="CURRENT TASK"
+        />
 
         <button
           className="add-task-btn"

@@ -135,96 +135,105 @@ button {
 .pomodoro-footer {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   width: 400px;
   margin: 24px auto 50px;
-  padding: 14px 16px 10px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.38);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  backdrop-filter: blur(8px);
+  padding: 14px;
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .task-input-row,
 .task-item {
   display: grid;
-  grid-template-columns: 1fr 30px;
+  grid-template-columns: 1fr 28px;
   align-items: center;
-  column-gap: 14px;
+  column-gap: 12px;
   width: 100%;
+  min-width: 0;
 }
 
 .task-input-row {
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 4px 2px;
 }
 
 .task-name {
   width: 100%;
   min-width: 0;
+  padding: 0;
   border: none;
   outline: none;
   background: transparent;
+
   font-size: 13px;
   font-weight: 400;
-  color: #2e2e2e;
-  padding: 0;
+  letter-spacing: 0.01em;
+  color: rgba(30, 30, 30, 0.88);
 }
 
 .task-name::placeholder {
-  color: #9a948c;
-  letter-spacing: 0.14em;
+  color: rgba(70, 65, 60, 0.42);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .task-name:focus {
-  color: #1f1f1f;
+  color: rgba(20, 20, 20, 0.96);
 }
 
 .task-list {
   display: flex;
   flex-direction: column;
+  gap: 2px;
   width: 100%;
   max-height: 180px;
   overflow-y: auto;
-  padding-bottom: 4px;
+  padding-bottom: 2px;
 }
 
 .task-item {
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  font-size: 13px;
-  color: #6b6560;
+  padding: 8px 2px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
 }
 
-.task-item:first-child {
-  padding-top: 0px;
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .task-item-text {
   min-width: 0;
-  color: #3a3835;
-  letter-spacing: 0.02em;
+  color: rgba(35, 35, 35, 0.72);
+  font-size: 13px;
+  letter-spacing: 0.01em;
 }
 
 .add-task-btn,
 .task-remove-btn {
-  justify-self: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  justify-self: center;
   cursor: pointer;
   background: transparent;
 }
 
 .add-task-btn {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
+  border: none;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  font-size: 22px;
-  color: #9f9389;
-  transition: all 0.25s ease;
+  font-size: 20px;
+  color: rgba(85, 80, 75, 0.48);
+  transition: all 0.2s ease;
 }
 
 .add-task-btn span {
@@ -232,23 +241,22 @@ button {
 }
 
 .add-task-btn:hover {
-  border-color: rgba(197, 97, 74, 0.28);
-  color: #c5614a;
+  background: rgba(216, 164, 164, 0.12);
+  color: rgba(55, 55, 55, 0.72);
 }
 
 .task-remove-btn {
   width: 18px;
   height: 18px;
+  border: none;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1;
-  color: #b7b1aa;
+  color: rgba(90, 84, 78, 0.34);
   transition: all 0.2s ease;
 }
 
 .task-remove-btn:hover {
-  border-color: rgba(197, 97, 74, 0.35);
-  color: #c5614a;
-  background: rgba(197, 97, 74, 0.07);
+  background: rgba(157, 23, 23, 0.12);
+  color: rgba(196, 25, 25, 0.62);
 }

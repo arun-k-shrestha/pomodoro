@@ -26,6 +26,7 @@ export default function Home() {
   const [timeLeft, setTimeLeft] = useState(MODES.pomodoro.duration);
   const [running, setRunning] = useState(false);
   const [task, setTask] = useState("");
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [tasks, setTasks] = useState<string[]>([]);
   const addTask = () => {
@@ -60,7 +61,20 @@ export default function Home() {
           if (t <= 1) {
             clearInterval(intervalRef.current!);
             setRunning(false);
-            return 0;
+
+            if (audioRef.current) {
+              audioRef.current.currentTime = 0;
+              audioRef.current.play().catch(err => {
+                console.error("Audio failed:", err);
+              });
+            }
+            const nextMode: Mode =
+            mode === "pomodoro" ? "shortBreak" : "pomodoro";
+
+            setMode(nextMode);
+            setTimeLeft(MODES[nextMode].duration);
+
+            return MODES[nextMode].duration;
           }
           return t - 1;
         });
@@ -157,45 +171,46 @@ export default function Home() {
         </button>
       </div>
       <div className="pomodoro-footer">
-  <div className="task-input-row">
-    <input
-      className="task-name"
-      value={task}
-      onChange={(e) => setTask(e.target.value)}
-      placeholder="CURRENT TASK"
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          addTask();
-        }
-      }}
-    />
+      <div className="task-input-row">
+        <input
+          className="task-name"
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          placeholder="CURRENT TASK"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              addTask();
+            }
+          }}
+        />
 
-    <button
-      className="add-task-btn"
-      onClick={addTask}
-      aria-label="Add task"
-    >
-      <span>+</span>
-    </button>
-  </div>
-
-  <div className="task-list">
-    {tasks.map((item, index) => (
-      <div key={index} className="task-item">
-        <span className="task-item-text">{item}</span>
         <button
-          className="task-remove-btn"
-          onClick={() =>
-            setTasks((prev) => prev.filter((_, i) => i !== index))
-          }
-          aria-label="Remove task"
+          className="add-task-btn"
+          onClick={addTask}
+          aria-label="Add task"
         >
-          ×
+          <span>+</span>
         </button>
       </div>
-    ))}
-  </div>
-</div>
-    </main>
+
+        <div className="task-list">
+          {tasks.map((item, index) => (
+            <div key={index} className="task-item">
+              <span className="task-item-text">{item}</span>
+              <button
+                className="task-remove-btn"
+                onClick={() =>
+                  setTasks((prev) => prev.filter((_, i) => i !== index))
+                }
+                aria-label="Remove task"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    <audio ref={audioRef} src="/sounds/kitchen-timer.wav" preload="auto" />
+  </main>
   );
 }

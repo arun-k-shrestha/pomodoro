@@ -156,43 +156,46 @@ export default function Home() {
           {running ? "PAUSE" : "START"}
         </button>
       </div>
-
       <div className="pomodoro-footer">
-          <input
-            className="task-name"
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
-            placeholder="CURRENT TASK"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                addTask(); // ← ENTER works here
-              }
-            }}
-          />
+  <div className="task-input-row">
+    <input
+      className="task-name"
+      value={task}
+      onChange={(e) => setTask(e.target.value)}
+      placeholder="CURRENT TASK"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          addTask();
+        }
+      }}
+    />
 
+    <button
+      className="add-task-btn"
+      onClick={addTask}
+      aria-label="Add task"
+    >
+      <span>+</span>
+    </button>
+  </div>
+
+  <div className="task-list">
+    {tasks.map((item, index) => (
+      <div key={index} className="task-item">
+        <span className="task-item-text">{item}</span>
         <button
-        className="add-task-btn"
-        onClick={addTask} // ← PLUS button works here
-        aria-label="Add task"
+          className="task-remove-btn"
+          onClick={() =>
+            setTasks((prev) => prev.filter((_, i) => i !== index))
+          }
+          aria-label="Remove task"
         >
-          +
+          ×
         </button>
-        
-        <div className="task-list">
-          {tasks.map((item, index) => (
-            <div key={index}>
-              {item}
-              <button
-                onClick={() =>
-                  setTasks((prev) => prev.filter((_, i) => i !== index))
-                }
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
       </div>
+    ))}
+  </div>
+</div>
     </main>
   );
 }

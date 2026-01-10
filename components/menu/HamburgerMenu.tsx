@@ -23,10 +23,10 @@ export default function MenuPage({ onClose }: MenuPageProps) {
         <nav className={styles.nav}>
           <ul>
             {[
-              { label: "Timer Settings", icon: "⏱" },
-              { label: "Sound",          icon: "♪"  },
-              { label: "Theme",          icon: "◐"  },
+              { label: "Progress",       icon: "▧"  },
+              { label: "Settings",       icon: "⚙"  },
               { label: "About",          icon: "◎"  },
+              { label: "Login",          icon: "⇥"  },
             ].map(({ label, icon }) => (
               <li key={label}>
                 <a href="#" className={styles.navItem}>

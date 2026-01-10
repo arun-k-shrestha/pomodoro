@@ -55,6 +55,21 @@ export default function Home() {
   const ss = (timeLeft % 60).toString().padStart(2, "0");
 
   useEffect(() => {
+    const modeLabel =
+      mode === "pomodoro"
+        ? "Pomodoro"
+        : mode === "shortBreak"
+        ? "Short Break"
+        : "Long Break";
+
+    document.title = `${mm}:${ss} • ${modeLabel}`;
+
+    return () => {
+      document.title = "Pomodoro";
+    };
+  }, [mm, ss, mode]);
+
+  useEffect(() => {
     if (running) {
       intervalRef.current = setInterval(() => {
         setTimeLeft((t) => {

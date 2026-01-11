@@ -1,6 +1,7 @@
 /* ── Overlay ───────────────────────────────────────────────── */
 .overlay {
   position: fixed;
+  inset: 0;
   z-index: 100;
   background: rgba(237, 234, 227, 0.1);
   backdrop-filter: blur(6px);
@@ -133,4 +134,19 @@
   opacity: 0;
   transition: opacity 0.18s ease, transform 0.18s ease;
   line-height: 1;
+}
+
+.sidebarShell {
+  width: 300px;
+  flex-shrink: 0;
+  min-height: 100vh;
+}
+
+.sidebarPage {
+  width: 100%;
+  min-height: 100vh;
+  border-left: none;
+  box-shadow:
+    inset 1px 0 0 rgba(255, 255, 255, 0.28),
+    8px 0 24px rgba(0, 0, 0, 0.04);
 }

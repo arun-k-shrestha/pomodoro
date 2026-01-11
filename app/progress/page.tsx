@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import styles from "./progress.module.css";
 import MenuPage from "@/components/menu/HamburgerMenu";
 
@@ -205,15 +205,27 @@ function HeatmapGrid() {
 // ── Main Page ─────────────────────────────────────────────────────
 export default function ProgressPage() {
   const [tab, setTab] = useState<TabKey>("day");
-  // const [menuOpen, setMenuOpen] = useState(false)
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const sidebarMode = searchParams.get("menu") === "sidebar";
+  const [menuOpen, setMenuOpen] = useState(sidebarMode);
+
+  const handleCloseMenu = () => {
+    setMenuOpen(false);
+    router.push("/")
+  };
 
   return (
     <div className={styles.layout}>
-      {/* Sidebar */}
-      <MenuPage onClose={() => {}} />
+      {/* Side Bar */}
+       {sidebarMode && menuOpen && (
+        <MenuPage variant="sidebar" onClose={handleCloseMenu} />
+      )}
+
 
       {/* Main */}
-      <main className={styles.main}>
+      <main className={`${styles.main} ${sidebarMode && menuOpen ? styles.mainWithSidebar : ""}`}>
         <header className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>PROGRESS</h1>
           <p className={styles.pageSubtitle}>Track your time, build your focus, and grow your streak.</p>

@@ -81,8 +81,13 @@
 /* ── Main ─────────────────────────────────────────────────────── */
 .main {
   flex: 1;
+  min-width: 0;
   padding: 36px 40px 48px;
   overflow-y: auto;
+}
+
+.mainWithSidebar {
+  min-width: 0;
 }
 
 .pageHeader {

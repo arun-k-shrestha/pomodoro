@@ -1,4 +1,5 @@
 import styles from "./HamburgerMenu.module.css";
+import Link from "next/link";
 
 type MenuPageProps = {
   onClose: () => void;
@@ -9,7 +10,6 @@ export default function MenuPage({ onClose }: MenuPageProps) {
     <div className={styles.overlay}>
       <div className={styles.page}>
 
-        {/* Header row: close btn left, title right */}
         <div className={styles.menuHeader}>
           <button
             className={styles.closeBtn}
@@ -23,17 +23,25 @@ export default function MenuPage({ onClose }: MenuPageProps) {
         <nav className={styles.nav}>
           <ul>
             {[
-              { label: "Progress",       icon: "▧"  },
-              { label: "Settings",       icon: "⚙"  },
-              { label: "About",          icon: "◎"  },
-              { label: "Login",          icon: "⇥"  },
-            ].map(({ label, icon }) => (
+              { label: "Progress", icon: "▧", href: "/progress" },  // ← added href
+              { label: "Settings", icon: "⚙" },
+              { label: "About",    icon: "◎" },
+              { label: "Login",    icon: "⇥" },
+            ].map(({ label, icon, href }) => (
               <li key={label}>
-                <a href="#" className={styles.navItem}>
-                  <span className={styles.navIcon}>{icon}</span>
-                  <span className={styles.navLabel}>{label}</span>
-                  <span className={styles.navArrow}>›</span>
-                </a>
+                {href ? (
+                  <Link href={href} className={styles.navItem} onClick={onClose}>
+                    <span className={styles.navIcon}>{icon}</span>
+                    <span className={styles.navLabel}>{label}</span>
+                    <span className={styles.navArrow}>›</span>
+                  </Link>
+                ) : (
+                  <a href="#" className={styles.navItem}>
+                    <span className={styles.navIcon}>{icon}</span>
+                    <span className={styles.navLabel}>{label}</span>
+                    <span className={styles.navArrow}>›</span>
+                  </a>
+                )}
               </li>
             ))}
           </ul>

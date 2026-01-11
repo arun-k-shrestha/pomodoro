@@ -1,0 +1,298 @@
+/* ── Design tokens ──────────────────────────────────────────────── */
+.layout {
+  --bg:       #f0ebe3;
+  --sidebar:  #ece7de;
+  --card:     #f7f3ee;
+  --accent:   #b85c3a;
+  --accent-light: #e8c4b4;
+  --text:     #4a3f36;
+  --muted:    #9e8e83;
+  --grid:     #e2d9d0;
+  --border:   #ddd6cc;
+
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: "Georgia", "Times New Roman", serif;
+  color: var(--text);
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────── */
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--sidebar);
+  padding: 20px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+  transition: background 0.15s;
+}
+.closeBtn:hover { background: var(--accent-light); }
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, color 0.15s;
+}
+.navItem:hover { background: var(--card); color: var(--text); }
+
+.navActive {
+  background: var(--card);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.navIcon {
+  font-size: 16px;
+  opacity: 0.7;
+  width: 20px;
+  text-align: center;
+}
+
+/* ── Main ─────────────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  padding: 36px 40px 48px;
+  overflow-y: auto;
+}
+
+.pageHeader {
+  margin-bottom: 24px;
+}
+
+.pageTitle {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  margin: 0 0 4px;
+}
+
+.pageSubtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+  font-family: "Georgia", serif;
+  font-style: italic;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 6px 18px;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.tab:hover { color: var(--text); }
+
+.tabActive {
+  background: var(--card);
+  border: 1.5px solid var(--accent-light);
+  color: var(--accent);
+}
+
+/* ── Stats Grid ───────────────────────────────────────────────── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.statCard {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 1px 4px rgba(80,40,20,0.06);
+}
+
+.statIcon {
+  font-size: 24px;
+  background: #f3e4dc;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statLabel {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 4px;
+  font-family: "Georgia", serif;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ── Charts Row ───────────────────────────────────────────────── */
+.chartsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.chartCard {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px 22px 14px;
+  box-shadow: 0 1px 4px rgba(80,40,20,0.06);
+}
+
+.chartTitle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  margin: 0 0 14px;
+  font-family: "Georgia", serif;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* SVG text */
+.axisLabel {
+  font-size: 10px;
+  fill: var(--muted);
+  font-family: "Georgia", serif;
+}
+
+.bar {
+  fill: var(--accent);
+  opacity: 0.82;
+  transition: opacity 0.15s;
+}
+.bar:hover { opacity: 1; }
+
+/* ── Heatmap Card ─────────────────────────────────────────────── */
+.heatmapCard {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px 22px 18px;
+  box-shadow: 0 1px 4px rgba(80,40,20,0.06);
+}
+
+.heatmapDesc {
+  font-size: 12px;
+  color: var(--muted);
+  margin: -8px 0 12px;
+  font-style: italic;
+}
+
+.heatmapWrap {
+  overflow-x: auto;
+}
+
+.heatmapSvg {
+  display: block;
+  width: 100%;
+  min-width: 700px;
+  height: auto;
+}
+
+.monthLabel {
+  font-size: 10px;
+  fill: var(--muted);
+  font-family: "Georgia", serif;
+}
+
+/* Cell intensities */
+.cellEmpty { fill: transparent; }
+.cell0     { fill: #ecddd6; }
+.cell1     { fill: #ddb99f; }
+.cell2     { fill: #cc8f70; }
+.cell3     { fill: #bb6a47; }
+.cell4     { fill: #a84e2c; }
+.cell5     { fill: #7a2e10; }
+
+/* Legend */
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.legendLabel {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.legendDot {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+  .chartsRow { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .sidebar { display: none; }
+  .main { padding: 20px 16px; }
+  .statsGrid { grid-template-columns: 1fr 1fr; }
+}

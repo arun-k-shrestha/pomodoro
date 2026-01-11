@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./progress.module.css";
+import MenuPage from "@/components/menu/HamburgerMenu";
 
 // ── Mock data ────────────────────────────────────────────────────
 const DAY_DATA = [
@@ -204,30 +205,12 @@ function HeatmapGrid() {
 // ── Main Page ─────────────────────────────────────────────────────
 export default function ProgressPage() {
   const [tab, setTab] = useState<TabKey>("day");
+  // const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <div className={styles.layout}>
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
-        <button className={styles.closeBtn} aria-label="Close">✕</button>
-        <nav className={styles.nav}>
-          {[
-            { key: "progress", label: "Progress", icon: "▦", href: "/progress" },
-            { key: "settings", label: "Settings", icon: "⚙", href: "/" },
-            { key: "about",    label: "About",    icon: "◎", href: "/" },
-            { key: "login",    label: "Login",    icon: "→", href: "/" },
-          ].map((item) => (
-            <Link
-              key={item.key}
-              href={item.href}
-              className={`${styles.navItem} ${item.key === "progress" ? styles.navActive : ""}`}
-            >
-              <span className={styles.navIcon}>{item.icon}</span>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </aside>
+      <MenuPage onClose={() => {}} />
 
       {/* Main */}
       <main className={styles.main}>

@@ -1,7 +1,6 @@
 /* ── Design tokens ──────────────────────────────────────────────── */
 .layout {
-  --bg:       #f0ebe3;
-  --sidebar:  #ece7de;
+  --bg:       #edeae3;
   --card:     #f7f3ee;
   --accent:   #b85c3a;
   --accent-light: #e8c4b4;
@@ -13,69 +12,7 @@
   display: flex;
   min-height: 100vh;
   background: var(--bg);
-  font-family: "Georgia", "Times New Roman", serif;
   color: var(--text);
-}
-
-/* ── Sidebar ──────────────────────────────────────────────────── */
-.sidebar {
-  width: 240px;
-  flex-shrink: 0;
-  background: var(--sidebar);
-  padding: 20px 16px 32px;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid var(--border);
-}
-
-.closeBtn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--muted);
-  font-size: 13px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 28px;
-  transition: background 0.15s;
-}
-.closeBtn:hover { background: var(--accent-light); }
-
-.nav {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.navItem {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-  color: var(--muted);
-  font-size: 15px;
-  letter-spacing: 0.01em;
-  transition: background 0.15s, color 0.15s;
-}
-.navItem:hover { background: var(--card); color: var(--text); }
-
-.navActive {
-  background: var(--card);
-  color: var(--text);
-  font-weight: 600;
-}
-
-.navIcon {
-  font-size: 16px;
-  opacity: 0.7;
-  width: 20px;
-  text-align: center;
 }
 
 /* ── Main ─────────────────────────────────────────────────────── */

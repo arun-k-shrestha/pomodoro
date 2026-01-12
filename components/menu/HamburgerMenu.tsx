@@ -9,10 +9,9 @@ type MenuPageProps = {
   variant?: "overlay" | "sidebar";
 };
 
-export default function MenuPage({
-  onClose,
-  variant = "overlay",
-}: MenuPageProps) {
+export default function MenuPage({ onClose, variant = "overlay",}: MenuPageProps) 
+
+{
   const isSidebar = variant === "sidebar";
   const pathname = usePathname();
 

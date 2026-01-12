@@ -77,8 +77,7 @@ export default function Home() {
 
   return (
     <main className="pomodoro-app" style={{ backgroundColor: BG_COLORS[mode] }}>
-      <PomodoroHeader onMenuClick={() => setMenuOpen(true)}  
-        menuOpen={menuOpen}/>
+      <PomodoroHeader onMenuClick={() => setMenuOpen(true)} menuOpen={menuOpen}/>
       {menuOpen && <MenuPage onClose={() => setMenuOpen(false)} />}
 
       <div className="pomodoro-body">

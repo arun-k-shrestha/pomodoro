@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./progress.module.css";
 import MenuPage from "@/components/menu/HamburgerMenu";
 
@@ -65,7 +65,6 @@ function BarChart() {
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart}>
-      {/* Y grid lines */}
       {yLines.map((v) => {
         const y = PAD_T + chartH - (v / maxH) * chartH;
         return (
@@ -75,7 +74,6 @@ function BarChart() {
           </g>
         );
       })}
-      {/* Bars */}
       {DAY_DATA.map((d, i) => {
         const bH = (d.hours / maxH) * chartH;
         const x = PAD_L + i * barW + barW * 0.2;
@@ -126,7 +124,6 @@ function LineChart() {
           </g>
         );
       })}
-      {/* Month labels */}
       {OVER_TIME_DATA.filter((_, i) => i % 2 === 0).map((d, idx) => {
         const i = idx * 2;
         const x = PAD_L + (i / (OVER_TIME_DATA.length - 1)) * chartW;
@@ -148,7 +145,6 @@ function HeatmapGrid() {
   const W = totalWeeks * (CELL + GAP);
   const H = 7 * (CELL + GAP) + 24;
 
-  // Compute month x positions
   let dayCount = 0;
   const monthXMap: Record<string, number> = {};
   const startDow = new Date(2026, 0, 1).getDay();
@@ -170,11 +166,9 @@ function HeatmapGrid() {
   return (
     <div className={styles.heatmapWrap}>
       <svg viewBox={`0 0 ${W} ${H}`} className={styles.heatmapSvg}>
-        {/* Month labels */}
         {MONTH_LABELS.map((m) => (
           <text key={m} x={monthXMap[m]} y={10} className={styles.monthLabel}>{m}</text>
         ))}
-        {/* Cells */}
         {HEATMAP_WEEKS.map((week, wi) =>
           week.map((val, di) => {
             if (val === -1) return null;
@@ -190,7 +184,6 @@ function HeatmapGrid() {
           })
         )}
       </svg>
-      {/* Legend */}
       <div className={styles.legend}>
         <span className={styles.legendLabel}>No time</span>
         {[styles.cell0, styles.cell1, styles.cell2, styles.cell3, styles.cell4, styles.cell5].map((c, i) => (
@@ -205,33 +198,24 @@ function HeatmapGrid() {
 // ── Main Page ─────────────────────────────────────────────────────
 export default function ProgressPage() {
   const [tab, setTab] = useState<TabKey>("day");
-  const searchParams = useSearchParams();
-  const router = useRouter();
+   const router = useRouter();
+   const handleCloseMenu = () => router.push("/");
+  // const searchParams = useSearchParams();
 
-  const sidebarMode = searchParams.get("menu") === "sidebar";
-  const [menuOpen, setMenuOpen] = useState(sidebarMode);
-
-  const handleCloseMenu = () => {
-    setMenuOpen(false);
-    router.push("/")
-  };
+  // const sidebarMode = searchParams.get("menu") === "sidebar";
+  // // onClose is now a no-op — the Link in HamburgerMenu navigates to "/" directly
+  // const handleCloseMenu = () => {};
 
   return (
     <div className={styles.layout}>
-      {/* Side Bar */}
-       {sidebarMode && menuOpen && (
-        <MenuPage variant="sidebar" onClose={handleCloseMenu} />
-      )}
+      <MenuPage variant="sidebar" onClose={handleCloseMenu} />
 
-
-      {/* Main */}
-      <main className={`${styles.main} ${sidebarMode && menuOpen ? styles.mainWithSidebar : ""}`}>
+      <main className={`${styles.main} ${styles.mainWithSidebar}`}>
         <header className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>PROGRESS</h1>
           <p className={styles.pageSubtitle}>Track your time, build your focus, and grow your streak.</p>
         </header>
 
-        {/* Tabs */}
         <div className={styles.tabs}>
           {(["day","week","month","year"] as TabKey[]).map((t) => (
             <button
@@ -244,7 +228,6 @@ export default function ProgressPage() {
           ))}
         </div>
 
-        {/* Stats */}
         <div className={styles.statsGrid}>
           <div className={styles.statCard}>
             <span className={styles.statIcon}>🕐</span>
@@ -276,7 +259,6 @@ export default function ProgressPage() {
           </div>
         </div>
 
-        {/* Charts */}
         <div className={styles.chartsRow}>
           <div className={styles.chartCard}>
             <h2 className={styles.chartTitle}>TIME BY DAY</h2>
@@ -288,7 +270,6 @@ export default function ProgressPage() {
           </div>
         </div>
 
-        {/* Heatmap */}
         <div className={styles.heatmapCard}>
           <h2 className={styles.chartTitle}>YEAR STREAK</h2>
           <p className={styles.heatmapDesc}>One square per day. Darker means more time.</p>

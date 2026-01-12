@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./progress.module.css";
-import MenuPage from "@/components/menu/HamburgerMenu";
 
 // ── Mock data ────────────────────────────────────────────────────
 const DAY_DATA = [
@@ -208,9 +207,8 @@ export default function ProgressPage() {
 
   return (
     <div className={styles.layout}>
-      <MenuPage variant="sidebar" onClose={handleCloseMenu} />
 
-      <main className={`${styles.main} ${styles.mainWithSidebar}`}>
+      <main className={styles.main}>
         <header className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>PROGRESS</h1>
           <p className={styles.pageSubtitle}>Track your time, build your focus, and grow your streak.</p>

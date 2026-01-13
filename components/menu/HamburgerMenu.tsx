@@ -38,7 +38,7 @@ export default function MenuPage({ onClose, variant = "overlay",}: MenuPageProps
         <ul>
           {[
             { label: "Progress", icon: "▧", href: "/progress" },
-            { label: "Settings", icon: "⚙", href: undefined },
+            { label: "Settings", icon: "⚙", href: "/settings" },
             { label: "About", icon: "◎", href: undefined },
             { label: "Login", icon: "⇥", href: undefined },
           ].map(({ label, icon, href }) => {
@@ -52,8 +52,8 @@ export default function MenuPage({ onClose, variant = "overlay",}: MenuPageProps
                   <Link
                     href={href}
                     className={styles.navItem}
-                    // Already here — don't close (which would navigate home)
-                    onClick={isCurrentPage ? undefined : onClose}
+                    // // Already here — don't close (which would navigate home)
+                    // onClick={isCurrentPage ? undefined : onClose}
                   >
                     <span className={styles.navIcon}>{icon}</span>
                     <span className={styles.navLabel}>{label}</span>

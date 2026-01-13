@@ -1,0 +1,321 @@
+/* ── Design tokens ──────────────────────────────────────────────── */
+.layout {
+  --bg: #edeae3;
+  --card: rgba(255, 255, 255, 0.16);
+  --card-strong: rgba(255, 255, 255, 0.22);
+  --accent: #c5614a;
+  --accent-light: rgba(197, 97, 74, 0.14);
+  --text: #2e2e2e;
+  --muted: #777;
+  --grid: rgba(120, 105, 95, 0.12);
+  --border: rgba(255, 255, 255, 0.28);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.06);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  --blur: blur(20px) saturate(150%);
+
+  display: flex;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ── Main ─────────────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 36px 40px 48px;
+  overflow-y: auto;
+}
+
+.mainWithSidebar {
+  min-width: 0;
+}
+
+.pageHeader {
+  margin-bottom: 24px;
+}
+
+.pageTitle {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+
+.pageSubtitle {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 20px;
+  background: transparent;
+  color: #5b4c4c;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--accent);
+  background: rgba(197, 97, 74, 0.08);
+}
+
+.tabActive {
+  background: rgba(197, 97, 74, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(197, 97, 74, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* ── Stats Grid ───────────────────────────────────────────────── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.statCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 24px;
+
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+
+  box-shadow: var(--shadow-inset), var(--shadow-soft);
+}
+
+.statIcon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 6px rgba(255, 255, 255, 0.15),
+    0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.statLabel {
+  margin-bottom: 4px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Charts Row ───────────────────────────────────────────────── */
+.chartsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.chartCard {
+  padding: 20px 22px 14px;
+  border-radius: 24px;
+
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+
+  box-shadow: var(--shadow-inset), var(--shadow-soft);
+}
+
+.chartTitle {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* SVG text */
+.axisLabel {
+  font-size: 10px;
+  fill: var(--muted);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.bar {
+  fill: var(--accent);
+  opacity: 0.78;
+  transition: opacity 0.15s ease;
+}
+
+.bar:hover {
+  opacity: 1;
+}
+
+/* ── Heatmap Card ─────────────────────────────────────────────── */
+.heatmapCard {
+  padding: 20px 22px 18px;
+  border-radius: 24px;
+
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+
+  box-shadow: var(--shadow-inset), var(--shadow-soft);
+}
+
+.heatmapDesc {
+  margin: -8px 0 12px;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: normal;
+  letter-spacing: 0.02em;
+}
+
+.heatmapWrap {
+  overflow-x: auto;
+}
+
+.heatmapSvg {
+  display: block;
+  width: 100%;
+  min-width: 700px;
+  height: auto;
+}
+
+.monthLabel {
+  font-size: 10px;
+  fill: var(--muted);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* Cell intensities */
+.cellEmpty {
+  fill: transparent;
+}
+
+.cell0 {
+  fill: rgba(197, 97, 74, 0.10);
+}
+
+.cell1 {
+  fill: rgba(197, 97, 74, 0.18);
+}
+
+.cell2 {
+  fill: rgba(197, 97, 74, 0.32);
+}
+
+.cell3 {
+  fill: rgba(197, 97, 74, 0.5);
+}
+
+.cell4 {
+  fill: rgba(197, 97, 74, 0.68);
+}
+
+.cell5 {
+  fill: rgba(197, 97, 74, 0.88);
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.legendLabel {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.legendDot {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chartsRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    padding: 20px 16px;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

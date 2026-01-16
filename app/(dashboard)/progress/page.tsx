@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter} from "next/navigation";
 import styles from "./progress.module.css";
+import MenuPage from "@/components/menu/HamburgerMenu";
 
 // ── Mock data ────────────────────────────────────────────────────
 const DAY_DATA = [
@@ -199,15 +200,10 @@ export default function ProgressPage() {
   const [tab, setTab] = useState<TabKey>("day");
    const router = useRouter();
    const handleCloseMenu = () => router.push("/");
-  // const searchParams = useSearchParams();
-
-  // const sidebarMode = searchParams.get("menu") === "sidebar";
-  // // onClose is now a no-op — the Link in HamburgerMenu navigates to "/" directly
-  // const handleCloseMenu = () => {};
 
   return (
     <div className={styles.layout}>
-
+    <MenuPage variant="sidebar" onClose={handleCloseMenu} />
       <main className={styles.main}>
         <header className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>PROGRESS</h1>

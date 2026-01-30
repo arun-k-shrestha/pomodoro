@@ -6,17 +6,23 @@
   --accent: #c5614a;
   --accent-light: rgba(197, 97, 74, 0.14);
   --text: #2e2e2e;
+  --text-secondary: #5b4c4c;
   --muted: #777;
   --grid: rgba(120, 105, 95, 0.12);
   --border: rgba(255, 255, 255, 0.28);
+  --border-subtle: rgba(120, 105, 95, 0.15);
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.06);
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.34);
   --blur: blur(20px) saturate(150%);
+  --radius-pill: 20px;
+  --radius-card: 24px;
+  --radius-badge: 20px;
 
   display: flex;
   min-height: 100dvh;
   background: var(--bg);
   color: var(--text);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* ── Main ─────────────────────────────────────────────────────── */
@@ -48,7 +54,6 @@
   margin: 0;
   font-size: 14px;
   color: var(--muted);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
   letter-spacing: 0.03em;
 }
@@ -63,9 +68,9 @@
 .tab {
   padding: 6px 16px;
   border: none;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   background: transparent;
-  color: #5b4c4c;
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.1em;
@@ -103,7 +108,7 @@
   align-items: center;
   gap: 14px;
   padding: 18px 20px;
-  border-radius: 24px;
+  border-radius: var(--radius-card);
 
   background: var(--card);
   border: 1px solid var(--border);
@@ -113,6 +118,7 @@
   box-shadow: var(--shadow-inset), var(--shadow-soft);
 }
 
+/* Matches .icon-btn glass treatment from pomodoro */
 .statIcon {
   width: 44px;
   height: 44px;
@@ -161,7 +167,7 @@
 
 .chartCard {
   padding: 20px 22px 14px;
-  border-radius: 24px;
+  border-radius: var(--radius-card);
 
   background: var(--card);
   border: 1px solid var(--border);
@@ -208,7 +214,7 @@
 /* ── Heatmap Card ─────────────────────────────────────────────── */
 .heatmapCard {
   padding: 20px 22px 18px;
-  border-radius: 24px;
+  border-radius: var(--radius-card);
 
   background: var(--card);
   border: 1px solid var(--border);
@@ -222,7 +228,6 @@
   margin: -8px 0 12px;
   font-size: 12px;
   color: var(--muted);
-  font-style: normal;
   letter-spacing: 0.02em;
 }
 
@@ -248,27 +253,21 @@
 .cellEmpty {
   fill: transparent;
 }
-
 .cell0 {
-  fill: rgba(197, 97, 74, 0.10);
+  fill: rgba(197, 97, 74, 0.1);
 }
-
 .cell1 {
   fill: rgba(197, 97, 74, 0.18);
 }
-
 .cell2 {
   fill: rgba(197, 97, 74, 0.32);
 }
-
 .cell3 {
   fill: rgba(197, 97, 74, 0.5);
 }
-
 .cell4 {
   fill: rgba(197, 97, 74, 0.68);
 }
-
 .cell5 {
   fill: rgba(197, 97, 74, 0.88);
 }
@@ -295,12 +294,175 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
+/* ── Shared section header ────────────────────────────────────── */
+.timelineHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+/* ── FocusTimeline ────────────────────────────────────────────── */
+.timelineWrapper,
+.sessionsWrapper {
+  height: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  box-shadow: var(--shadow-inset), var(--shadow-soft);
+  border-radius: var(--radius-card);
+  padding: 20px 22px 14px;
+}
+
+.periodBtn {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.periodBtn:hover {
+  color: var(--accent);
+  background: rgba(197, 97, 74, 0.08);
+}
+
+/* SVG segment fills */
+.timelineFocus {
+  fill: var(--accent);
+}
+.timelineBreak {
+  fill: rgba(197, 97, 74, 0.22);
+}
+.timelineIdle {
+  fill: rgba(120, 105, 95, 0.28);
+}
+.timelineTick {
+  fill: var(--muted);
+}
+
+/* Timeline legend */
+.timelineLegend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendDotFocus {
+  background: var(--accent);
+}
+.legendDotBreak {
+  background: rgba(197, 97, 74, 0.22);
+}
+.legendDotIdle {
+  background: rgba(120, 105, 95, 0.28);
+}
+
+.legendMeta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-left: 2px;
+}
+
+/* ── RecentSessions ───────────────────────────────────────────── */
+.viewAllBtn {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.viewAllBtn:hover {
+  opacity: 0.7;
+}
+
+.sessionsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.sessionsTh {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 0 10px;
+}
+
+.sessionsTr {
+  border-top: 0.5px solid var(--border-subtle);
+}
+
+.sessionsTd {
+  padding: 14px 0;
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.sessionsDuration {
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Badges — mirrors .mode-pill from pomodoro */
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-radius: var(--radius-badge);
+  padding: 5px 14px;
+}
+
+.badgeFocus {
+  background: rgba(197, 97, 74, 0.12);
+  color: var(--accent);
+}
+
+.badgeBreak {
+  background: rgba(120, 105, 95, 0.1);
+  color: var(--text-secondary);
+}
+
 /* ── Responsive ───────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .statsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
-
   .chartsRow {
     grid-template-columns: 1fr;
   }
@@ -310,11 +472,9 @@
   .sidebar {
     display: none;
   }
-
   .main {
     padding: 20px 16px;
   }
-
   .statsGrid {
     grid-template-columns: 1fr 1fr;
   }

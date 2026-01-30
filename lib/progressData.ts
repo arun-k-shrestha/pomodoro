@@ -1,0 +1,84 @@
+import { TimelineSegment } from "@/app/(dashboard)/progress/charts/Timeline";
+import {RecentSessions} from "@/app/(dashboard)/progress/charts/RecentSessions";
+
+
+export const DAY_DATA = [
+  { day: "Mon", hours: 3.8 },
+  { day: "Tue", hours: 4.9 },
+  { day: "Wed", hours: 2.4 },
+  { day: "Thu", hours: 6.3 },
+  { day: "Fri", hours: 4.4 },
+  { day: "Sat", hours: 1.5 },
+  { day: "Sun", hours: 0 },
+];
+
+export const WEEK_DATA = [
+  { label: "Week 1", hours: 22 },
+  { label: "Week 2", hours: 31 },
+  { label: "Week 3", hours: 18 },
+  { label: "Week 4", hours: 27 },
+];
+
+export const MONTH_DATA = Array.from({ length: 30 }, (_, i) => ({
+  label: `${i + 1}`,
+  hours: parseFloat((Math.random() * 7).toFixed(1)),
+}));
+
+export const OVER_TIME_DATA = [
+  { month: "Jan", hours: 4 },
+  { month: "Feb", hours: 14 },
+  { month: "Mar", hours: 22 },
+  { month: "Apr", hours: 55 },
+  { month: "May", hours: 75 },
+  { month: "Jun", hours: 90 },
+  { month: "Jul", hours: 100 },
+  { month: "Aug", hours: 108 },
+  { month: "Sep", hours: 112 },
+  { month: "Oct", hours: 118 },
+  { month: "Nov", hours: 124 },
+  { month: "Dec", hours: 127 },
+];
+
+
+export const TIMELINE_DATA : TimelineSegment[] = [
+  { startHour: 8,    durationMin: 30,  type: "idle"  },
+  { startHour: 8.5,  durationMin: 25,  type: "focus" },
+  { startHour: 8.92, durationMin: 5,   type: "break" },
+  { startHour: 9.25, durationMin: 45,  type: "idle"  },
+  { startHour: 10,   durationMin: 25,  type: "focus" },
+  { startHour: 10.42,durationMin: 5,   type: "break" },
+  { startHour: 11,   durationMin: 25,  type: "focus" },
+  { startHour: 11.42,durationMin: 5,   type: "break" },
+  { startHour: 12,   durationMin: 25,  type: "focus" },
+  { startHour: 12.42,durationMin: 75,  type: "idle"  },
+  { startHour: 13.67,durationMin: 5,   type: "break" },
+  { startHour: 14,   durationMin: 25,  type: "focus" },
+  { startHour: 14.42,durationMin: 5,   type: "break" },
+  { startHour: 14.5, durationMin: 25,  type: "focus" },
+  { startHour: 14.92,durationMin: 35,  type: "idle"  },
+  { startHour: 15.5, durationMin: 25,  type: "focus" },
+  { startHour: 15.92,durationMin: 5,   type: "break" },
+  { startHour: 16,   durationMin: 25,  type: "focus" },
+  { startHour: 16.42,durationMin: 98,  type: "idle"  },
+]
+
+export const SESSION_DATA: RecentSessions[]= [
+  { startTime: "4:00 PM", endTime: "4:25 PM",  task: "Project Proposal",  durationMin: 25, type: "focus" },
+  { startTime: "3:30 PM", endTime: "3:55 PM",  task: "Code Review",       durationMin: 25, type: "focus" },
+  { startTime: "2:30 PM", endTime: "2:55 PM",  task: "Study: Algorithms", durationMin: 25, type: "focus" },
+  { startTime: "1:30 PM", endTime: "1:55 PM",  task: "Planning",          durationMin: 25, type: "focus" },
+  { startTime: "10:00 AM",endTime: "10:25 AM", task: "Deep Work",         durationMin: 25, type: "focus" },
+]
+
+export function generateHeatmap() {
+  const weeks: number[][] = [];
+  const firstDay = new Date(2026, 0, 1).getDay();
+  const cells: number[] = [];
+  for (let i = 0; i < firstDay; i++) cells.push(-1);
+  for (let d = 0; d < 365; d++) {
+    const r = Math.random();
+    cells.push(r < 0.22 ? 0 : r < 0.4 ? 1 : r < 0.6 ? 2 : r < 0.78 ? 3 : r < 0.9 ? 4 : 5);
+  }
+  for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
+  return weeks;
+}

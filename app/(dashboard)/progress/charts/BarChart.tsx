@@ -1,0 +1,37 @@
+import styles from "@/app/(dashboard)/progress/progress.module.css";
+
+type BarData = { label: string; hours: number };
+
+export default function BarChart({ data, maxH = 8 }: { data: BarData[]; maxH?: number }) {
+  const W = 460, H = 180, PAD_L = 36, PAD_B = 28, PAD_T = 12, PAD_R = 12;
+  const chartW = W - PAD_L - PAD_R;
+  const chartH = H - PAD_B - PAD_T;
+  const barW = chartW / data.length;
+  const yLines = Array.from({ length: 5 }, (_, i) => (maxH / 4) * i);
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart}>
+      {yLines.map((v) => {
+        const y = PAD_T + chartH - (v / maxH) * chartH;
+        return (
+          <g key={v}>
+            <line x1={PAD_L} y1={y} x2={W - PAD_R} y2={y} stroke="var(--grid)" strokeWidth="1" />
+            <text x={PAD_L - 6} y={y + 4} textAnchor="end" className={styles.axisLabel}>{v}h</text>
+          </g>
+        );
+      })}
+      {data.map((d, i) => {
+        const bH = (d.hours / maxH) * chartH;
+        const x = PAD_L + i * barW + barW * 0.2;
+        const y = PAD_T + chartH - bH;
+        const w = barW * 0.6;
+        return (
+          <g key={d.label}>
+            <rect x={x} y={y} width={w} height={bH} rx="4" className={styles.bar} />
+            <text x={x + w / 2} y={H - 8} textAnchor="middle" className={styles.axisLabel}>{d.label}</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}

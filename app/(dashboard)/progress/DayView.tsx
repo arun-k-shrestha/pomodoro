@@ -25,6 +25,7 @@ export default function DayView() {
           </div>
         </div>
         <div className={styles.statCard}>
+          <span className={styles.statIcon}></span>
           <div>
             <div className={styles.statLabel}>SESSIONS</div>
             <div className={styles.statValue}>6</div>

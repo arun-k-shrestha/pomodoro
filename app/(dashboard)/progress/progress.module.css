@@ -38,7 +38,7 @@
 }
 
 .pageHeader {
-  margin-bottom: 24px;
+  margin-bottom: 60px;
 }
 
 .pageTitle {
@@ -62,7 +62,7 @@
 .tabs {
   display: flex;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 60px;
 }
 
 .tab {
@@ -100,7 +100,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .statCard {
@@ -351,41 +351,36 @@
   fill: rgba(197, 97, 74, 0.22);
 }
 .timelineIdle {
-  fill: rgba(120, 105, 95, 0.28);
+  fill: rgba(235, 230, 227, 0.28);
 }
 .timelineTick {
   fill: var(--muted);
 }
 
 /* Timeline legend */
-.timelineLegend {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 0.75rem;
-  font-size: 13px;
-  color: var(--text);
-}
-
-.legendItem {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
 
 .legendDotFocus {
   background: var(--accent);
 }
 .legendDotBreak {
-  background: rgba(197, 97, 74, 0.22);
+  background: rgba(155, 53, 31, 0.22);
 }
 .legendDotIdle {
-  background: rgba(120, 105, 95, 0.28);
+  background: rgba(189, 104, 18, 0.28);
 }
 
 .legendMeta {
   color: var(--muted);
   font-size: 13px;
   margin-left: 2px;
+}
+
+.timelineIdle {
+  fill: rgba(235, 230, 227, 0.28);
+}
+
+.legendDotIdle {
+  background: rgba(189, 104, 18, 0.28);
 }
 
 /* ── RecentSessions ───────────────────────────────────────────── */

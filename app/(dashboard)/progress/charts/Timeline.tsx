@@ -1,11 +1,9 @@
 import styles from "@/app/(dashboard)/progress/progress.module.css";
 
-type SegmentType = "focus" | "break" | "idle";
-
 export type TimelineSegment = {
   startHour: number;
   durationMin: number;
-  type: SegmentType;
+  type: "focus" | "break";
 };
 
 type Props = {
@@ -18,10 +16,14 @@ type Props = {
 const FOCUS_DUR = 25;
 const BREAK_DUR = 5;
 
-const TYPE_CLASS: Record<SegmentType, string> = {
+const SEGMENT_CLASS: Record<string, string> = {
   focus: styles.timelineFocus,
   break: styles.timelineBreak,
-  idle: styles.timelineIdle,
+};
+
+const SEGMENT_RX: Record<string, number> = {
+  focus: 10,
+  break: 6,
 };
 
 export default function FocusTimeline({
@@ -30,15 +32,15 @@ export default function FocusTimeline({
   endHour = 18,
   period = "Today",
 }: Props) {
-  const W = 560,
-    H = 160,
-    PAD_L = 0,
-    PAD_R = 0,
-    PAD_T = 38,
-    PAD_B = 44;
+  const W = 680,
+    H = 200;
+  const PAD_L = 24,
+    PAD_R = 24;
+  const BAR_Y = 70,
+    BAR_H = 110;
   const chartW = W - PAD_L - PAD_R;
-  const chartH = H - PAD_T - PAD_B;
   const totalMins = (endHour - startHour) * 60;
+
   const tickHours = Array.from(
     { length: endHour - startHour + 1 },
     (_, i) => startHour + i,
@@ -47,8 +49,10 @@ export default function FocusTimeline({
   const toX = (hour: number, offsetMin = 0) =>
     PAD_L + (((hour - startHour) * 60 + offsetMin) / totalMins) * chartW;
 
-  const BAR_RX = 10;
-  const BAR_H = chartH;
+  const toW = (min: number) => (min / totalMins) * chartW;
+
+  const fmtHour = (h: number) =>
+    h === 12 ? "12 PM" : h > 12 ? `${h - 12} PM` : `${h} AM`;
 
   return (
     <div className={styles.timelineWrapper}>
@@ -58,67 +62,38 @@ export default function FocusTimeline({
       </div>
 
       <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart}>
+        {/* Tick dots + labels */}
         {tickHours.map((h) => {
           const x = toX(h);
-          const label =
-            h === 12 ? "12 PM" : h > 12 ? `${h - 12} PM` : `${h} AM`;
           return (
             <g key={h}>
-              <circle
-                cx={x}
-                cy={PAD_T - 6}
-                r={2.5}
-                className={styles.timelineTick}
-              />
-              <circle
-                cx={x}
-                cy={PAD_T + BAR_H + 6}
-                r={2.5}
-                className={styles.timelineTick}
-              />
+              <circle cx={x} cy={62} r={2.5} className={styles.timelineTick} />
               <text
                 x={x}
-                y={PAD_T - 14}
+                y={52}
                 textAnchor="middle"
                 className={styles.axisLabel}
+                style={{ fontSize: "16px" }}
               >
-                {label}
+                {fmtHour(h)}
               </text>
             </g>
           );
         })}
 
-        {segments.map((seg, i) => {
-          const x = toX(seg.startHour, 0);
-          const w = (seg.durationMin / totalMins) * chartW;
-          return (
-            <rect
-              key={i}
-              x={x + 2}
-              y={PAD_T}
-              width={Math.max(w - 4, 4)}
-              height={BAR_H}
-              rx={BAR_RX}
-              className={TYPE_CLASS[seg.type]}
-            />
-          );
-        })}
+        {/* Segments */}
+        {segments.map((seg, i) => (
+          <rect
+            key={i}
+            x={toX(seg.startHour) + 1}
+            y={BAR_Y}
+            width={Math.max(toW(seg.durationMin) - 2, 4)}
+            height={BAR_H}
+            rx={SEGMENT_RX[seg.type]}
+            className={SEGMENT_CLASS[seg.type]}
+          />
+        ))}
       </svg>
-
-      <div className={styles.timelineLegend}>
-        <span className={styles.legendItem}>
-          <span className={`${styles.legendDot} ${styles.legendDotFocus}`} />
-          Focus <span className={styles.legendMeta}>{FOCUS_DUR}m</span>
-        </span>
-        <span className={styles.legendItem}>
-          <span className={`${styles.legendDot} ${styles.legendDotBreak}`} />
-          Break <span className={styles.legendMeta}>{BREAK_DUR}m</span>
-        </span>
-        <span className={styles.legendItem}>
-          <span className={`${styles.legendDot} ${styles.legendDotIdle}`} />
-          Idle
-        </span>
-      </div>
     </div>
   );
 }

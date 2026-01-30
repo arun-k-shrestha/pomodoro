@@ -17,20 +17,17 @@ export default function ProgressPage() {
   const handleCloseMenu = () => router.push("/");
 
   const views: Record<TabKey, React.ReactNode> = {
-    day:   <DayView />,
-    week:  <WeekView />,
+    day: <DayView />,
+    week: <WeekView />,
     month: <MonthView />,
-    year:  <YearView />,
+    year: <YearView />,
   };
 
   return (
     <div className={styles.layout}>
       <MenuPage variant="sidebar" onClose={handleCloseMenu} />
       <main className={styles.main}>
-        <header className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>PROGRESS</h1>
-          <p className={styles.pageSubtitle}>Track your time, build your focus, and grow your streak.</p>
-        </header>
+        <header className={styles.pageHeader}></header>
         <div className={styles.tabs}>
           {(["day", "week", "month", "year"] as TabKey[]).map((t) => (
             <button

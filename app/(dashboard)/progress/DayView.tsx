@@ -18,28 +18,24 @@ export default function DayView() {
     <>
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
-          <span className={styles.statIcon}></span>
           <div>
             <div className={styles.statLabel}>TIME TODAY</div>
             <div className={styles.statValue}>4h 25m</div>
           </div>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statIcon}></span>
           <div>
             <div className={styles.statLabel}>SESSIONS</div>
             <div className={styles.statValue}>6</div>
           </div>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statIcon}></span>
           <div>
             <div className={styles.statLabel}>STREAK</div>
             <div className={styles.statValue}>12 days</div>
           </div>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statIcon}>⏱</span>
           <div>
             <div className={styles.statLabel}>AVG SESSION</div>
             <div className={styles.statValue}>44m</div>

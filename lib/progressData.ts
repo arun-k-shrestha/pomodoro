@@ -12,10 +12,13 @@ export const DAY_DATA = [
 ];
 
 export const WEEK_DATA = [
-  { label: "Week 1", hours: 22 },
-  { label: "Week 2", hours: 31 },
-  { label: "Week 3", hours: 18 },
-  { label: "Week 4", hours: 27 },
+  { label: "Sunday", hours: 0 },
+  { label: "Monday", hours: 1 },
+  { label: "Tuesday", hours: 10 },
+  { label: "Wednesday", hours: 7 },
+  { label: "Thursday", hours: 8 },
+  { label: "Friday", hours: 0 },
+  { label: "Saturday", hours: 0 },
 ];
 
 export const MONTH_DATA = Array.from({ length: 30 }, (_, i) => ({

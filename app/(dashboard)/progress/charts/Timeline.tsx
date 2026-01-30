@@ -37,7 +37,7 @@ export default function FocusTimeline({
   const PAD_L = 24,
     PAD_R = 24;
   const BAR_Y = 70,
-    BAR_H = 110;
+    BAR_H = 80;
   const chartW = W - PAD_L - PAD_R;
   const totalMins = (endHour - startHour) * 60;
 

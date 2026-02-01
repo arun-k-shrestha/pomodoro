@@ -461,6 +461,32 @@
   color: var(--text-secondary);
 }
 
+/* ── DayBreakSession ───────────────────────────────────────────────── */
+
+.dayBadgeCell {
+  text-align: right;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badgeSessions {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+
+.badgeBest {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+
 /* ── Responsive ───────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .statsGrid {

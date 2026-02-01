@@ -82,6 +82,16 @@ export const SESSION_DATA: Session[] = [
   },
 ];
 
+export const DAY_BREAKDOWN_DATA = [
+  { day: "Monday", duration: { hours: 2, minutes: 32 }, sessions: 5 },
+  { day: "Tuesday", duration: { hours: 3, minutes: 36 }, sessions: 7 },
+  { day: "Wednesday", duration: { hours: 3, minutes: 18 }, sessions: 6 },
+  { day: "Thursday", duration: { hours: 6, minutes: 0 }, sessions: 4 },
+  { day: "Friday", duration: { hours: 4, minutes: 12 }, sessions: 8 },
+  { day: "Saturday", duration: { hours: 1, minutes: 48 }, sessions: 3 },
+  { day: "Sunday", duration: { hours: 0, minutes: 54 }, sessions: 2 },
+];
+
 export function generateHeatmap() {
   const weeks: number[][] = [];
   const firstDay = new Date(2026, 0, 1).getDay();

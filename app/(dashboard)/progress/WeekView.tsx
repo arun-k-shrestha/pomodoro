@@ -1,5 +1,6 @@
 import BarChart from "./charts/BarChart";
-import { WEEK_DATA } from "@/lib/progressData";
+import DayBreakdown from "./charts/DayBreakDown";
+import { WEEK_DATA, DAY_BREAKDOWN_DATA } from "@/lib/progressData";
 import styles from "@/app/(dashboard)/progress/progress.module.css";
 
 export default function WeekView() {
@@ -39,6 +40,10 @@ export default function WeekView() {
             data={WEEK_DATA.map((d) => ({ label: d.label, hours: d.hours }))}
             maxH={maxHours + 1}
           />
+        </div>
+        <div className={styles.chartCard}>
+          <h2 className={styles.chartTitle}>Day Breakdown</h2>
+          <DayBreakdown days={DAY_BREAKDOWN_DATA} />
         </div>
       </div>
     </>

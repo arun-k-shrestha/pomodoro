@@ -93,18 +93,18 @@ export const DAY_BREAKDOWN_DATA = [
 ];
 
 export const YEAR_DATA = [
-  { label: "January", hours: 0 },
-  { label: "February", hours: 1 },
-  { label: "March", hours: 10 },
-  { label: "April", hours: 7 },
-  { label: "May", hours: 8 },
-  { label: "June", hours: 0 },
-  { label: "July", hours: 0 },
-  { label: "August", hours: 0 },
-  { label: "September", hours: 0 },
-  { label: "October", hours: 0 },
-  { label: "November", hours: 0 },
-  { label: "December", hours: 0 },
+  { label: "Jan", hours: 45 },
+  { label: "Feb", hours: 52 },
+  { label: "Mar", hours: 60 },
+  { label: "Apr", hours: 47 },
+  { label: "May", hours: 58 },
+  { label: "Jun", hours: 63 },
+  { label: "Jul", hours: 55 },
+  { label: "Aug", hours: 49 },
+  { label: "Sep", hours: 61 },
+  { label: "Oct", hours: 57 },
+  { label: "Nov", hours: 53 },
+  { label: "Dec", hours: 48 },
 ];
 
 export function generateHeatmap() {

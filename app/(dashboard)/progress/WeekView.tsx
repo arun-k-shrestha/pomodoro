@@ -41,10 +41,10 @@ export default function WeekView() {
             maxH={maxHours + 1}
           />
         </div>
-        <div className={styles.chartCard}>
+        {/* <div className={styles.chartCard}>
           <h2 className={styles.chartTitle}>Day Breakdown</h2>
           <DayBreakdown days={DAY_BREAKDOWN_DATA} />
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -3,6 +3,7 @@ import { MONTH_DATA } from "@/lib/progressData";
 import styles from "@/app/(dashboard)/progress/progress.module.css";
 
 export default function MonthView() {
+  const maxHours = Math.min(24, Math.max(...MONTH_DATA.map((d) => d.hours)));
   return (
     <>
       <div className={styles.statsGrid}>
@@ -36,7 +37,7 @@ export default function MonthView() {
           <h2 className={styles.chartTitle}>DAILY HOURS THIS MONTH</h2>
           <BarChart
             data={MONTH_DATA.map((d) => ({ label: d.label, hours: d.hours }))}
-            maxH={8}
+            maxH={maxHours}
           />
         </div>
       </div>

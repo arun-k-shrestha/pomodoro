@@ -4,7 +4,7 @@ import { WEEK_DATA, DAY_BREAKDOWN_DATA } from "@/lib/progressData";
 import styles from "@/app/(dashboard)/progress/progress.module.css";
 
 export default function WeekView() {
-  const maxHours = Math.min(23, Math.max(...WEEK_DATA.map((d) => d.hours)));
+  const maxHours = Math.min(24, Math.max(...WEEK_DATA.map((d) => d.hours)));
   return (
     <>
       <div className={styles.statsGrid}>
@@ -38,7 +38,7 @@ export default function WeekView() {
           <h2 className={styles.chartTitle}>HOURS BY DAY</h2>
           <BarChart
             data={WEEK_DATA.map((d) => ({ label: d.label, hours: d.hours }))}
-            maxH={maxHours + 1}
+            maxH={maxHours}
           />
         </div>
         {/* <div className={styles.chartCard}>

@@ -18,14 +18,15 @@ export default function BarChart({
   const chartW = W - PAD_L - PAD_R;
   const chartH = H - PAD_B - PAD_T;
   const barW = chartW / data.length;
-  const steps = 4; // number of intervals
+  const steps = 4;
   const stepSize = Math.ceil(maxH / steps);
+  const yMax = stepSize * steps; // ← top of the y-axis scale
   const yLines = Array.from({ length: steps + 1 }, (_, i) => i * stepSize);
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart}>
       {yLines.map((v) => {
-        const y = PAD_T + chartH - (v / maxH) * chartH;
+        const y = PAD_T + chartH - (v / yMax) * chartH;
         return (
           <g key={v}>
             <line
@@ -48,7 +49,7 @@ export default function BarChart({
         );
       })}
       {data.map((d, i) => {
-        const bH = (d.hours / maxH) * chartH;
+        const bH = (d.hours / yMax) * chartH;
         const x = PAD_L + i * barW + barW * 0.2;
         const y = PAD_T + chartH - bH;
         const w = barW * 0.6;

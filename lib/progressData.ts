@@ -92,6 +92,21 @@ export const DAY_BREAKDOWN_DATA = [
   { day: "Sunday", duration: { hours: 0, minutes: 54 }, sessions: 2 },
 ];
 
+export const YEAR_DATA = [
+  { label: "January", hours: 0 },
+  { label: "February", hours: 1 },
+  { label: "March", hours: 10 },
+  { label: "April", hours: 7 },
+  { label: "May", hours: 8 },
+  { label: "June", hours: 0 },
+  { label: "July", hours: 0 },
+  { label: "August", hours: 0 },
+  { label: "September", hours: 0 },
+  { label: "October", hours: 0 },
+  { label: "November", hours: 0 },
+  { label: "December", hours: 0 },
+];
+
 export function generateHeatmap() {
   const weeks: number[][] = [];
   const firstDay = new Date(2026, 0, 1).getDay();

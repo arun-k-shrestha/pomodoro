@@ -25,7 +25,6 @@ export default function ProgressPage() {
   return (
     <div className={styles.layout}>
       <main className={styles.main}>
-        <header className={styles.pageHeader}></header>
         <div className={styles.tabs}>
           {(["day", "week", "month", "year"] as TabKey[]).map((t) => (
             <button

@@ -1,6 +1,5 @@
 /* ── Design tokens ──────────────────────────────────────────────── */
 .layout {
-  --bg: #edeae3;
   --card: rgba(255, 255, 255, 0.16);
   --card-strong: rgba(255, 255, 255, 0.22);
   --accent: #c5614a;
@@ -20,7 +19,6 @@
 
   display: flex;
   min-height: 100dvh;
-  background: var(--bg);
   color: var(--text);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -29,7 +27,7 @@
 .main {
   flex: 1;
   min-width: 0;
-  padding: 36px 40px 48px;
+  padding: 18px 40px 48px;
   overflow-y: auto;
 
   display: flex;
@@ -39,10 +37,6 @@
 
 .mainWithSidebar {
   min-width: 0;
-}
-
-.pageHeader {
-  margin-bottom: 60px;
 }
 
 .pageTitle {

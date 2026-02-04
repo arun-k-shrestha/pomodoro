@@ -139,9 +139,19 @@
   color: #c5614a;
 }
 
-.navItem:hover .navArrow {
+/* persistent "hover" -> when you click on progress, the hover is active unless pressed somewhere*/
+.active {
+  background: rgba(197, 97, 74, 0.08);
+  color: #c5614a;
+}
+
+/* Hover OR active should show arrow */
+
+.navItem:hover .navArrow,
+.navItem.active .navArrow {
   opacity: 1;
   transform: translateX(2px);
+  color: #c5614a;
 }
 
 .navIcon {

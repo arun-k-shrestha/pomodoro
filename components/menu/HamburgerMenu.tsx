@@ -1,9 +1,8 @@
 "use client";
 
-import { access } from "fs";
+import { useState } from "react";
 import styles from "./HamburgerMenu.module.css";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 type MenuPageProps = {
   onClose: () => void;
@@ -17,13 +16,12 @@ export default function MenuPage({
   variant = "overlay",
 }: MenuPageProps) {
   const isSidebar = variant === "sidebar";
-  const pathname = usePathname();
+  const [activeItem, setactiveItem] = useState<string | null>(null);
 
   const content = (
     <div className={`${styles.page} ${isSidebar ? styles.sidebarPage : ""}`}>
       <div className={styles.menuHeader}>
         {isSidebar ? (
-          // Link replaces router.push + setState — no intermediate flash
           <Link href="/" className={styles.closeBtn} aria-label="Close menu">
             ✕
           </Link>
@@ -46,34 +44,22 @@ export default function MenuPage({
             { label: "About", icon: "◎", href: undefined },
             { label: "Login", icon: "⇥", href: undefined },
           ].map(({ label, icon, href, action }) => {
-            // Strip query string to compare just the pathname
-            const hrefPathname = href?.split("?")[0];
-            const isCurrentPage = !!hrefPathname && pathname === hrefPathname;
-
             return (
               <li key={label}>
-                {href ? (
-                  <Link
-                    href={href}
-                    className={styles.navItem}
-                    // // Already here — don't close (which would navigate home)
-                    // onClick={isCurrentPage ? undefined : onClose}
-                  >
-                    <span className={styles.navIcon}>{icon}</span>
-                    <span className={styles.navLabel}>{label}</span>
-                    <span className={styles.navArrow}>›</span>
-                  </Link>
-                ) : (
-                  <button
-                    type="button"
-                    className={styles.navItem}
-                    onClick={action}
-                  >
-                    <span className={styles.navIcon}>{icon}</span>
-                    <span className={styles.navLabel}>{label}</span>
-                    <span className={styles.navArrow}>›</span>
-                  </button>
-                )}
+                <button
+                  type="button"
+                  className={`${styles.navItem} ${
+                    activeItem === label ? styles.active : ""
+                  }`}
+                  onClick={() => {
+                    setactiveItem(label);
+                    action?.();
+                  }}
+                >
+                  <span className={styles.navIcon}>{icon}</span>
+                  <span className={styles.navLabel}>{label}</span>
+                  <span className={styles.navArrow}>›</span>
+                </button>
               </li>
             );
           })}

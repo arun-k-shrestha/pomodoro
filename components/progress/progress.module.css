@@ -27,7 +27,7 @@
 .main {
   flex: 1;
   min-width: 0;
-  padding: 18px 40px 48px;
+  padding: 18px 120px 48px;
   overflow-y: auto;
 
   display: flex;

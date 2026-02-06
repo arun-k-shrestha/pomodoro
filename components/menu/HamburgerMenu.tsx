@@ -19,7 +19,11 @@ export default function MenuPage({
   const [activeItem, setactiveItem] = useState<string | null>(null);
 
   const content = (
-    <div className={`${styles.page} ${isSidebar ? styles.sidebarPage : ""}`}>
+    <div
+      className={`${styles.page} ${isSidebar ? styles.sidebarPage : ""} ${
+        isFullscreen ? styles.fullscreenPage : ""
+      }`}
+    >
       <div className={styles.menuHeader}>
         <button
           className={styles.closeBtn}

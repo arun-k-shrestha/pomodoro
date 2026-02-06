@@ -20,6 +20,7 @@ export default function Home() {
   const [timeLeft, setTimeLeft] = useState(MODES.pomodoro.duration);
   const [running, setRunning] = useState(false);
   const [tasks, setTasks] = useState<string[]>([]);
+  const [isNarrow, setIsNarrow] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -27,6 +28,14 @@ export default function Home() {
     .toString()
     .padStart(2, "0");
   const ss = (timeLeft % 60).toString().padStart(2, "0");
+
+  // Track viewport width
+  useEffect(() => {
+    const check = () => setIsNarrow(window.innerWidth < 1042);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   // Update document title
   useEffect(() => {
@@ -84,53 +93,70 @@ export default function Home() {
     setTasks((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const handleClose = () => {
+    setMenuOpen(false);
+    setActivePage("home");
+  };
+
+  const handleProgressClick = () => {
+    setActivePage("progress");
+    setMenuOpen(true);
+  };
+
+  // Below 1042px: sidebar pushes content. At or above: overlay.
+  const showPushMenu = menuOpen && isNarrow;
+  const showOverlayMenu = menuOpen && !isNarrow;
+
   return (
     <main className="pomodoro-app" style={{ backgroundColor: BG_COLORS[mode] }}>
-      <PomodoroHeader
-        onMenuClick={() => setMenuOpen(true)}
-        menuOpen={menuOpen}
-      />
-
-      {menuOpen && (
-        <MenuPage
-          onClose={() => {
-            setMenuOpen(false);
-            if (activePage === "progress") {
-              setActivePage("home");
-            }
-          }}
-          onProgressClick={() => {
-            setActivePage("progress");
-            setMenuOpen(true);
-          }}
-        />
+      {/* Wide viewport: fixed overlay (original behaviour) */}
+      {showOverlayMenu && (
+        <MenuPage onClose={handleClose} onProgressClick={handleProgressClick} />
       )}
 
-      {activePage === "home" && (
-        <>
-          <div className="pomodoro-body">
-            <ModeTabs mode={mode} onChangeMode={changeMode} />
-            <TimerDisplay mode={mode} timeLeft={timeLeft} />
-            <StartButton
-              running={running}
-              onToggle={() => setRunning((r) => !r)}
-            />
-          </div>
+      {/* Flex wrapper — row when push menu is open, column otherwise */}
+      <div className={`pomodoro-layout${showPushMenu ? " push" : ""}`}>
+        {/* Narrow viewport: in-flow sidebar that pushes content right */}
+        {showPushMenu && (
+          <MenuPage
+            variant="sidebar"
+            onClose={handleClose}
+            onProgressClick={handleProgressClick}
+          />
+        )}
 
-          <div className="pomodoro-footer">
-            <TaskInput onAdd={addTask} />
-            <TaskList tasks={tasks} onRemove={removeTask} />
-          </div>
-        </>
-      )}
+        {/* All page content lives here so it shifts as one unit */}
+        <div className="pomodoro-main-content">
+          <PomodoroHeader
+            onMenuClick={() => setMenuOpen(true)}
+            menuOpen={menuOpen}
+          />
 
-      {activePage === "progress" && (
-        <>
-          <div>
-            <ProgressPage />
-          </div>
-        </>
-      )}
+          {activePage === "home" && (
+            <>
+              <div className="pomodoro-body">
+                <ModeTabs mode={mode} onChangeMode={changeMode} />
+                <TimerDisplay mode={mode} timeLeft={timeLeft} />
+                <StartButton
+                  running={running}
+                  onToggle={() => setRunning((r) => !r)}
+                />
+              </div>
+
+              <div className="pomodoro-footer">
+                <TaskInput onAdd={addTask} />
+                <TaskList tasks={tasks} onRemove={removeTask} />
+              </div>
+            </>
+          )}
+
+          {activePage === "progress" && (
+            <div>
+              <ProgressPage />
+            </div>
+          )}
+        </div>
+      </div>
 
       <audio ref={audioRef} src="/sounds/kitchen-timer.wav" preload="auto" />
     </main>

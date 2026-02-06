@@ -21,19 +21,13 @@ export default function MenuPage({
   const content = (
     <div className={`${styles.page} ${isSidebar ? styles.sidebarPage : ""}`}>
       <div className={styles.menuHeader}>
-        {isSidebar ? (
-          <Link href="/" className={styles.closeBtn} aria-label="Close menu">
-            ✕
-          </Link>
-        ) : (
-          <button
-            className={styles.closeBtn}
-            onClick={onClose}
-            aria-label="Close menu"
-          >
-            ✕
-          </button>
-        )}
+        <button
+          className={styles.closeBtn}
+          onClick={onClose}
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
       </div>
 
       <nav className={styles.nav}>

@@ -21,6 +21,7 @@ export default function Home() {
   const [running, setRunning] = useState(false);
   const [tasks, setTasks] = useState<string[]>([]);
   const [isNarrow, setIsNarrow] = useState(false);
+  const [isVeryNarrow, setIsVeryNarrow] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -31,7 +32,10 @@ export default function Home() {
 
   // Track viewport width
   useEffect(() => {
-    const check = () => setIsNarrow(window.innerWidth < 1042);
+    const check = () => {
+      setIsNarrow(window.innerWidth < 1042);
+      setIsVeryNarrow(window.innerWidth < 740);
+    };
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -104,60 +108,73 @@ export default function Home() {
   };
 
   // Below 1042px: sidebar pushes content. At or above: overlay.
-  const showPushMenu = menuOpen && isNarrow;
+  const showFullscreenMenu = menuOpen && isVeryNarrow;
+  const showPushMenu = menuOpen && isNarrow && !isVeryNarrow;
   const showOverlayMenu = menuOpen && !isNarrow;
 
   return (
     <main className="pomodoro-app" style={{ backgroundColor: BG_COLORS[mode] }}>
       {/* Wide viewport: fixed overlay (original behaviour) */}
-      {showOverlayMenu && (
-        <MenuPage onClose={handleClose} onProgressClick={handleProgressClick} />
+      {showFullscreenMenu && (
+        <MenuPage
+          variant="fullscreen"
+          onClose={handleClose}
+          onProgressClick={handleProgressClick}
+        />
       )}
 
-      {/* Flex wrapper — row when push menu is open, column otherwise */}
-      <div className={`pomodoro-layout${showPushMenu ? " push" : ""}`}>
-        {/* Narrow viewport: in-flow sidebar that pushes content right */}
-        {showPushMenu && (
-          <MenuPage
-            variant="sidebar"
-            onClose={handleClose}
-            onProgressClick={handleProgressClick}
-          />
-        )}
-
-        {/* All page content lives here so it shifts as one unit */}
-        <div className="pomodoro-main-content">
-          <PomodoroHeader
-            onMenuClick={() => setMenuOpen(true)}
-            menuOpen={menuOpen}
-          />
-
-          {activePage === "home" && (
-            <>
-              <div className="pomodoro-body">
-                <ModeTabs mode={mode} onChangeMode={changeMode} />
-                <TimerDisplay mode={mode} timeLeft={timeLeft} />
-                <StartButton
-                  running={running}
-                  onToggle={() => setRunning((r) => !r)}
-                />
-              </div>
-
-              <div className="pomodoro-footer">
-                <TaskInput onAdd={addTask} />
-                <TaskList tasks={tasks} onRemove={removeTask} />
-              </div>
-            </>
+      {!showFullscreenMenu && (
+        <>
+          {showOverlayMenu && (
+            <MenuPage
+              onClose={handleClose}
+              onProgressClick={handleProgressClick}
+            />
           )}
+          <div className={`pomodoro-layout${showPushMenu ? " push" : ""}`}>
+            {/* Narrow viewport: in-flow sidebar that pushes content right */}
+            {showPushMenu && (
+              <MenuPage
+                variant="sidebar"
+                onClose={handleClose}
+                onProgressClick={handleProgressClick}
+              />
+            )}
 
-          {activePage === "progress" && (
-            <div>
-              <ProgressPage />
+            {/* All page content lives here so it shifts as one unit */}
+            <div className="pomodoro-main-content">
+              <PomodoroHeader
+                onMenuClick={() => setMenuOpen(true)}
+                menuOpen={menuOpen}
+              />
+
+              {activePage === "home" && (
+                <>
+                  <div className="pomodoro-body">
+                    <ModeTabs mode={mode} onChangeMode={changeMode} />
+                    <TimerDisplay mode={mode} timeLeft={timeLeft} />
+                    <StartButton
+                      running={running}
+                      onToggle={() => setRunning((r) => !r)}
+                    />
+                  </div>
+
+                  <div className="pomodoro-footer">
+                    <TaskInput onAdd={addTask} />
+                    <TaskList tasks={tasks} onRemove={removeTask} />
+                  </div>
+                </>
+              )}
+
+              {activePage === "progress" && (
+                <div>
+                  <ProgressPage />
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </div>
-
+          </div>
+        </>
+      )}
       <audio ref={audioRef} src="/sounds/kitchen-timer.wav" preload="auto" />
     </main>
   );

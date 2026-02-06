@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import styles from "./HamburgerMenu.module.css";
-import Link from "next/link";
 
 type MenuPageProps = {
   onClose: () => void;
   onProgressClick: () => void;
-  variant?: "overlay" | "sidebar";
+  variant?: "overlay" | "sidebar" | "fullscreen";
 };
 
 export default function MenuPage({
@@ -16,6 +15,7 @@ export default function MenuPage({
   variant = "overlay",
 }: MenuPageProps) {
   const isSidebar = variant === "sidebar";
+  const isFullscreen = variant === "fullscreen";
   const [activeItem, setactiveItem] = useState<string | null>(null);
 
   const content = (
@@ -65,6 +65,7 @@ export default function MenuPage({
   if (isSidebar) {
     return <aside className={styles.sidebarShell}>{content}</aside>;
   }
-
+  if (isFullscreen)
+    return <div className={styles.fullscreenShell}>{content}</div>;
   return <div className={styles.overlay}>{content}</div>;
 }

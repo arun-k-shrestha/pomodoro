@@ -14,16 +14,13 @@ export default function TimerDisplay({ mode, timeLeft }: Props) {
   const visualProgress = isReverse ? progress - 1 : progress;
 
   const offset = CIRC * (1 - visualProgress);
-  const angle = -Math.PI / 2 + 2 * Math.PI * visualProgress;
-  const dotX = CX + R * Math.cos(angle);
-  const dotY = CY + R * Math.sin(angle);
 
   const mm = Math.floor(timeLeft / 60).toString().padStart(2, "0");
   const ss = (timeLeft % 60).toString().padStart(2, "0");
 
   return (
     <div className="timer-wrap">
-      <svg viewBox="0 0 360 360" width="360" height="360">
+      <svg className="timer-svg" viewBox="0 0 360 360" width="360" height="360">
         <circle
           cx={CX}
           cy={CY}

@@ -73,12 +73,18 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: min(100%, 420px);
+  margin: 0 auto;
+  padding: 18px 16px 0;
   padding-top: 18px;
 }
 
 .mode-tabs {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 8px;
+  width: 100%;
   margin-bottom: 28px;
 }
 
@@ -89,9 +95,12 @@ button {
   padding: 6px 16px;
   font-size: 14px;
   letter-spacing: 0.1em;
+  line-height: 1.1;
   color: #5b4c4c;
   cursor: pointer;
   text-transform: uppercase;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .mode-tab.active {
@@ -101,8 +110,14 @@ button {
 
 .timer-wrap {
   position: relative;
-  width: 360px;
-  height: 360px;
+  width: min(100%, 360px);
+  aspect-ratio: 1;
+}
+
+.timer-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .timer-center {
@@ -154,7 +169,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 400px;
+  width: min(400px, calc(100vw - 32px));
   margin: 24px auto 50px;
   padding: 14px;
   border-radius: 24px;
@@ -294,4 +309,44 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 470px) {
+  .pomodoro-header {
+    padding: 18px 18px 10px;
+  }
+
+  .pomodoro-body {
+    width: min(100%, 390px);
+    padding: 14px 14px 0;
+  }
+
+  .mode-tabs {
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+
+  .mode-tab {
+    padding: 6px 10px;
+    font-size: 12px;
+    letter-spacing: 0.07em;
+  }
+
+  .timer-wrap {
+    width: min(100%, 320px);
+  }
+
+  .timer-text {
+    font-size: 64px;
+  }
+
+  .start-btn {
+    margin-top: 16px;
+    padding: 14px 40px;
+  }
+
+  .pomodoro-footer {
+    width: calc(100vw - 28px);
+    margin: 20px auto 36px;
+  }
 }

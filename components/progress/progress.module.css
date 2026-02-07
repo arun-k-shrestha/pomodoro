@@ -95,7 +95,8 @@
 
 /* ── Stats Grid ───────────────────────────────────────────────── */
 .statsGrid {
-  width: 65%;
+  width: 100%;
+  max-width: 750px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
@@ -160,7 +161,8 @@
 
 /* ── Charts Row ───────────────────────────────────────────────── */
 .chartsRow {
-  width: 65%;
+  width: 100%;
+  max-width: 750px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
@@ -482,7 +484,20 @@
 }
 
 /* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 1380px) {
+  .main {
+    margin-left: 300px;
+    /* Smoothly shrinks from 40px → 16px as viewport narrows 1380 → 800 */
+    padding: 18px clamp(16px, calc(-8px + 3.5vw), 40px) 48px;
+    align-items: center;
+  }
+}
+
 @media (max-width: 1024px) {
+  .main {
+    margin-left: 300px;
+    padding: 18px clamp(16px, calc(-8px + 3.5vw), 40px) 48px;
+  }
   .statsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -492,10 +507,8 @@
 }
 
 @media (max-width: 640px) {
-  .sidebar {
-    display: none;
-  }
   .main {
+    margin-left: 0;
     padding: 20px 16px;
   }
   .statsGrid {

@@ -51,11 +51,8 @@ export const TIMELINE_DATA: TimelineSegment[] = [
   { startHour: 12, durationMin: 55, type: "focus" },
   { startHour: 13.67, durationMin: 5, type: "break" },
   { startHour: 14, durationMin: 25, type: "focus" },
-  { startHour: 14.42, durationMin: 5, type: "break" },
-  { startHour: 14.5, durationMin: 25, type: "focus" },
-  { startHour: 15.5, durationMin: 25, type: "focus" },
-  { startHour: 15.92, durationMin: 5, type: "break" },
-  { startHour: 16, durationMin: 25, type: "focus" },
+  { startHour: 14.42, durationMin: 50, type: "break" },
+  { startHour: 23.5, durationMin: 25, type: "focus" },
 ];
 
 export const SESSION_DATA: Session[] = [

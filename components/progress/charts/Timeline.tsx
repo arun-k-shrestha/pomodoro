@@ -13,23 +13,20 @@ type Props = {
   period?: string;
 };
 
-const FOCUS_DUR = 25;
-const BREAK_DUR = 5;
-
 const SEGMENT_CLASS: Record<string, string> = {
   focus: styles.timelineFocus,
   break: styles.timelineBreak,
 };
 
 const SEGMENT_RX: Record<string, number> = {
-  focus: 10,
-  break: 6,
+  focus: 4,
+  break: 0,
 };
 
 export default function FocusTimeline({
   segments,
-  startHour = 8,
-  endHour = 18,
+  startHour = 0,
+  endHour = 24,
   period = "Today",
 }: Props) {
   const W = 680,
@@ -44,15 +41,19 @@ export default function FocusTimeline({
   const tickHours = Array.from(
     { length: endHour - startHour + 1 },
     (_, i) => startHour + i,
-  ).filter((h) => h % 2 === 0);
+  ).filter((h) => h % 4 === 0);
 
   const toX = (hour: number, offsetMin = 0) =>
     PAD_L + (((hour - startHour) * 60 + offsetMin) / totalMins) * chartW;
 
   const toW = (min: number) => (min / totalMins) * chartW;
 
-  const fmtHour = (h: number) =>
-    h === 12 ? "12 PM" : h > 12 ? `${h - 12} PM` : `${h} AM`;
+  const fmtHour = (h: number) => {
+    const h24 = h % 24;
+    if (h24 === 0) return "12 AM";
+    if (h24 === 12) return "12 PM";
+    return h24 < 12 ? `${h24} AM` : `${h24 - 12} PM`;
+  };
 
   return (
     <div className={styles.timelineWrapper}>

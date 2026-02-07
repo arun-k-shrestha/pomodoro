@@ -47,8 +47,8 @@ export default function DayView() {
         <div className={styles.chartCardWide}>
           <FocusTimeline
             segments={TIMELINE_DATA}
-            startHour={8}
-            endHour={18}
+            startHour={0}
+            endHour={24}
             period="Today"
           />
         </div>

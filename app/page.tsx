@@ -142,7 +142,21 @@ export default function Home() {
             )}
 
             {/* All page content lives here so it shifts as one unit */}
-            <div className="pomodoro-main-content">
+            <div
+              className="pomodoro-main-content"
+              style={
+                showOverlayMenu
+                  ? {
+                      marginLeft: "300px",
+                      transition:
+                        "margin-left 0.26s cubic-bezier(0.22, 1, 0.36, 1)",
+                    }
+                  : {
+                      transition:
+                        "margin-left 0.26s cubic-bezier(0.22, 1, 0.36, 1)",
+                    }
+              }
+            >
               <PomodoroHeader
                 onMenuClick={() => setMenuOpen(true)}
                 menuOpen={menuOpen}

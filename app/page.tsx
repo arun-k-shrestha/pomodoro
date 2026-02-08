@@ -22,6 +22,7 @@ export default function Home() {
   const [tasks, setTasks] = useState<string[]>([]);
   const [isNarrow, setIsNarrow] = useState(false);
   const [isVeryNarrow, setIsVeryNarrow] = useState(false);
+  const [isMenuOverLay, setIsMenuOverLay] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -33,6 +34,7 @@ export default function Home() {
   // Track viewport width
   useEffect(() => {
     const check = () => {
+      setIsMenuOverLay(window.innerWidth < 1380);
       setIsNarrow(window.innerWidth < 1042);
       setIsVeryNarrow(window.innerWidth < 740);
     };
@@ -145,7 +147,7 @@ export default function Home() {
             <div
               className="pomodoro-main-content"
               style={
-                showOverlayMenu
+                showOverlayMenu && activePage === "progress" && isMenuOverLay
                   ? {
                       marginLeft: "300px",
                       transition:

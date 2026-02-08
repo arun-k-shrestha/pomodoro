@@ -27,7 +27,6 @@ export default function FocusTimeline({
   segments,
   startHour = 0,
   endHour = 24,
-  period = "Today",
 }: Props) {
   const W = 680,
     H = 200;

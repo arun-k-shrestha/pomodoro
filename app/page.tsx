@@ -104,7 +104,7 @@ export default function Home() {
 
   const handleProgressClick = () => {
     setActivePage("progress");
-    setMenuOpen(true);
+    setMenuOpen(!isVeryNarrow);
   };
 
   // Below 1042px: sidebar pushes content. At or above: overlay.

@@ -59,7 +59,6 @@ export default function FocusTimeline({
     <div className={styles.timelineWrapper}>
       <div className={styles.timelineHeader}>
         <span className={styles.sectionTitle}>Focus Timeline</span>
-        <button className={styles.periodBtn}>{period} ▾</button>
       </div>
 
       <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart}>

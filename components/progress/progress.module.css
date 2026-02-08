@@ -510,4 +510,7 @@
   .statsGrid {
     grid-template-columns: 1fr 1fr;
   }
+  .sectionTitle {
+    font-size: 9px;
+  }
 }

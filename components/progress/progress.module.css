@@ -204,6 +204,13 @@
   letter-spacing: 0.04em;
 }
 
+.timeLineAxisLabel {
+  font-size: 16px;
+  fill: var(--muted);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 0.04em;
+}
+
 .bar {
   fill: var(--accent);
   opacity: 0.78;
@@ -348,9 +355,11 @@
 
 /* SVG segment fills */
 .timelineFocus {
+  height: 70px;
   fill: var(--accent);
 }
 .timelineBreak {
+  height: 70px;
   fill: rgba(197, 97, 74, 0.22);
 }
 .timelineIdle {
@@ -501,6 +510,10 @@
   .chartsRow {
     grid-template-columns: 1fr;
   }
+  .timelineFocus,
+  .timelineBreak {
+    height: 70px; /* change this freely */
+  }
 }
 
 @media (max-width: 640px) {
@@ -513,4 +526,25 @@
   .sectionTitle {
     font-size: 9px;
   }
+  .timeLineAxisLabel {
+    font-size: 25px;
+  }
+  .timelineFocus,
+  .timelineBreak {
+    height: 80px; /* change this freely */
+  }
 }
+
+@media (max-width: 400px) {
+  .timeLineAxisLabel {
+    font-size: 28px;
+  }
+
+  .timelineFocus,
+  .timelineBreak {
+    height: 95px; /* change this freely */
+  }
+}
+
+/* .timeLineAxisLabelis increasing as the dimension decreases because the font size decreases 
+proportional to the dimension. Thus increasing the .timeLineAxisLabel keeps up with the decreasing font size */

@@ -49,9 +49,9 @@ export default function FocusTimeline({
 
   const fmtHour = (h: number) => {
     const h24 = h % 24;
-    if (h24 === 0) return "12 AM";
-    if (h24 === 12) return "12 PM";
-    return h24 < 12 ? `${h24} AM` : `${h24 - 12} PM`;
+    if (h24 === 0) return "12AM";
+    if (h24 === 12) return "12PM";
+    return h24 < 12 ? `${h24}AM` : `${h24 - 12}PM`;
   };
 
   return (
@@ -71,8 +71,7 @@ export default function FocusTimeline({
                 x={x}
                 y={52}
                 textAnchor="middle"
-                className={styles.axisLabel}
-                style={{ fontSize: "16px" }}
+                className={styles.timeLineAxisLabel}
               >
                 {fmtHour(h)}
               </text>
@@ -87,7 +86,6 @@ export default function FocusTimeline({
             x={toX(seg.startHour) + 1}
             y={BAR_Y}
             width={Math.max(toW(seg.durationMin) - 2, 4)}
-            height={BAR_H}
             rx={SEGMENT_RX[seg.type]}
             className={SEGMENT_CLASS[seg.type]}
           />

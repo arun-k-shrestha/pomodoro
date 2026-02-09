@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styles from "../progress.module.css";
 
 type BarData = { label: string; hours: number };
@@ -9,6 +10,17 @@ export default function BarChart({
   data: BarData[];
   maxH?: number;
 }) {
+  const [isLowerCount, setLowerCount] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      setLowerCount(window.innerWidth < 650);
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const W = 460,
     H = 180,
     PAD_L = 36,
@@ -22,6 +34,8 @@ export default function BarChart({
   const stepSize = Math.ceil(maxH / steps);
   const yMax = stepSize * steps; // ← top of the y-axis scale
   const yLines = Array.from({ length: steps + 1 }, (_, i) => i * stepSize);
+
+  const labelInterval = isLowerCount ? Math.ceil(data.length / 8) : 1;
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart}>
@@ -53,6 +67,8 @@ export default function BarChart({
         const x = PAD_L + i * barW + barW * 0.2;
         const y = PAD_T + chartH - bH;
         const w = barW * 0.6;
+        const showLabel = i % labelInterval === 0;
+
         return (
           <g key={d.label}>
             <rect
@@ -63,14 +79,16 @@ export default function BarChart({
               rx="4"
               className={styles.bar}
             />
-            <text
-              x={x + w / 2}
-              y={H - 8}
-              textAnchor="middle"
-              className={styles.axisLabel}
-            >
-              {d.label}
-            </text>
+            {showLabel && (
+              <text
+                x={x + w / 2}
+                y={H - 8}
+                textAnchor="middle"
+                className={styles.axisLabel}
+              >
+                {d.label}
+              </text>
+            )}
           </g>
         );
       })}

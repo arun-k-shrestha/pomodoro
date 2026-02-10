@@ -416,7 +416,7 @@
 .sessionsTable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .sessionsTh {
@@ -434,7 +434,7 @@
 }
 
 .sessionsTd {
-  padding: 14px 0;
+  padding: 14px 2px;
   color: var(--text);
   vertical-align: middle;
 }
@@ -540,7 +540,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 430px) {
   .timeLineAxisLabel {
     font-size: 28px;
   }
@@ -551,6 +551,10 @@
   .timelineFocus,
   .timelineBreak {
     height: 95px; /* change this freely */
+  }
+
+  .sessionsTable {
+    font-size: 13px;
   }
 }
 

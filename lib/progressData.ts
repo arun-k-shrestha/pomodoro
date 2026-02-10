@@ -73,7 +73,7 @@ export const SESSION_DATA: Session[] = [
   {
     startTime: "2:30 PM",
     endTime: "2:55 PM",
-    task: "Study: Algorithms",
+    task: "Study: Algorithms. Testing Testing Testing",
     durationMin: 25,
     type: "focus",
   },

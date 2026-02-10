@@ -43,7 +43,6 @@ export default function RecentSessions({ sessions, onViewAll }: Props) {
             <th className={styles.sessionsTh}>Time</th>
             <th className={styles.sessionsTh}>Task</th>
             <th className={styles.sessionsTh}>Duration</th>
-            <th className={styles.sessionsTh}>Type</th>
           </tr>
         </thead>
         <tbody>
@@ -55,13 +54,6 @@ export default function RecentSessions({ sessions, onViewAll }: Props) {
               <td className={styles.sessionsTd}>{s.task}</td>
               <td className={`${styles.sessionsTd} ${styles.sessionsDuration}`}>
                 {s.durationMin}m
-              </td>
-              <td className={styles.sessionsTd}>
-                <span
-                  className={`${styles.badge} ${styles[TYPE_BADGE_CLASS[s.type]]}`}
-                >
-                  {TYPE_LABEL[s.type]}
-                </span>
               </td>
             </tr>
           ))}

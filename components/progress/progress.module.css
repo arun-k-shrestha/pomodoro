@@ -529,6 +529,11 @@
   .timeLineAxisLabel {
     font-size: 25px;
   }
+
+  .axisLabel {
+    font-size: 14px;
+  }
+
   .timelineFocus,
   .timelineBreak {
     height: 80px; /* change this freely */
@@ -540,6 +545,9 @@
     font-size: 28px;
   }
 
+  .axisLabel {
+    font-size: 18px;
+  }
   .timelineFocus,
   .timelineBreak {
     height: 95px; /* change this freely */

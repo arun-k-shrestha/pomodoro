@@ -37,6 +37,9 @@ export default function BarChart({
 
   const labelInterval = isLowerCount ? Math.ceil(data.length / 8) : 1;
 
+  const formatLabel = (label: string) =>
+    isLowerCount ? label.slice(0, 3) : label;
+
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart}>
       {yLines.map((v) => {
@@ -86,7 +89,7 @@ export default function BarChart({
                 textAnchor="middle"
                 className={styles.axisLabel}
               >
-                {d.label}
+                {formatLabel(d.label)}
               </text>
             )}
           </g>

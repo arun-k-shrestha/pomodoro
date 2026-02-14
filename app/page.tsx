@@ -10,8 +10,9 @@ import TaskInput from "@/components/TaskInput";
 import TaskList from "@/components/TaskList";
 import MenuPage from "@/components/menu/HamburgerMenu";
 import ProgressPage from "@/components/progress/page";
+import SettingPage from "@/components/settings/page";
 
-type ActivePage = "home" | "progress";
+type ActivePage = "home" | "progress" | "settings" | "about";
 
 export default function Home() {
   const [activePage, setActivePage] = useState<ActivePage>("home");
@@ -109,6 +110,11 @@ export default function Home() {
     setMenuOpen(!isVeryNarrow);
   };
 
+  const handleSettingsClick = () => {
+    setActivePage("settings");
+    setMenuOpen(!isVeryNarrow);
+  };
+
   // Below 1042px: sidebar pushes content. At or above: overlay.
   const showFullscreenMenu = menuOpen && isVeryNarrow;
   const showPushMenu = menuOpen && isNarrow && !isVeryNarrow;
@@ -122,6 +128,7 @@ export default function Home() {
           variant="fullscreen"
           onClose={handleClose}
           onProgressClick={handleProgressClick}
+          onSettingsClick={handleSettingsClick}
         />
       )}
 
@@ -131,6 +138,7 @@ export default function Home() {
             <MenuPage
               onClose={handleClose}
               onProgressClick={handleProgressClick}
+              onSettingsClick={handleSettingsClick}
             />
           )}
           <div className={`pomodoro-layout${showPushMenu ? " push" : ""}`}>
@@ -140,6 +148,7 @@ export default function Home() {
                 variant="sidebar"
                 onClose={handleClose}
                 onProgressClick={handleProgressClick}
+                onSettingsClick={handleSettingsClick}
               />
             )}
 
@@ -185,6 +194,12 @@ export default function Home() {
               {activePage === "progress" && (
                 <div>
                   <ProgressPage />
+                </div>
+              )}
+
+              {activePage === "settings" && (
+                <div>
+                  <SettingPage />
                 </div>
               )}
             </div>

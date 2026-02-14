@@ -6,12 +6,14 @@ import styles from "./HamburgerMenu.module.css";
 type MenuPageProps = {
   onClose: () => void;
   onProgressClick: () => void;
+  onSettingsClick: () => void;
   variant?: "overlay" | "sidebar" | "fullscreen";
 };
 
 export default function MenuPage({
   onClose,
   onProgressClick,
+  onSettingsClick,
   variant = "overlay",
 }: MenuPageProps) {
   const isSidebar = variant === "sidebar";
@@ -38,7 +40,7 @@ export default function MenuPage({
         <ul>
           {[
             { label: "Progress", icon: "▧", action: onProgressClick },
-            { label: "Settings", icon: "⚙", href: "/settings" },
+            { label: "Settings", icon: "⚙", action: onSettingsClick },
             { label: "About", icon: "◎", href: undefined },
             { label: "Login", icon: "⇥", href: undefined },
           ].map(({ label, icon, href, action }) => {

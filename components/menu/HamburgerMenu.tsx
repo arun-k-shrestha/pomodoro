@@ -7,6 +7,7 @@ type MenuPageProps = {
   onClose: () => void;
   onProgressClick: () => void;
   onSettingsClick: () => void;
+  onAboutClick: () => void;
   variant?: "overlay" | "sidebar" | "fullscreen";
 };
 
@@ -14,6 +15,7 @@ export default function MenuPage({
   onClose,
   onProgressClick,
   onSettingsClick,
+  onAboutClick,
   variant = "overlay",
 }: MenuPageProps) {
   const isSidebar = variant === "sidebar";
@@ -41,7 +43,7 @@ export default function MenuPage({
           {[
             { label: "Progress", icon: "▧", action: onProgressClick },
             { label: "Settings", icon: "⚙", action: onSettingsClick },
-            { label: "About", icon: "◎", href: undefined },
+            { label: "About", icon: "◎", action: onAboutClick },
             { label: "Login", icon: "⇥", href: undefined },
           ].map(({ label, icon, href, action }) => {
             return (

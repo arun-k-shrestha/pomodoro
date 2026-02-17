@@ -11,6 +11,7 @@ import TaskList from "@/components/TaskList";
 import MenuPage from "@/components/menu/HamburgerMenu";
 import ProgressPage from "@/components/progress/page";
 import SettingPage from "@/components/settings/page";
+import AboutPage from "@/components/about/page";
 
 type ActivePage = "home" | "progress" | "settings" | "about";
 
@@ -115,6 +116,11 @@ export default function Home() {
     setMenuOpen(!isVeryNarrow);
   };
 
+  const handleAboutClick = () => {
+    setActivePage("about");
+    setMenuOpen(!isVeryNarrow);
+  };
+
   // Below 1042px: sidebar pushes content. At or above: overlay.
   const showFullscreenMenu = menuOpen && isVeryNarrow;
   const showPushMenu = menuOpen && isNarrow && !isVeryNarrow;
@@ -129,6 +135,7 @@ export default function Home() {
           onClose={handleClose}
           onProgressClick={handleProgressClick}
           onSettingsClick={handleSettingsClick}
+          onAboutClick={handleAboutClick}
         />
       )}
 
@@ -139,6 +146,7 @@ export default function Home() {
               onClose={handleClose}
               onProgressClick={handleProgressClick}
               onSettingsClick={handleSettingsClick}
+              onAboutClick={handleAboutClick}
             />
           )}
           <div className={`pomodoro-layout${showPushMenu ? " push" : ""}`}>
@@ -149,6 +157,7 @@ export default function Home() {
                 onClose={handleClose}
                 onProgressClick={handleProgressClick}
                 onSettingsClick={handleSettingsClick}
+                onAboutClick={handleAboutClick}
               />
             )}
 
@@ -200,6 +209,12 @@ export default function Home() {
               {activePage === "settings" && (
                 <div>
                   <SettingPage />
+                </div>
+              )}
+
+              {activePage === "about" && (
+                <div>
+                  <AboutPage />
                 </div>
               )}
             </div>

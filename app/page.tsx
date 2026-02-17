@@ -21,12 +21,14 @@ export default function Home() {
   const [mode, setMode] = useState<Mode>("pomodoro");
   const [timeLeft, setTimeLeft] = useState(MODES.pomodoro.duration);
   const [running, setRunning] = useState(false);
+  const [soundRepeats, setSoundRepeats] = useState(1);
   const [tasks, setTasks] = useState<string[]>([]);
   const [isNarrow, setIsNarrow] = useState(false);
   const [isVeryNarrow, setIsVeryNarrow] = useState(false);
   const [isMenuOverLay, setIsMenuOverLay] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const remainingSoundRepeatsRef = useRef(0);
 
   const mm = Math.floor(timeLeft / 60)
     .toString()
@@ -59,6 +61,30 @@ export default function Home() {
     };
   }, [mm, ss, mode]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    const handleEnded = () => {
+      if (remainingSoundRepeatsRef.current > 1) {
+        remainingSoundRepeatsRef.current -= 1;
+        audio.currentTime = 0;
+        audio.play().catch(console.error);
+        return;
+      }
+
+      remainingSoundRepeatsRef.current = 0;
+    };
+
+    audio.addEventListener("ended", handleEnded);
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, []);
+
   // Timer logic
   useEffect(() => {
     if (running) {
@@ -68,6 +94,7 @@ export default function Home() {
             clearInterval(intervalRef.current!);
             setRunning(false);
             if (audioRef.current) {
+              remainingSoundRepeatsRef.current = soundRepeats;
               audioRef.current.currentTime = 0;
               audioRef.current.play().catch(console.error);
             }
@@ -84,7 +111,7 @@ export default function Home() {
       clearInterval(intervalRef.current!);
     }
     return () => clearInterval(intervalRef.current!);
-  }, [running]);
+  }, [running, mode, soundRepeats]);
 
   const changeMode = (m: Mode) => {
     clearInterval(intervalRef.current!);
@@ -208,7 +235,10 @@ export default function Home() {
 
               {activePage === "settings" && (
                 <div>
-                  <SettingPage />
+                  <SettingPage
+                    soundRepeats={soundRepeats}
+                    onSoundRepeatsChange={setSoundRepeats}
+                  />
                 </div>
               )}
 

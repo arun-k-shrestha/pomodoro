@@ -58,6 +58,19 @@ export function PomodoroApp() {
     setMenuOpen(!isVeryNarrow);
   };
 
+  const handleTimerToggle = async () => {
+    if (!running && status === "authenticated") {
+      await fetch("/api/sessions", {
+        method: "POST",
+        headers: {
+          body: JSON.stringify({
+            task: tasks[0] ?? null,
+          }),
+        },
+      });
+    }
+  };
+
   return (
     <main className="pomodoro-app" style={{ backgroundColor: BG_COLORS[mode] }}>
       <AppLayout

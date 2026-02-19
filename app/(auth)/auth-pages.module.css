@@ -1,0 +1,253 @@
+.page {
+  --card: rgba(255, 255, 255, 0.16);
+  --text: #2e2e2e;
+  --muted: #777;
+  --accent: #c5614a;
+  --accent-soft: rgba(197, 97, 74, 0.12);
+  --border: rgba(255, 255, 255, 0.28);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.06);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  --blur: blur(20px) saturate(150%);
+  --radius-card: 28px;
+  --radius-pill: 20px;
+
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  position: relative;
+  overflow: hidden;
+  color: var(--text);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.page::before,
+.page::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  filter: blur(10px);
+}
+
+.page::before {
+  width: 280px;
+  height: 280px;
+  top: -80px;
+  left: -100px;
+}
+
+.page::after {
+  width: 320px;
+  height: 320px;
+  right: -120px;
+  bottom: -120px;
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 420px);
+  padding: 28px 24px 24px;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  box-shadow: var(--shadow-inset), var(--shadow-soft);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: #777;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.brandDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(197, 97, 74, 0.75);
+  box-shadow:
+    0 0 0 6px rgba(197, 97, 74, 0.1),
+    0 10px 20px rgba(197, 97, 74, 0.15);
+}
+
+.header {
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.fieldGroup {
+  display: grid;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6d6666;
+}
+
+.input {
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.input::placeholder {
+  color: rgba(89, 84, 84, 0.62);
+}
+
+.input:focus {
+  border-color: rgba(197, 97, 74, 0.34);
+  background: rgba(255, 255, 255, 0.56);
+  box-shadow: 0 0 0 4px rgba(197, 97, 74, 0.08);
+}
+
+.inlineRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.link {
+  color: #7d5650;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--accent);
+}
+
+.actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.primaryButton,
+.secondaryButton {
+  border: none;
+  border-radius: 999px;
+  padding: 15px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primaryButton {
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--accent);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.secondaryButton {
+  background: rgba(255, 255, 255, 0.24);
+  color: #5b4c4c;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
+  transform: translateY(-1px);
+}
+
+.primaryButton:hover {
+  background: #fff;
+}
+
+.secondaryButton:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.footer {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.footerRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 560px) {
+  .page {
+    padding: 20px 14px;
+  }
+
+  .card {
+    padding: 22px 18px 18px;
+    border-radius: 22px;
+  }
+
+  .inlineRow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "./HamburgerMenu.module.css";
+import Link from "next/link";
 
 type MenuPageProps = {
   onClose: () => void;
@@ -44,24 +45,34 @@ export default function MenuPage({
             { label: "Progress", icon: "▧", action: onProgressClick },
             { label: "Settings", icon: "⚙", action: onSettingsClick },
             { label: "About", icon: "◎", action: onAboutClick },
-            { label: "Login", icon: "⇥", href: undefined },
+            { label: "Login", icon: "⇥", href: "/login" }, // fix path
           ].map(({ label, icon, href, action }) => {
+            const className = `${styles.navItem} ${
+              activeItem === label ? styles.active : ""
+            }`;
+
             return (
               <li key={label}>
-                <button
-                  type="button"
-                  className={`${styles.navItem} ${
-                    activeItem === label ? styles.active : ""
-                  }`}
-                  onClick={() => {
-                    setactiveItem(label);
-                    action?.();
-                  }}
-                >
-                  <span className={styles.navIcon}>{icon}</span>
-                  <span className={styles.navLabel}>{label}</span>
-                  <span className={styles.navArrow}>›</span>
-                </button>
+                {href ? (
+                  <Link href={href} className={className}>
+                    <span className={styles.navIcon}>{icon}</span>
+                    <span className={styles.navLabel}>{label}</span>
+                    <span className={styles.navArrow}>›</span>
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    className={className}
+                    onClick={() => {
+                      setactiveItem(label);
+                      action?.();
+                    }}
+                  >
+                    <span className={styles.navIcon}>{icon}</span>
+                    <span className={styles.navLabel}>{label}</span>
+                    <span className={styles.navArrow}>›</span>
+                  </button>
+                )}
               </li>
             );
           })}

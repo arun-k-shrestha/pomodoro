@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "../auth-pages.module.css";
+import Image from "next/image";
 
 export default function SignupPage() {
   return (
@@ -46,23 +47,18 @@ export default function SignupPage() {
             />
           </div>
 
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel} htmlFor="confirmPassword">
-              Confirm password
-            </label>
-            <input
-              className={styles.input}
-              id="confirmPassword"
-              type="password"
-              placeholder="Repeat password"
-            />
-          </div>
-
           <div className={styles.actions}>
             <button className={styles.primaryButton} type="submit">
               Create account
             </button>
             <button className={styles.secondaryButton} type="button">
+              <Image
+                src="/google-logo.svg"
+                alt=""
+                width={18}
+                height={18}
+                className={styles.buttonIcon}
+              />
               Continue with Google
             </button>
           </div>

@@ -199,9 +199,17 @@
 }
 
 .secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   background: rgba(255, 255, 255, 0.24);
   color: #5b4c4c;
   border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.buttonIcon {
+  flex: 0 0 auto;
 }
 
 .primaryButton:hover,

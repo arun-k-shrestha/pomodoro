@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "../auth-pages.module.css";
 
@@ -44,6 +45,13 @@ export default function LoginPage() {
               Login
             </button>
             <button className={styles.secondaryButton} type="button">
+              <Image
+                src="/google-logo.svg"
+                alt=""
+                width={18}
+                height={18}
+                className={styles.buttonIcon}
+              />
               Continue with Google
             </button>
           </div>

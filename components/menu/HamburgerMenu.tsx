@@ -45,7 +45,7 @@ export default function MenuPage({
             { label: "Progress", icon: "▧", action: onProgressClick },
             { label: "Settings", icon: "⚙", action: onSettingsClick },
             { label: "About", icon: "◎", action: onAboutClick },
-            { label: "Login", icon: "⇥", href: "/login" }, // fix path
+            { label: "Login", icon: "⇥", href: "/login" },
           ].map(({ label, icon, href, action }) => {
             const className = `${styles.navItem} ${
               activeItem === label ? styles.active : ""

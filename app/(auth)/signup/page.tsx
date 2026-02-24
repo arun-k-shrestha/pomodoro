@@ -1,6 +1,8 @@
+"use client";
 import Link from "next/link";
 import styles from "../auth-pages.module.css";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 
 export default function SignupPage() {
   return (
@@ -51,19 +53,24 @@ export default function SignupPage() {
             <button className={styles.primaryButton} type="submit">
               Create account
             </button>
-            <button className={styles.secondaryButton} type="button">
-              <Image
-                src="/google-logo.svg"
-                alt=""
-                width={18}
-                height={18}
-                className={styles.buttonIcon}
-              />
-              Continue with Google
-            </button>
           </div>
         </form>
-
+        <div className={styles.actions}>
+          <button
+            className={styles.secondaryButton}
+            type="button"
+            onClick={() => signIn("google", { callBackUrl: "/" })}
+          >
+            <Image
+              src="/google-logo.svg"
+              alt=""
+              width={18}
+              height={18}
+              className={styles.buttonIcon}
+            />
+            Continue with Google
+          </button>
+        </div>
         <footer className={styles.footer}>
           <div className={styles.footerRow}>
             <span>Already have an account?</span>

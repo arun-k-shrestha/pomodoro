@@ -59,7 +59,9 @@ export default function SignupPage() {
           <button
             className={styles.secondaryButton}
             type="button"
-            onClick={() => signIn("google", { callBackUrl: "/" })}
+            onClick={() =>
+              signIn("google", { callbackUrl: "/" }, { prompt: "select_account" })
+            }
           >
             <Image
               src="/google-logo.svg"

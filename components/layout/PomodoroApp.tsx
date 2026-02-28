@@ -27,8 +27,9 @@ export function PomodoroApp() {
 
   const router = useRouter();
   const { status } = useSession();
+  const isAuthenticated = status === "authenticated";
   const { isNarrow, isVeryNarrow, isMenuOverLay } = useViewport();
-  const { tasks, addTask, removeTask } = useTasks();
+  const { tasks, addTask, removeTask } = useTasks(isAuthenticated);
   const { mode, timeLeft, running, audioRef, changeMode, toggleRunning } =
     useTimer(soundRepeats);
 
@@ -60,15 +61,21 @@ export function PomodoroApp() {
 
   const handleTimerToggle = async () => {
     if (!running && status === "authenticated") {
-      await fetch("/api/sessions", {
+      const response = await fetch("/api/sessions", {
         method: "POST",
-        headers: {
-          body: JSON.stringify({
-            task: tasks[0] ?? null,
-          }),
-        },
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mode,
+          task: tasks[0]?.title ?? null,
+          startedAt: new Date().toISOString(),
+        }),
       });
+
+      if (!response.ok) {
+        console.error("Failed to save timer session");
+      }
     }
+    toggleRunning();
   };
 
   return (
@@ -94,7 +101,8 @@ export function PomodoroApp() {
             <div className="pomodoro-body">
               <ModeTabs mode={mode} onChangeMode={changeMode} />
               <TimerDisplay mode={mode} timeLeft={timeLeft} />
-              <StartButton running={running} onToggle={toggleRunning} />
+              {/* <StartButton running={running} onToggle={toggleRunning} /> */}
+              <StartButton running={running} onToggle={handleTimerToggle} />
             </div>
             <div className="pomodoro-footer">
               <TaskInput onAdd={addTask} />

@@ -12,6 +12,6 @@ if (!connectionString) {
 export const db = new Pool({
   connectionString,
   ssl: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: false, // check this on the Production
   },
 });

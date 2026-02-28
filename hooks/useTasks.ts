@@ -60,8 +60,12 @@ export function useTasks(isAuthenticated: boolean) {
     setTasks((prev) => [data.task, ...prev]);
   };
 
-  const removeTask = (index: number) => {
-    setTasks((prev) => prev.filter((_, i) => i !== index));
+  const removeTask = async (id: string) => {
+    if (isAuthenticated) {
+      await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+    }
+
+    setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
   return { tasks, addTask, removeTask };

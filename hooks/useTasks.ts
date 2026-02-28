@@ -31,7 +31,7 @@ export function useTasks(isAuthenticated: boolean) {
 
     void loadTasks().then((loadedTasks) => {
       if (!ignore && loadedTasks) {
-        setTasks(loadedTasks);
+        setTasks(loadedTasks.slice(0, 1));
       }
     });
 
@@ -42,14 +42,13 @@ export function useTasks(isAuthenticated: boolean) {
 
   const addTask = async (title: string) => {
     if (!isAuthenticated) {
-      setTasks((prev) => [
+      setTasks([
         {
           id: crypto.randomUUID(),
           title,
           completed: false,
           created_at: new Date().toISOString(),
         },
-        ...prev,
       ]);
       return;
     }
@@ -66,7 +65,7 @@ export function useTasks(isAuthenticated: boolean) {
     }
 
     const data = (await response.json()) as { task: Task };
-    setTasks((prev) => [data.task, ...prev]);
+    setTasks([data.task]);
   };
 
   const removeTask = async (id: string) => {

@@ -105,7 +105,7 @@ export function PomodoroApp() {
               <StartButton running={running} onToggle={handleTimerToggle} />
             </div>
             <div className="pomodoro-footer">
-              <TaskInput onAdd={addTask} />
+              {tasks.length === 0 && <TaskInput onAdd={addTask} />}
               <TaskList tasks={tasks} onRemove={removeTask} />
             </div>
           </>

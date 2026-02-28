@@ -4,7 +4,7 @@ import type { Task } from "@/hooks/useTasks";
 
 type Props = {
   tasks: Task[];
-  onRemove: (index: number) => void;
+  onRemove: (id: string) => void;
 };
 
 export default function TaskList({ tasks, onRemove }: Props) {
@@ -15,7 +15,7 @@ export default function TaskList({ tasks, onRemove }: Props) {
           <span className="task-item-text">{item.title}</span>
           <button
             className="task-remove-btn"
-            onClick={() => onRemove(index)}
+            onClick={() => onRemove(item.id)}
             aria-label="Remove task"
           >
             ×

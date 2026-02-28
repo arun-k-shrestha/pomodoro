@@ -10,25 +10,34 @@ export type Task = {
 export function useTasks(isAuthenticated: boolean) {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const loadTasks = useCallback(async () => {
+  const loadTasks = useCallback(async (): Promise<Task[] | null> => {
     if (!isAuthenticated) {
-      setTasks([]);
-      return;
+      return [];
     }
 
     const response = await fetch("/api/tasks");
 
     if (!response.ok) {
       console.error("Failed to load tasks");
-      return;
+      return null;
     }
 
     const data = (await response.json()) as { tasks: Task[] };
-    setTasks(data.tasks);
+    return data.tasks;
   }, [isAuthenticated]);
 
   useEffect(() => {
-    void loadTasks();
+    let ignore = false;
+
+    void loadTasks().then((loadedTasks) => {
+      if (!ignore && loadedTasks) {
+        setTasks(loadedTasks);
+      }
+    });
+
+    return () => {
+      ignore = true;
+    };
   }, [loadTasks]);
 
   const addTask = async (title: string) => {
@@ -62,7 +71,7 @@ export function useTasks(isAuthenticated: boolean) {
 
   const removeTask = async (id: string) => {
     if (isAuthenticated) {
-      await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+      await fetch(`/api/tasks?id=${id}`, { method: "DELETE" });
     }
 
     setTasks((prev) => prev.filter((task) => task.id !== id));

@@ -47,3 +47,20 @@ export async function POST(request: Request) {
 
   return Response.json({ task: result.rows[0] }, { status: 201 });
 }
+
+export async function DELETE(request: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email)
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
+  if (!id) return Response.json({ error: "Missing id" }, { status: 400 });
+
+  await db.query(`DELETE FROM tasks WHERE id = $1 AND user_email = $2`, [
+    id,
+    session.user.email,
+  ]);
+
+  return new Response(null, { status: 204 });
+}

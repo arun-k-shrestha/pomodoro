@@ -26,7 +26,11 @@ export default function TaskInput({ onAdd }: Props) {
           if (e.key === "Enter") handleAdd();
         }}
       />
-      <button className="add-task-btn" onClick={handleAdd} aria-label="Add task">
+      <button
+        className="add-task-btn"
+        onClick={handleAdd}
+        aria-label="Add task"
+      >
         <span>+</span>
       </button>
     </div>

@@ -243,13 +243,51 @@ button {
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* ── Custom checkbox ───────────────────────────────────────── */
+
 .task-checkbox {
-  width: 14px;
-  height: 14px;
-  justify-self: center;
-  border: 1.5px solid rgba(35, 35, 35, 0.52);
-  border-radius: 2px;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%; /* circle */
+  border: 1px solid rgba(200, 77, 50, 0.3);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+  margin-left: 2px;
 }
+
+/* Dimmed tick */
+.task-checkbox::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 4px;
+  height: 9px;
+  border-right: 2px solid rgba(197, 97, 74, 0.5);
+  border-bottom: 2px solid rgba(197, 97, 74, 0.5);
+  transform: rotate(45deg);
+}
+
+/* Lit-up */
+.task-checkbox:checked {
+  background-color: #b7614d;
+}
+
+.task-checkbox:checked::after {
+  border-color: #f0efef;
+}
+
+.task-checkbox:checked + .task-item-text {
+  text-decoration: line-through;
+  opacity: 0.45;
+}
+/**-----------**/
 
 .task-item-text {
   min-width: 0;

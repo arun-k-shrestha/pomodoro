@@ -198,6 +198,7 @@ button {
 .task-input-row {
   padding: 4px 2px;
   padding-left: 26px;
+  padding-top: 4px;
 }
 
 .task-name {
@@ -236,7 +237,14 @@ button {
   grid-template-columns: 12px 1fr 28px;
   padding: 8px 2px;
   border-radius: 10px;
-  transition: background 0.2s ease;
+  transition:
+    background 0.2s ease,
+    opacity 0.9s ease;
+}
+
+.task-item-fading {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .task-item:hover {
@@ -294,6 +302,8 @@ button {
   color: rgba(35, 35, 35, 0.72);
   font-size: 16px;
   letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .add-task-btn,

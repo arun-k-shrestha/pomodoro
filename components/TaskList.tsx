@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Task } from "@/hooks/useTasks";
 
 type Props = {
@@ -8,12 +9,33 @@ type Props = {
 };
 
 export default function TaskList({ tasks, onRemove }: Props) {
+  const [fadingTaskId, setFadingTaskId] = useState<string | null>(null);
+
+  const completeTask = (id: string) => {
+    setFadingTaskId(id);
+
+    setTimeout(() => {
+      onRemove(id);
+    }, 600);
+  };
+
   return (
     <div className="task-list">
       {tasks.map((item) => (
-        <div key={item.id} className="task-item">
-          <input className="task-checkbox" type="checkbox" aria-hidden="true" />
+        <div
+          key={item.id}
+          className={`task-item ${fadingTaskId === item.id ? "task-item-fading" : ""}`}
+        >
+          <input
+            className="task-checkbox"
+            type="checkbox"
+            checked={fadingTaskId === item.id}
+            onChange={() => completeTask(item.id)}
+            aria-label="Complete task"
+          />
+
           <span className="task-item-text">{item.title}</span>
+
           <button
             className="task-remove-btn"
             onClick={() => onRemove(item.id)}

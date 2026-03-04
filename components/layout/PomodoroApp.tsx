@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { BG_COLORS } from "@/lib/constants";
@@ -25,13 +25,21 @@ export function PomodoroApp() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [soundRepeats, setSoundRepeats] = useState(1);
 
+  const sessionIdRef = useRef<string | null>(null); // DB row id from POST
+  const timerStartedAtRef = useRef<string | null>(null); // first start time for this timer
+  const runStartRef = useRef<number | null>(null); // timestamp when current segment began
+  const totalElapsedRef = useRef<number>(0); // cumulative running seconds
+  const saveInFlightRef = useRef(false);
+  const onCompleteRef = useRef<(() => Promise<void>) | undefined>(undefined);
+
   const router = useRouter();
   const { status } = useSession();
   const isAuthenticated = status === "authenticated";
   const { isNarrow, isVeryNarrow, isMenuOverLay } = useViewport();
   const { tasks, addTask, removeTask } = useTasks(isAuthenticated);
+  const activeTaskTitle = tasks[0]?.title ?? null;
   const { mode, timeLeft, running, audioRef, changeMode, toggleRunning } =
-    useTimer(soundRepeats);
+    useTimer(soundRepeats, () => onCompleteRef.current?.());
 
   const handleClose = () => {
     setMenuOpen(false);
@@ -59,24 +67,106 @@ export function PomodoroApp() {
     setMenuOpen(!isVeryNarrow);
   };
 
-  const handleTimerToggle = async () => {
-    if (!running && status === "authenticated") {
-      const response = await fetch("/api/sessions", {
+  const getElapsedSeconds = useCallback(
+    () =>
+      totalElapsedRef.current +
+      (runStartRef.current ? (Date.now() - runStartRef.current) / 1000 : 0),
+    [],
+  );
+
+  const resetSessionTracking = useCallback(() => {
+    sessionIdRef.current = null;
+    timerStartedAtRef.current = null;
+    runStartRef.current = null;
+    totalElapsedRef.current = 0;
+    saveInFlightRef.current = false;
+  }, []);
+
+  const createSessionIfEligible = useCallback(async () => {
+    if (
+      !isAuthenticated ||
+      sessionIdRef.current ||
+      saveInFlightRef.current ||
+      !timerStartedAtRef.current ||
+      getElapsedSeconds() < 10
+    ) {
+      return sessionIdRef.current;
+    }
+
+    saveInFlightRef.current = true;
+    try {
+      const res = await fetch("/api/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           mode,
-          task: tasks[0]?.title ?? null,
-          startedAt: new Date().toISOString(),
+          task: activeTaskTitle,
+          startedAt: timerStartedAtRef.current,
         }),
       });
 
-      if (!response.ok) {
-        console.error("Failed to save timer session");
+      if (!res.ok) {
+        return null;
       }
+
+      const data = await res.json();
+      sessionIdRef.current = data.session.id;
+      return sessionIdRef.current;
+    } finally {
+      saveInFlightRef.current = false;
+    }
+  }, [activeTaskTitle, getElapsedSeconds, isAuthenticated, mode]);
+
+  const handleTimerToggle = async () => {
+    if (!running) {
+      if (!timerStartedAtRef.current) {
+        timerStartedAtRef.current = new Date().toISOString();
+      }
+      runStartRef.current = Date.now();
+    } else {
+      if (runStartRef.current) {
+        totalElapsedRef.current += (Date.now() - runStartRef.current) / 1000;
+        runStartRef.current = null;
+      }
+
+      await createSessionIfEligible();
     }
     toggleRunning();
   };
+
+  const handleTimerComplete = async () => {
+    if (runStartRef.current) {
+      totalElapsedRef.current += (Date.now() - runStartRef.current) / 1000;
+      runStartRef.current = null;
+    }
+
+    const sessionId = await createSessionIfEligible();
+    if (sessionId && isAuthenticated) {
+      await fetch("/api/sessions", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          endedAt: new Date().toISOString(),
+          actualDurationSeconds: Math.round(totalElapsedRef.current),
+        }),
+      });
+    }
+
+    resetSessionTracking();
+  };
+
+  onCompleteRef.current = handleTimerComplete;
+
+  const handleModeChange = (nextMode: typeof mode) => {
+    resetSessionTracking();
+    changeMode(nextMode);
+  };
+
+  useEffect(() => {
+    if (!running) return;
+    void createSessionIfEligible();
+  }, [createSessionIfEligible, running, timeLeft]);
 
   return (
     <main className="pomodoro-app" style={{ backgroundColor: BG_COLORS[mode] }}>
@@ -99,7 +189,7 @@ export function PomodoroApp() {
         {activePage === "home" && (
           <>
             <div className="pomodoro-body">
-              <ModeTabs mode={mode} onChangeMode={changeMode} />
+              <ModeTabs mode={mode} onChangeMode={handleModeChange} />
               <TimerDisplay mode={mode} timeLeft={timeLeft} />
               {/* <StartButton running={running} onToggle={toggleRunning} /> */}
               <StartButton running={running} onToggle={handleTimerToggle} />

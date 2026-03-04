@@ -205,7 +205,9 @@ export function PomodoroApp() {
             <div className="pomodoro-footer">
               {tasks.length === 0 && (
                 <TaskInput
-                  onAdd={(task) => addTask(task, currentSessionName)}
+                  onAdd={(task) =>
+                    addTask(task, currentSessionName, getElapsedSeconds())
+                  }
                 />
               )}
               <TaskList

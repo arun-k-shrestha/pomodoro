@@ -95,7 +95,11 @@ export function useTasks(isAuthenticated: boolean) {
     };
   }, []);
 
-  const addTask = async (title: string, sessionName: string | null) => {
+  const addTask = async (
+    title: string,
+    sessionName: string | null,
+    elapsedSeconds: number,
+  ) => {
     const localTask: Task = {
       id: crypto.randomUUID(),
       title,
@@ -112,6 +116,11 @@ export function useTasks(isAuthenticated: boolean) {
     if (!isAuthenticated) {
       return;
     }
+    // If the user adds a task after 10 seconds, save it immediately.
+    const remainingDelayMs = Math.max(
+      TASK_SAVE_DELAY_MS - elapsedSeconds * 1000,
+      0,
+    );
 
     // CHANGE: save as incomplete only if the task still exists after 10 seconds.
     pendingSaveTimersRef.current[localTask.id] = setTimeout(() => {
@@ -124,7 +133,7 @@ export function useTasks(isAuthenticated: boolean) {
           prev.map((task) => (task.id === localTask.id ? savedTask : task)),
         );
       });
-    }, TASK_SAVE_DELAY_MS);
+    }, remainingDelayMs);
   };
 
   const completeTask = async (id: string) => {

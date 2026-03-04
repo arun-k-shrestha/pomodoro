@@ -68,3 +68,32 @@ export async function POST(request: Request) {
 
   return Response.json({ session: result.rows[0] }, { status: 201 });
 }
+
+export async function PATCH(request: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email)
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+  const body = (await request.json()) as {
+    sessionId: string;
+    endedAt: string;
+    actualDurationSeconds: number;
+  };
+
+  const result = await db.query(
+    `UPDATE pomodoro_sessions                                                                                                                       
+       SET ended_at = $1, actual_duration_seconds = $2, status = 'completed'
+       WHERE id = $3 AND user_email = $4
+       RETURNING *`,
+    [
+      new Date(body.endedAt).toISOString(),
+      body.actualDurationSeconds,
+      body.sessionId,
+      session.user.email,
+    ],
+  );
+
+  if (!result.rows[0])
+    return Response.json({ error: "Not found" }, { status: 404 });
+  return Response.json({ session: result.rows[0] });
+}

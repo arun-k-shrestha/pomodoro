@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { MODES, Mode } from "@/lib/constants";
 
-export function useTimer(soundRepeats: number) {
+export function useTimer(soundRepeats: number, onComplete?: () => void) {
   const [mode, setMode] = useState<Mode>("pomodoro");
   const [timeLeft, setTimeLeft] = useState(MODES.pomodoro.duration);
   const [running, setRunning] = useState(false);
@@ -55,6 +55,7 @@ export function useTimer(soundRepeats: number) {
           if (t <= 1) {
             clearInterval(intervalRef.current!);
             setRunning(false);
+            onComplete?.();
             if (audioRef.current) {
               remainingSoundRepeatsRef.current = soundRepeats;
               audioRef.current.currentTime = 0;

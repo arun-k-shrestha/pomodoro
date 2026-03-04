@@ -134,13 +134,14 @@ export function PomodoroApp() {
     toggleRunning();
   };
 
-  const handleTimerComplete = async () => {
+  const finishCurrentSession = useCallback(async () => {
     if (runStartRef.current) {
       totalElapsedRef.current += (Date.now() - runStartRef.current) / 1000;
       runStartRef.current = null;
     }
 
     const sessionId = await createSessionIfEligible();
+
     if (sessionId && isAuthenticated) {
       await fetch("/api/sessions", {
         method: "PATCH",
@@ -152,13 +153,17 @@ export function PomodoroApp() {
         }),
       });
     }
+  }, [createSessionIfEligible, isAuthenticated]);
 
+  const handleTimerComplete = async () => {
+    await finishCurrentSession();
     resetSessionTracking();
   };
 
   onCompleteRef.current = handleTimerComplete;
 
-  const handleModeChange = (nextMode: typeof mode) => {
+  const handleModeChange = async (nextMode: typeof mode) => {
+    await finishCurrentSession();
     resetSessionTracking();
     changeMode(nextMode);
   };

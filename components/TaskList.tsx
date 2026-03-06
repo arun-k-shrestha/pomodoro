@@ -5,17 +5,19 @@ import type { Task } from "@/hooks/useTasks";
 
 type Props = {
   tasks: Task[];
+  onComplete: (id: string) => void;
   onRemove: (id: string) => void;
 };
 
-export default function TaskList({ tasks, onRemove }: Props) {
+export default function TaskList({ tasks, onComplete, onRemove }: Props) {
   const [fadingTaskId, setFadingTaskId] = useState<string | null>(null);
 
   const completeTask = (id: string) => {
     setFadingTaskId(id);
 
     setTimeout(() => {
-      onRemove(id);
+      // CHANGE: checkbox completes and auto-removes instead of deleting.
+      onComplete(id);
     }, 600);
   };
 

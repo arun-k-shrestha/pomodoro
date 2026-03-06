@@ -1,1 +1,1 @@
-select * from pomodoro_sessions;
+SELECT * from pomodoro_sessions;

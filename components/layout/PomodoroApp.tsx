@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { BG_COLORS } from "@/lib/constants";
+import { BG_COLORS, MODES } from "@/lib/constants";
 import { useTimer } from "@/hooks/useTimer";
 import { useTasks } from "@/hooks/useTasks";
 import { useViewport } from "@/hooks/useViewport";
@@ -36,10 +36,13 @@ export function PomodoroApp() {
   const { status } = useSession();
   const isAuthenticated = status === "authenticated";
   const { isNarrow, isVeryNarrow, isMenuOverLay } = useViewport();
-  const { tasks, addTask, removeTask } = useTasks(isAuthenticated);
+  const { tasks, addTask, completeTask, removeTask } =
+    useTasks(isAuthenticated);
   const activeTaskTitle = tasks[0]?.title ?? null;
   const { mode, timeLeft, running, audioRef, changeMode, toggleRunning } =
     useTimer(soundRepeats, () => onCompleteRef.current?.());
+  // CHANGE: session name stored with tasks added at any time.
+  const currentSessionName = MODES[mode].label;
 
   const handleClose = () => {
     setMenuOpen(false);
@@ -200,8 +203,16 @@ export function PomodoroApp() {
               <StartButton running={running} onToggle={handleTimerToggle} />
             </div>
             <div className="pomodoro-footer">
-              {tasks.length === 0 && <TaskInput onAdd={addTask} />}
-              <TaskList tasks={tasks} onRemove={removeTask} />
+              {tasks.length === 0 && (
+                <TaskInput
+                  onAdd={(task) => addTask(task, currentSessionName)}
+                />
+              )}
+              <TaskList
+                tasks={tasks}
+                onComplete={completeTask}
+                onRemove={removeTask}
+              />
             </div>
           </>
         )}

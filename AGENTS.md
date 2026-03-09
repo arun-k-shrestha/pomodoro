@@ -5,5 +5,4 @@ When writing or modifying code:
 - Be creative, but keep the code simple and easy to understand.
 - Prefer clear, readable solutions over overly engineered code.
 - The code may be used in production, but do not make it unnecessarily complex just to satisfy production-level assumptions.
-- When making changes, show the full updated code.
-- Clearly comment the places where changes were made.
+- When making changes, clearly comment the places where changes were made.

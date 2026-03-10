@@ -10,10 +10,14 @@ export type Task = {
   completed_at: string | null;
   session_name: string | null;
   completion_duration_seconds: number | null;
+  pomodoro_started_seconds: number;
   created_at: string;
 };
 
-export function useTasks(isAuthenticated: boolean) {
+export function useTasks(
+  isAuthenticated: boolean,
+  getPomodoroElapsedSeconds: () => number,
+) {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   // CHANGE: track unsaved local tasks and their 10-second save timers.
@@ -31,7 +35,11 @@ export function useTasks(isAuthenticated: boolean) {
   }, []);
 
   const saveTask = useCallback(
-    async (task: Task, completed: boolean) => {
+    async (
+      task: Task,
+      completed: boolean,
+      completionDurationSeconds?: number,
+    ) => {
       if (!isAuthenticated) return null;
 
       const completedAt = completed ? new Date().toISOString() : null;
@@ -45,6 +53,8 @@ export function useTasks(isAuthenticated: boolean) {
           completed,
           completedAt,
           sessionName: task.session_name,
+          pomodoroStartedSeconds: task.pomodoro_started_seconds,
+          completionDurationSeconds,
         }),
       });
 
@@ -100,6 +110,7 @@ export function useTasks(isAuthenticated: boolean) {
     sessionName: string | null,
     elapsedSeconds: number,
   ) => {
+    const pomodoroStartedSeconds = getPomodoroElapsedSeconds();
     const localTask: Task = {
       id: crypto.randomUUID(),
       title,
@@ -108,6 +119,7 @@ export function useTasks(isAuthenticated: boolean) {
       completed_at: null,
       session_name: sessionName,
       completion_duration_seconds: null,
+      pomodoro_started_seconds: pomodoroStartedSeconds,
       created_at: new Date().toISOString(),
     };
 
@@ -130,7 +142,15 @@ export function useTasks(isAuthenticated: boolean) {
         if (!savedTask) return;
 
         setTasks((prev) =>
-          prev.map((task) => (task.id === localTask.id ? savedTask : task)),
+          prev.map((task) =>
+            task.id === localTask.id
+              ? {
+                  ...savedTask,
+                  // CHANGE: keep local pomodoro start time because the DB row does not store it.
+                  pomodoro_started_seconds: localTask.pomodoro_started_seconds,
+                }
+              : task,
+          ),
         );
       });
     }, remainingDelayMs);
@@ -151,9 +171,14 @@ export function useTasks(isAuthenticated: boolean) {
       return;
     }
 
+    const getTaskCompletionDuration = (task: Task) =>
+      Math.max(
+        0,
+        Math.round(getPomodoroElapsedSeconds() - task.pomodoro_started_seconds),
+      );
     if (wasPendingSave) {
       // CHANGE: if completed before 10 seconds, create the DB row as completed.
-      await saveTask(task, true);
+      await saveTask(task, true, getTaskCompletionDuration(task));
       return;
     }
 
@@ -164,6 +189,7 @@ export function useTasks(isAuthenticated: boolean) {
       body: JSON.stringify({
         id,
         completedAt: new Date().toISOString(),
+        completionDurationSeconds: getTaskCompletionDuration(task),
       }),
     });
 

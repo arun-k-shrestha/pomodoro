@@ -36,11 +36,21 @@ export function PomodoroApp() {
   const { status } = useSession();
   const isAuthenticated = status === "authenticated";
   const { isNarrow, isVeryNarrow, isMenuOverLay } = useViewport();
-  const { tasks, addTask, completeTask, removeTask } =
-    useTasks(isAuthenticated);
-  const activeTaskTitle = tasks[0]?.title ?? null;
+
   const { mode, timeLeft, running, audioRef, changeMode, toggleRunning } =
     useTimer(soundRepeats, () => onCompleteRef.current?.());
+
+  const getPomodoroElapsedSeconds = useCallback(() => {
+    if (mode !== "pomodoro") return 0;
+    return MODES.pomodoro.duration - timeLeft;
+  }, [mode, timeLeft]);
+
+  const { tasks, addTask, completeTask, removeTask } = useTasks(
+    isAuthenticated,
+    getPomodoroElapsedSeconds,
+  );
+  const activeTaskTitle = tasks[0]?.title ?? null;
+
   // CHANGE: session name stored with tasks added at any time.
   const currentSessionName = MODES[mode].label;
 

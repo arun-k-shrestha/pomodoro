@@ -44,6 +44,8 @@ export async function POST(request: Request) {
     completed?: boolean;
     completedAt?: string;
     sessionName?: string | null;
+    completionDurationSeconds?: number;
+    pomodoroStartedSeconds?: number;
   };
   const title = body.title?.trim();
 
@@ -59,11 +61,8 @@ export async function POST(request: Request) {
     : null;
 
   const durationSeconds =
-    completed && completedAt
-      ? Math.max(
-          0,
-          Math.round((completedAt.getTime() - startedAt.getTime()) / 1000),
-        )
+    completed && typeof body.completionDurationSeconds === "number"
+      ? Math.max(0, Math.round(body.completionDurationSeconds))
       : null;
 
   const result = await db.query(
@@ -113,6 +112,8 @@ export async function PATCH(request: Request) {
   const body = (await request.json()) as {
     id?: string;
     completedAt?: string;
+    completionDurationSeconds?: number;
+    pomodoroStartedSeconds?: number;
   };
 
   if (!body.id) {
@@ -129,14 +130,10 @@ export async function PATCH(request: Request) {
         set
           completed = true,
           completed_at = $1,
-          completion_duration_seconds = greatest(
-            0,
-            round(extract(epoch from ($1::timestamptz -
-started_at)))::integer
-          ),
+          completion_duration_seconds = $2,
           updated_at = now()
-        where id = $2
-          and user_email = $3
+        where id = $3
+          and user_email = $4
         returning
           id,
           title,
@@ -147,7 +144,12 @@ started_at)))::integer
           completion_duration_seconds,
           created_at
       `,
-    [completedAt.toISOString(), body.id, session.user.email],
+    [
+      completedAt.toISOString(),
+      Math.max(0, Math.round(body.completionDurationSeconds ?? 0)),
+      body.id,
+      session.user.email,
+    ],
   );
 
   if (result.rowCount === 0) {

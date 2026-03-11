@@ -1,4 +1,4 @@
-SELECT * from pomodoro_sessions;
+SELECT * from tasks;
 
 --                 List of relations
 --  Schema |       Name        | Type  |   Owner    

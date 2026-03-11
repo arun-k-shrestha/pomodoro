@@ -18,6 +18,7 @@ type DayViewProps = {
     totalSeconds: number;
     sessionCount: number;
     averageSessionMinutes: number;
+    streakDays: number;
     timeLine: {
       startHour: number;
       durationMin: number;
@@ -62,7 +63,7 @@ export default function DayView({ data }: DayViewProps) {
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>STREAK</div>
-            <div className={styles.statValue}>12 days</div>
+            <div className={styles.statValue}>{data.streakDays}</div>
           </div>
         </div>
         <div className={styles.statCard}>

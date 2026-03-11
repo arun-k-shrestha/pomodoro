@@ -26,6 +26,33 @@ function formatTime(value: string | null) {
   }).format(new Date(value));
 }
 
+function dateKey(value: Date) {
+  const year = value.getFullYear();
+  const month = String(value.getMonth() + 1).padStart(2, "0");
+  const day = String(value.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+// Streak
+function countPomodoroStreak(sessions: PomodoroSessionRow[]) {
+  const usedDays = new Set(
+    sessions
+      .filter((s) => s.type === "focus" && (s.actual_duration_seconds ?? 0) > 0)
+      .map((s) => dateKey(new Date(s.started_at))),
+  );
+
+  let streak = 0;
+  const currentDay = new Date();
+
+  while (usedDays.has(dateKey(currentDay))) {
+    streak += 1;
+    currentDay.setDate(currentDay.getDate() - 1);
+  }
+
+  return streak;
+}
+
 export async function GET() {
   const session = await getServerSession(authOptions);
 
@@ -42,6 +69,7 @@ export async function GET() {
   );
 
   const sessions = result.rows;
+  const streakDays = countPomodoroStreak(sessions);
   const today = new Date();
   const todayKey = today.toDateString();
 
@@ -106,6 +134,7 @@ export async function GET() {
         todayFocusSessions.length === 0
           ? 0
           : Math.round(totalTodaySeconds / todayFocusSessions.length / 60),
+      streakDays,
       timeLine,
       recentSessions,
     },

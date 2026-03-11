@@ -14,6 +14,7 @@ type ProgressData = {
     totalSeconds: number;
     sessionCount: number;
     averageSessionMinutes: number;
+    streakDays: number;
     timeLine: {
       startHour: number;
       durationMin: number;

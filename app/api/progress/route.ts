@@ -92,7 +92,7 @@ export async function GET() {
 
   const timeLine = todaySessions.map((s) => {
     const start = new Date(s.started_at);
-    const startHour = (start.getHours() + start.getMinutes()) / 60;
+    const startHour = start.getHours() + start.getMinutes() / 60;
 
     return {
       startHour,

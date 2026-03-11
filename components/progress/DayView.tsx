@@ -13,20 +13,50 @@ import router from "next/router";
 
 const HEATMAP_WEEKS = generateHeatmap();
 
-export default function DayView() {
+type DayViewProps = {
+  data: {
+    totalSeconds: number;
+    sessionCount: number;
+    averageSessionMinutes: number;
+    timeline: {
+      startHour: number;
+      durationMin: number;
+      type: "focus" | "break";
+    }[];
+    recentSessions: {
+      startTime: string;
+      endTime: string;
+      task: string;
+      durationMin: number;
+      type: "focus" | "break";
+    }[];
+  };
+};
+
+function formatDuration(seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.round((seconds % 3600) / 60);
+
+  if (hours === 0) return `${minutes}m`;
+  return `${hours}h ${minutes}m`;
+}
+
+export default function DayView({ data }: DayViewProps) {
   return (
     <>
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>TIME TODAY</div>
-            <div className={styles.statValue}>4h 25m</div>
+            <div className={styles.statValue}>
+              {formatDuration(data.totalSeconds)}
+            </div>
           </div>
         </div>
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>SESSIONS</div>
-            <div className={styles.statValue}>6</div>
+            <div className={styles.statValue}>{data.sessionCount}</div>
           </div>
         </div>
         <div className={styles.statCard}>

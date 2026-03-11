@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./progress.module.css";
 import DayView from "./DayView";
 import WeekView from "./WeekView";
@@ -9,11 +9,60 @@ import YearView from "./YearView";
 
 type TabKey = "day" | "week" | "month" | "year";
 
+type ProgressData = {
+  day: {
+    totalSeconds: number;
+    sessionCount: number;
+    averageSessionMinutes: number;
+    timeline: {
+      startHour: number;
+      durationMin: number;
+      type: "focus" | "break";
+    }[];
+    recentSessions: {
+      startTime: string;
+      endTime: string;
+      task: string;
+      durationMin: number;
+      type: "focus" | "break";
+    }[];
+  };
+  week: {
+    weekData: {
+      label: string;
+      hours: number;
+    }[];
+  };
+};
+
 export default function ProgressPage() {
   const [tab, setTab] = useState<TabKey>("day");
+  const [progressData, setProgressData] = useState<ProgressData | null>(null);
 
+  useEffect(() => {
+    async function loadProgress() {
+      const response = await fetch("/api/progress");
+
+      if (!response.ok) {
+        console.error("Failed to load progress data");
+        return;
+      }
+
+      const data = await response.json();
+      setProgressData(data);
+    }
+    loadProgress();
+  }, []);
+
+  if (!progressData) {
+    return (
+      <div className={styles.layout}>
+        <main className={styles.main}>Loading progress...</main>
+      </div>
+    );
+  }
   const views: Record<TabKey, React.ReactNode> = {
-    day: <DayView />,
+    day: <DayView data={progressData.day} />,
     week: <WeekView />,
     month: <MonthView />,
     year: <YearView />,

@@ -18,7 +18,7 @@ type DayViewProps = {
     totalSeconds: number;
     sessionCount: number;
     averageSessionMinutes: number;
-    timeline: {
+    timeLine: {
       startHour: number;
       durationMin: number;
       type: "focus" | "break";
@@ -68,7 +68,9 @@ export default function DayView({ data }: DayViewProps) {
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>AVG SESSION</div>
-            <div className={styles.statValue}>44m</div>
+            <div className={styles.statValue}>
+              {data.averageSessionMinutes}m
+            </div>
           </div>
         </div>
       </div>
@@ -76,7 +78,7 @@ export default function DayView({ data }: DayViewProps) {
       <div className={styles.chartsRow}>
         <div className={styles.chartCardWide}>
           <FocusTimeline
-            segments={TIMELINE_DATA}
+            segments={data.timeLine}
             startHour={0}
             endHour={24}
             period="Today"
@@ -84,7 +86,7 @@ export default function DayView({ data }: DayViewProps) {
         </div>
         <div className={styles.chartCardNarrow}>
           <RecentSessions
-            sessions={SESSION_DATA}
+            sessions={data.recentSessions}
             onViewAll={() => router.push("/")}
           />
         </div>

@@ -14,7 +14,7 @@ type ProgressData = {
     totalSeconds: number;
     sessionCount: number;
     averageSessionMinutes: number;
-    timeline: {
+    timeLine: {
       startHour: number;
       durationMin: number;
       type: "focus" | "break";

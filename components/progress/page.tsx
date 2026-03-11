@@ -63,7 +63,7 @@ export default function ProgressPage() {
   }
   const views: Record<TabKey, React.ReactNode> = {
     day: <DayView data={progressData.day} />,
-    week: <WeekView />,
+    week: <WeekView data={progressData.week} />,
     month: <MonthView />,
     year: <YearView />,
   };

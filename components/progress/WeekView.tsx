@@ -2,21 +2,32 @@ import BarChart from "./charts/BarChart";
 import DayBreakdown from "./charts/DayBreakDown";
 import { WEEK_DATA, DAY_BREAKDOWN_DATA } from "@/lib/progressData";
 import styles from "./progress.module.css";
-export default function WeekView() {
+
+type WeekViewProps = {
+  data: {
+    weekData: {
+      label: string;
+      hours: number;
+    }[];
+  };
+};
+
+export default function WeekView({ data }: WeekViewProps) {
   const maxHours = Math.min(24, Math.max(...WEEK_DATA.map((d) => d.hours)));
+  const totalHours = data.weekData.reduce((sum, day) => sum + day.hours, 0);
   return (
     <>
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>THIS WEEK</div>
-            <div className={styles.statValue}>27h</div>
+            <div className={styles.statValue}>{totalHours.toFixed(1)}h</div>
           </div>
         </div>
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>DAILY AVG</div>
-            <div className={styles.statValue}>3h 51m</div>
+            <div className={styles.statValue}>{totalHours / 7}</div>
           </div>
         </div>
         <div className={styles.statCard}>

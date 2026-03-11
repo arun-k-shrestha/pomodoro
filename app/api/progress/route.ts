@@ -92,6 +92,10 @@ export async function GET() {
 
       return sum + (s.actual_duration_seconds ?? 0);
     }, 0);
+    return {
+      label,
+      hours: hoursFromSeconds(seconds),
+    };
   });
 
   return Response.json({

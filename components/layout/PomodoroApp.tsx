@@ -162,7 +162,10 @@ export function PomodoroApp() {
         body: JSON.stringify({
           sessionId,
           endedAt: new Date().toISOString(),
-          actualDurationSeconds: Math.round(totalElapsedRef.current),
+          actualDurationSeconds: Math.min(
+            Math.round(totalElapsedRef.current),
+            MODES[mode].duration,
+          ), // temporary fix, need to replace the timer count in the useTimer.tsx
         }),
       });
     }

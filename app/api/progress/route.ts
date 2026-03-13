@@ -100,7 +100,6 @@ export async function GET() {
       type: s.type,
     };
   });
-
   const weekDays = [
     "Sunday",
     "Monday",

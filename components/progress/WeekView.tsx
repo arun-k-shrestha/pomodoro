@@ -28,6 +28,13 @@ export default function WeekView({ data }: WeekViewProps) {
   const totalHours = data.weekData.reduce((sum, day) => sum + day.hours, 0);
   const activeDays = data.weekData.filter((day) => day.hours > 0).length;
   const activeDayAverage = activeDays === 0 ? 0 : totalHours / activeDays;
+
+  const bestDay = data.weekData.reduce(
+    (best, day) => {
+      return day.hours > best.hours ? day : best;
+    },
+    { label: "", hours: 0 },
+  );
   return (
     <>
       <div className={styles.statsGrid}>
@@ -48,7 +55,11 @@ export default function WeekView({ data }: WeekViewProps) {
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>BEST DAY</div>
-            <div className={styles.statValue}>Thu · 6h</div>
+            <div className={styles.statValue}>
+              {bestDay.hours === 0
+                ? "--"
+                : `${bestDay.label.slice(0, 3)} · ${formatHours(bestDay.hours)}`}
+            </div>
           </div>
         </div>
         <div className={styles.statCard}>

@@ -9,6 +9,7 @@ type WeekViewProps = {
       label: string;
       hours: number;
     }[];
+    lastWeekTotalHours: number;
   };
 };
 
@@ -35,6 +36,20 @@ export default function WeekView({ data }: WeekViewProps) {
     },
     { label: "", hours: 0 },
   );
+
+  const lastWeekTotalHours = data.lastWeekTotalHours;
+
+  const weekChangePercent =
+    lastWeekTotalHours === 0
+      ? totalHours > 0
+        ? 100
+        : 0
+      : ((totalHours - lastWeekTotalHours) / lastWeekTotalHours) * 100;
+
+  const formattedWeekChange =
+    weekChangePercent > 0
+      ? `+${Math.round(weekChangePercent)}%`
+      : `${Math.round(weekChangePercent)}%`;
   return (
     <>
       <div className={styles.statsGrid}>
@@ -65,7 +80,7 @@ export default function WeekView({ data }: WeekViewProps) {
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>VS LAST WEEK</div>
-            <div className={styles.statValue}>+18%</div>
+            <div className={styles.statValue}>{formattedWeekChange}</div>
           </div>
         </div>
       </div>

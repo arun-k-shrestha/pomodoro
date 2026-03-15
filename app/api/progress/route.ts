@@ -125,6 +125,27 @@ export async function GET() {
     };
   });
 
+  // last week data extraction
+
+  const now = new Date();
+  const startOfThisWeek = new Date(now);
+  startOfThisWeek.setHours(0, 0, 0, 0);
+  startOfThisWeek.setDate(now.getDate() - now.getDay());
+
+  const startOfLastWeek = new Date(startOfThisWeek);
+  startOfLastWeek.setDate(startOfThisWeek.getDate() - 7);
+
+  const lastWeekSeconds = sessions.reduce((sum, s) => {
+    const startedAt = new Date(s.started_at);
+    if (s.type !== "focus") return sum;
+    if (startedAt < startOfLastWeek) return sum;
+    if (startedAt >= startOfThisWeek) return sum;
+
+    return sum + (s.actual_duration_seconds ?? 0);
+  }, 0);
+
+  const lastWeekTotalHours = hoursFromSeconds(lastWeekSeconds);
+
   return Response.json({
     day: {
       totalSeconds: totalTodaySeconds,
@@ -139,6 +160,7 @@ export async function GET() {
     },
     week: {
       weekData,
+      lastWeekTotalHours,
     },
   });
 }

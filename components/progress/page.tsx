@@ -33,6 +33,7 @@ type ProgressData = {
       label: string;
       hours: number;
     }[];
+    lastWeekTotalHours: number;
   };
 };
 

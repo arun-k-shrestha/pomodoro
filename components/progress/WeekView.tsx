@@ -25,7 +25,7 @@ function formatHours(hours: number) {
 }
 
 export default function WeekView({ data }: WeekViewProps) {
-  const maxHours = Math.min(24, Math.max(...WEEK_DATA.map((d) => d.hours)));
+  const maxHours = Math.min(24, Math.max(...data.weekData.map((d) => d.hours)));
   const totalHours = data.weekData.reduce((sum, day) => sum + day.hours, 0);
   const activeDays = data.weekData.filter((day) => day.hours > 0).length;
   const activeDayAverage = activeDays === 0 ? 0 : totalHours / activeDays;
@@ -88,7 +88,10 @@ export default function WeekView({ data }: WeekViewProps) {
         <div className={styles.chartCard}>
           <h2 className={styles.chartTitle}>HOURS BY DAY</h2>
           <BarChart
-            data={WEEK_DATA.map((d) => ({ label: d.label, hours: d.hours }))}
+            data={data.weekData.map((d) => ({
+              label: d.label,
+              hours: d.hours,
+            }))}
             maxH={maxHours}
           />
         </div>

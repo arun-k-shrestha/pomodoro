@@ -2,7 +2,15 @@ import BarChart from "./charts/BarChart";
 import { MONTH_DATA } from "@/lib/progressData";
 import styles from "./progress.module.css";
 
-export default function MonthView() {
+type MonthViewProps = {
+  data: {
+    monthData: {
+      label: string;
+      hours: number;
+    }[];
+  };
+};
+export default function MonthView({ data }: MonthViewProps) {
   const maxHours = Math.min(24, Math.max(...MONTH_DATA.map((d) => d.hours)));
   return (
     <>
@@ -10,7 +18,7 @@ export default function MonthView() {
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>THIS MONTH</div>
-            <div className={styles.statValue}>89h</div>
+            <div className={styles.statValue}>h</div>
           </div>
         </div>
         <div className={styles.statCard}>

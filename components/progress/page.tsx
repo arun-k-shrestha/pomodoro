@@ -35,6 +35,12 @@ type ProgressData = {
     }[];
     lastWeekTotalHours: number;
   };
+  month: {
+    monthData: {
+      label: string;
+      hours: number;
+    }[];
+  };
 };
 
 export default function ProgressPage() {
@@ -66,7 +72,7 @@ export default function ProgressPage() {
   const views: Record<TabKey, React.ReactNode> = {
     day: <DayView data={progressData.day} />,
     week: <WeekView data={progressData.week} />,
-    month: <MonthView />,
+    month: <MonthView data={progressData.month} />,
     year: <YearView />,
   };
 

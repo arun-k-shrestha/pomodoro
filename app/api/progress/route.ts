@@ -146,6 +146,29 @@ export async function GET() {
 
   const lastWeekTotalHours = hoursFromSeconds(lastWeekSeconds);
 
+  // monthly extraction
+
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  const monthData = Array.from({ length: daysInMonth }, (_, i) => {
+    const day = i + 1;
+    const seconds = sessions.reduce((sum, s) => {
+      const startedAt = new Date(s.started_at);
+      if (s.type !== "focus") return sum;
+      if (startedAt.getFullYear() !== currentYear) return sum;
+      if (startedAt.getMonth() != currentMonth) return sum;
+      if (startedAt.getDate() !== day) return sum;
+
+      return sum + (s.actual_duration_seconds ?? 0);
+    }, 0);
+    return {
+      label: `${day}`,
+      hours: hoursFromSeconds(seconds),
+    };
+  });
+
   return Response.json({
     day: {
       totalSeconds: totalTodaySeconds,
@@ -161,6 +184,9 @@ export async function GET() {
     week: {
       weekData,
       lastWeekTotalHours,
+    },
+    month: {
+      monthData,
     },
   });
 }

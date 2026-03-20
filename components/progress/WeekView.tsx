@@ -1,6 +1,7 @@
 import BarChart from "./charts/BarChart";
 import DayBreakdown from "./charts/DayBreakDown";
 import { WEEK_DATA, DAY_BREAKDOWN_DATA } from "@/lib/progressData";
+import { formatHours } from "@/lib/time";
 import styles from "./progress.module.css";
 
 type WeekViewProps = {
@@ -12,17 +13,6 @@ type WeekViewProps = {
     lastWeekTotalHours: number;
   };
 };
-
-function formatHours(hours: number) {
-  const totalMinutes = Math.round(hours * 60);
-  const h = Math.floor(totalMinutes / 60);
-  const m = totalMinutes % 60;
-
-  if (h === 0) return `${m}m`;
-  if (m === 0) return `${h}h`;
-
-  return `${h}h ${m}m`;
-}
 
 export default function WeekView({ data }: WeekViewProps) {
   const maxHours = Math.min(24, Math.max(...data.weekData.map((d) => d.hours)));

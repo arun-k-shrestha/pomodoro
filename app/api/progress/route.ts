@@ -169,6 +169,27 @@ export async function GET() {
     };
   });
 
+  // last month data extraction
+
+  const month_now = new Date();
+  const startOfThisMonth = new Date(now);
+  startOfThisMonth.setHours(0, 0, 0, 0);
+  startOfThisMonth.setDate(now.getDate() - now.getDay());
+
+  const startOfLastMonth = new Date(startOfThisMonth);
+  startOfLastMonth.setDate(startOfThisMonth.getDate() - 7);
+
+  const lastMonthSeconds = sessions.reduce((sum, s) => {
+    const startedAt = new Date(s.started_at);
+    if (s.type !== "focus") return sum;
+    if (startedAt < startOfLastMonth) return sum;
+    if (startedAt >= startOfThisMonth) return sum;
+
+    return sum + (s.actual_duration_seconds ?? 0);
+  }, 0);
+
+  const lastMonthTotalHours = hoursFromSeconds(lastMonthSeconds);
+
   return Response.json({
     day: {
       totalSeconds: totalTodaySeconds,
@@ -187,6 +208,7 @@ export async function GET() {
     },
     month: {
       monthData,
+      lastMonthTotalHours,
     },
   });
 }

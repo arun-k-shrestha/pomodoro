@@ -40,6 +40,7 @@ type ProgressData = {
       label: string;
       hours: number;
     }[];
+    lastMonthTotalHours: number;
   };
 };
 

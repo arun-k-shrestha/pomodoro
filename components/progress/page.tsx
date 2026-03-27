@@ -42,6 +42,12 @@ type ProgressData = {
     }[];
     lastMonthTotalHours: number;
   };
+  year: {
+    yearData: {
+      label: string;
+      hours: number;
+    }[];
+  };
 };
 
 export default function ProgressPage() {

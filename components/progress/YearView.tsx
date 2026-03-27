@@ -4,9 +4,18 @@ import { OVER_TIME_DATA, YEAR_DATA, generateHeatmap } from "@/lib/progressData";
 import styles from "./progress.module.css";
 import BarChart from "./charts/BarChart";
 
+type YearViewProp = {
+  data: {
+    yearData: {
+      label: string;
+      hours: number;
+    }[];
+  };
+};
+
 const HEATMAP_WEEKS = generateHeatmap();
 
-export default function YearView() {
+export default function YearView({ data }: YearViewProp) {
   const maxHours = Math.min(744, Math.max(...YEAR_DATA.map((d) => d.hours)));
   return (
     <>

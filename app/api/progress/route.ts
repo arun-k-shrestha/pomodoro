@@ -1,8 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
 import { db } from "@/lib/db";
-import { error } from "console";
-import { format } from "path";
 
 type PomodoroSessionRow = {
   id: string;
@@ -23,6 +21,15 @@ function formatTime(value: string | null) {
   return new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     minute: "2-digit",
+  }).format(new Date(value));
+}
+
+// View all sessions: keep session date formatting in the API response.
+function formatSessionDate(value: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   }).format(new Date(value));
 }
 
@@ -129,13 +136,16 @@ export async function GET() {
     return sum + (s.actual_duration_seconds ?? 0);
   }, 0);
 
-  const recentSessions = sessions.slice(0, 5).map((s) => ({
+  // View all sessions: share the same simple shape for recent and paginated lists.
+  const allSessions = sessions.map((s) => ({
+    date: formatSessionDate(s.started_at),
     startTime: formatTime(s.started_at),
     endTime: formatTime(s.ended_at),
-    task: s.task ?? "Untilted session",
+    task: s.task ?? "Untitled session",
     durationMin: Math.round((s.actual_duration_seconds ?? 0) / 60),
     type: s.type,
   }));
+  const recentSessions = allSessions.slice(0, 5);
 
   const timeLine = todaySessions.map((s) => {
     const start = new Date(s.started_at);
@@ -293,6 +303,7 @@ export async function GET() {
       streakDays,
       timeLine,
       recentSessions,
+      allSessions,
     },
     week: {
       weekData,

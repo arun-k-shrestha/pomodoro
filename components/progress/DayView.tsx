@@ -1,17 +1,6 @@
-import BarChart from "./charts/BarChart";
-import {
-  DAY_DATA,
-  TIMELINE_DATA,
-  SESSION_DATA,
-  generateHeatmap,
-} from "@/lib/progressData";
 import styles from "./progress.module.css";
-import HeatmapGrid from "./charts/HeatmapGrid";
 import FocusTimeline from "./charts/Timeline";
 import RecentSessions from "./charts/RecentSessions";
-import router from "next/router";
-
-const HEATMAP_WEEKS = generateHeatmap();
 
 type DayViewProps = {
   data: {
@@ -32,6 +21,7 @@ type DayViewProps = {
       type: "focus" | "break";
     }[];
   };
+  onViewAllSessions: () => void;
 };
 
 function formatDuration(seconds: number) {
@@ -42,7 +32,7 @@ function formatDuration(seconds: number) {
   return `${hours}h ${minutes}m`;
 }
 
-export default function DayView({ data }: DayViewProps) {
+export default function DayView({ data, onViewAllSessions }: DayViewProps) {
   return (
     <>
       <div className={styles.statsGrid}>
@@ -88,7 +78,7 @@ export default function DayView({ data }: DayViewProps) {
         <div className={styles.chartCardNarrow}>
           <RecentSessions
             sessions={data.recentSessions}
-            onViewAll={() => router.push("/")}
+            onViewAll={onViewAllSessions}
           />
         </div>
       </div>

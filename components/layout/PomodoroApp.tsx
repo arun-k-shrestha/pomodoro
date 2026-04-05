@@ -23,7 +23,7 @@ type ActivePage = "home" | "progress" | "settings" | "about";
 export function PomodoroApp() {
   const [activePage, setActivePage] = useState<ActivePage>("home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [soundRepeats, setSoundRepeats] = useState(1);
+  const [soundRepeats, setSoundRepeats] = useState(2);
 
   const sessionIdRef = useRef<string | null>(null); // DB row id from POST
   const timerStartedAtRef = useRef<string | null>(null); // first start time for this timer

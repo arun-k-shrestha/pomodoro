@@ -48,6 +48,7 @@ type ProgressData = {
       hours: number;
     }[];
     yearActiveDays: number;
+    longestYearStreak: number;
   };
 };
 

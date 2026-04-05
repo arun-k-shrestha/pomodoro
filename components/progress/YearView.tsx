@@ -12,6 +12,7 @@ type YearViewProp = {
       hours: number;
     }[];
     yearActiveDays: number;
+    longestYearStreak: number;
   };
 };
 
@@ -23,7 +24,12 @@ export default function YearView({ data }: YearViewProp) {
     Math.max(...data.yearData.map((d) => d.hours)),
   );
   const totalHours = data.yearData.reduce((sum, day) => sum + day.hours, 0);
-  const activeDays = data.yearData.filter((day) => day.hours > 0).length;
+
+  const bestYearMonth = data.yearData.reduce(
+    (best, month) => (month.hours > best.hours ? month : best),
+    data.yearData[0],
+  );
+
   return (
     <>
       <div className={styles.statsGrid}>
@@ -42,13 +48,17 @@ export default function YearView({ data }: YearViewProp) {
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>LONGEST STREAK</div>
-            <div className={styles.statValue}>21 days</div>
+            <div className={styles.statValue}>
+              {data.longestYearStreak} days
+            </div>
           </div>
         </div>
         <div className={styles.statCard}>
           <div>
             <div className={styles.statLabel}>BEST MONTH</div>
-            <div className={styles.statValue}>Dec · 127h</div>
+            <div className={styles.statValue}>
+              {bestYearMonth.label} · {formatHours(bestYearMonth.hours)}
+            </div>
           </div>
         </div>
       </div>

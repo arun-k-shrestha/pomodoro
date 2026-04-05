@@ -53,6 +53,53 @@ function countPomodoroStreak(sessions: PomodoroSessionRow[]) {
   return streak;
 }
 
+function countLongestStreakForYear(
+  sessions: PomodoroSessionRow[],
+  year: number,
+) {
+  const activeDayKeys = Array.from(
+    new Set(
+      sessions
+        .filter((s) => {
+          const startedAt = new Date(s.started_at);
+
+          return (
+            s.type === "focus" &&
+            (s.actual_duration_seconds ?? 0) > 0 &&
+            startedAt.getFullYear() === year
+          );
+        })
+        .map((s) => dateKey(new Date(s.started_at))),
+    ),
+  ).sort();
+
+  let longestStreak = 0;
+  let currentStreak = 0;
+  let previousDate: Date | null = null;
+
+  for (const dayKey of activeDayKeys) {
+    const currentDate = new Date(dayKey);
+
+    if (!previousDate) {
+      currentStreak = 1;
+    } else {
+      const nextExpectedDate = new Date(previousDate);
+
+      nextExpectedDate.setDate(previousDate.getDate() + 1);
+
+      currentStreak =
+        dateKey(currentDate) === dateKey(nextExpectedDate)
+          ? currentStreak + 1
+          : 1;
+    }
+
+    longestStreak = Math.max(longestStreak, currentStreak);
+    previousDate = currentDate;
+  }
+
+  return longestStreak;
+}
+
 export async function GET() {
   const session = await getServerSession(authOptions);
 
@@ -149,6 +196,9 @@ export async function GET() {
   // monthly extraction
 
   const currentYear = today.getFullYear();
+
+  const longestYearStreak = countLongestStreakForYear(sessions, currentYear); // for yearly data
+
   const currentMonth = today.getMonth();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
@@ -255,6 +305,7 @@ export async function GET() {
     year: {
       yearData,
       yearActiveDays,
+      longestYearStreak,
     },
   });
 }

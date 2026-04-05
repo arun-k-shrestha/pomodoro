@@ -62,8 +62,8 @@ export default function DayView({ data }: DayViewProps) {
         </div>
         <div className={styles.statCard}>
           <div>
-            <div className={styles.statLabel}>STREAK</div>
-            <div className={styles.statValue}>{data.streakDays}</div>
+            <div className={styles.statLabel}>CURRENT STREAK</div>
+            <div className={styles.statValue}>{data.streakDays} days</div>
           </div>
         </div>
         <div className={styles.statCard}>

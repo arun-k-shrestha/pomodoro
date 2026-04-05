@@ -171,16 +171,12 @@ export async function GET() {
 
   // last month data extraction
 
-  const month_now = new Date();
-  const startOfThisMonth = new Date(now);
-  startOfThisMonth.setHours(0, 0, 0, 0);
-  startOfThisMonth.setDate(now.getDate() - now.getDay());
-
-  const startOfLastMonth = new Date(startOfThisMonth);
-  startOfLastMonth.setDate(startOfThisMonth.getDate() - 7);
+  const startOfThisMonth = new Date(currentYear, currentMonth, 1);
+  const startOfLastMonth = new Date(currentYear, currentMonth - 1, 1);
 
   const lastMonthSeconds = sessions.reduce((sum, s) => {
     const startedAt = new Date(s.started_at);
+
     if (s.type !== "focus") return sum;
     if (startedAt < startOfLastMonth) return sum;
     if (startedAt >= startOfThisMonth) return sum;
@@ -189,6 +185,52 @@ export async function GET() {
   }, 0);
 
   const lastMonthTotalHours = hoursFromSeconds(lastMonthSeconds);
+
+  // yearly extraction
+
+  const yearActiveDays = new Set(
+    sessions
+      .filter((s) => {
+        const startedAt = new Date(s.started_at);
+
+        return (
+          s.type === "focus" &&
+          (s.actual_duration_seconds ?? 0) > 0 &&
+          startedAt.getFullYear() === currentYear
+        );
+      })
+      .map((s) => dateKey(new Date(s.started_at))),
+  ).size;
+
+  const monthLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const yearData = monthLabels.map((label, monthIndex) => {
+    const seconds = sessions.reduce((sum, s) => {
+      const startedAt = new Date(s.started_at);
+      if (s.type !== "focus") return sum;
+      if (startedAt.getFullYear() !== currentYear) return sum;
+      if (startedAt.getMonth() !== monthIndex) return sum;
+      return sum + (s.actual_duration_seconds ?? 0);
+    }, 0);
+
+    return {
+      label,
+      hours: hoursFromSeconds(seconds),
+    };
+  });
 
   return Response.json({
     day: {
@@ -209,6 +251,10 @@ export async function GET() {
     month: {
       monthData,
       lastMonthTotalHours,
+    },
+    year: {
+      yearData,
+      yearActiveDays,
     },
   });
 }

@@ -47,6 +47,7 @@ type ProgressData = {
       label: string;
       hours: number;
     }[];
+    yearActiveDays: number;
   };
 };
 
@@ -80,7 +81,7 @@ export default function ProgressPage() {
     day: <DayView data={progressData.day} />,
     week: <WeekView data={progressData.week} />,
     month: <MonthView data={progressData.month} />,
-    year: <YearView />,
+    year: <YearView data={progressData.year} />,
   };
 
   return (

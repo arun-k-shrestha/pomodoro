@@ -47,7 +47,7 @@ create table if not exists users(
     id uuid primary key default gen_random_uuid(),
     email text not null unique,
     name text,
-    password_hasdh text, -- null for OAuth-only users
+    password_hash text, -- null for OAuth-only users
     provider text not null default 'credentials', -- 'google' | 'credentials'
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()

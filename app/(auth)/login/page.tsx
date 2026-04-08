@@ -3,9 +3,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../auth-pages.module.css";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    const result = await signIn("credentials", {
+      email: formData.get("email"),
+      password: formData.get("password"),
+      redirect: false,
+    });
+
+    if (result?.error) {
+      setError("Invalid email or password.");
+      return;
+    }
+
+    router.push("/");
+    router.refresh();
+  }
   return (
     <main className={styles.page}>
       <section className={styles.card}>
@@ -13,7 +37,7 @@ export default function LoginPage() {
           <h1 className={styles.title}>Login</h1>
         </header>
 
-        <form className={styles.form}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.fieldGroup}>
             <label className={styles.fieldLabel} htmlFor="email">
               Email
@@ -21,6 +45,7 @@ export default function LoginPage() {
             <input
               className={styles.input}
               id="email"
+              name="email"
               type="email"
               placeholder="you@example.com"
             />
@@ -38,10 +63,12 @@ export default function LoginPage() {
             <input
               className={styles.input}
               id="password"
+              name="password"
               type="password"
               placeholder="Enter password"
             />
           </div>
+          {error && <p>{error}</p>}
           <div className={styles.actions}>
             <button className={styles.primaryButton} type="submit">
               Login
@@ -54,7 +81,11 @@ export default function LoginPage() {
             className={styles.secondaryButton}
             type="button"
             onClick={() =>
-              signIn("google", { callbackUrl: "/" }, { prompt: "select_account" })
+              signIn(
+                "google",
+                { callbackUrl: "/" },
+                { prompt: "select_account" },
+              )
             }
           >
             <Image

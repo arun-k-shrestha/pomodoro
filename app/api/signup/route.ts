@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
-import { error } from "console";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -9,10 +8,10 @@ export async function POST(request: Request) {
   const email = body.email?.toLowerCase().trim();
   const password = body.password;
 
-  if (!email || !password) {
+  if (!email || !password || !name) {
     return NextResponse.json(
       {
-        error: "Email and password are required.",
+        error: "Name, email, or password are required.",
       },
       { status: 400 },
     );
@@ -41,4 +40,18 @@ export async function POST(request: Request) {
       { status: 409 },
     );
   }
+
+  const password_hash = await bcrypt.hash(password, 12);
+  const result = await db.query(
+    `
+    insert into users (name, email, password_hash, provider)
+    values ($1, $2, $3, 'credentials')
+    returning id, email, name
+    `,
+    [name || null, email, password_hash],
+  );
+
+  return NextResponse.json({
+    user: result.rows[0],
+  });
 }

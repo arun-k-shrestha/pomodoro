@@ -31,7 +31,9 @@ export default function BarChart({
   const chartH = H - PAD_B - PAD_T;
   const barW = chartW / data.length;
   const steps = 4;
-  const stepSize = Math.ceil(maxH / steps);
+  // Changed: keep an empty/new-account chart on a valid scale to avoid duplicate keys and NaN SVG values.
+  const safeMaxH = Math.max(maxH, 1);
+  const stepSize = Math.ceil(safeMaxH / steps);
   const yMax = stepSize * steps; // ← top of the y-axis scale
   const yLines = Array.from({ length: steps + 1 }, (_, i) => i * stepSize);
 

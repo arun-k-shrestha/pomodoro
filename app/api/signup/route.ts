@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     [email],
   );
 
-  if (!existingUser.rowCount) {
+  if (existingUser.rowCount) {
     return NextResponse.json(
       { error: "An account with this email already exists." },
       { status: 409 },

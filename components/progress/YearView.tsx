@@ -1,7 +1,7 @@
 import LineChart from "./charts/LineChart";
 import HeatmapGrid from "./charts/HeatmapGrid";
 import { OVER_TIME_DATA, YEAR_DATA, generateHeatmap } from "@/lib/progressData";
-import styles from "@/app/(dashboard)/progress/progress.module.css";
+import styles from "@/components/progress.module.css";
 import BarChart from "./charts/BarChart";
 
 const HEATMAP_WEEKS = generateHeatmap();

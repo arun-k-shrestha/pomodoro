@@ -7,8 +7,8 @@ export default function AboutPage() {
         <section className={styles.card}>
           <div className={styles.copy}>
             <p>
-              Hi, I am Arun. I have ADHD, and the Pomodoro technique really
-              seems to help me.
+              Hi, I am Arun. Pomodoro technique really seems to help me finish
+              tasks.
             </p>
 
             <p>I try to work for 25 minutes and then take a 5-minute break.</p>

@@ -1,5 +1,5 @@
-import { TimelineSegment } from "@/app/(dashboard)/progress/charts/Timeline";
-import { Session } from "@/app/(dashboard)/progress/charts/RecentSessions";
+import { TimelineSegment } from "@/components/progress/charts/Timeline";
+import { Session } from "@/components/progress/charts/RecentSessions";
 
 export const DAY_DATA = [
   { day: "Mon", hours: 3.8 },

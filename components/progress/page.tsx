@@ -9,12 +9,11 @@ import WeekView from "./WeekView";
 import MonthView from "./MonthView";
 import YearView from "./YearView";
 
+type AppView = "timer" | "progress";
 type TabKey = "day" | "week" | "month" | "year";
 
 export default function ProgressPage() {
   const [tab, setTab] = useState<TabKey>("day");
-  const router = useRouter();
-  const handleCloseMenu = () => router.push("/");
 
   const views: Record<TabKey, React.ReactNode> = {
     day: <DayView />,
@@ -25,7 +24,6 @@ export default function ProgressPage() {
 
   return (
     <div className={styles.layout}>
-      <MenuPage variant="sidebar" onClose={handleCloseMenu} />
       <main className={styles.main}>
         <header className={styles.pageHeader}></header>
         <div className={styles.tabs}>

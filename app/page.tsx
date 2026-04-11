@@ -9,9 +9,13 @@ import StartButton from "@/components/StartButton";
 import TaskInput from "@/components/TaskInput";
 import TaskList from "@/components/TaskList";
 import MenuPage from "@/components/menu/HamburgerMenu";
+import ProgressPage from "@/components/progress/page";
+
+type ActivePage = "home" | "progress";
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [activePage, setActivePage] = useState<ActivePage>("home");
+  const [menuOpen, setMenuOpen] = useState(false);
   const [mode, setMode] = useState<Mode>("pomodoro");
   const [timeLeft, setTimeLeft] = useState(MODES.pomodoro.duration);
   const [running, setRunning] = useState(false);
@@ -19,7 +23,9 @@ export default function Home() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const mm = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+  const mm = Math.floor(timeLeft / 60)
+    .toString()
+    .padStart(2, "0");
   const ss = (timeLeft % 60).toString().padStart(2, "0");
 
   // Update document title
@@ -28,10 +34,12 @@ export default function Home() {
       mode === "pomodoro"
         ? "Pomodoro"
         : mode === "shortBreak"
-        ? "Short Break"
-        : "Long Break";
+          ? "Short Break"
+          : "Long Break";
     document.title = `${mm}:${ss} • ${modeLabel}`;
-    return () => { document.title = "Pomodoro"; };
+    return () => {
+      document.title = "Pomodoro";
+    };
   }, [mm, ss, mode]);
 
   // Timer logic
@@ -46,7 +54,8 @@ export default function Home() {
               audioRef.current.currentTime = 0;
               audioRef.current.play().catch(console.error);
             }
-            const nextMode: Mode = mode === "pomodoro" ? "shortBreak" : "pomodoro";
+            const nextMode: Mode =
+              mode === "pomodoro" ? "shortBreak" : "pomodoro";
             setMode(nextMode);
             setTimeLeft(MODES[nextMode].duration);
             return MODES[nextMode].duration;
@@ -77,20 +86,51 @@ export default function Home() {
 
   return (
     <main className="pomodoro-app" style={{ backgroundColor: BG_COLORS[mode] }}>
-     
-      <PomodoroHeader onMenuClick={() => setMenuOpen(true)}  menuOpen={menuOpen}/>
-      {menuOpen && <MenuPage onClose={() => setMenuOpen(false)} />}
+      <PomodoroHeader
+        onMenuClick={() => setMenuOpen(true)}
+        menuOpen={menuOpen}
+      />
 
-      <div className="pomodoro-body">
-        <ModeTabs mode={mode} onChangeMode={changeMode} />
-        <TimerDisplay mode={mode} timeLeft={timeLeft} />
-        <StartButton running={running} onToggle={() => setRunning((r) => !r)} />
-      </div>
+      {menuOpen && (
+        <MenuPage
+          onClose={() => {
+            setMenuOpen(false);
+            if (activePage === "progress") {
+              setActivePage("home");
+            }
+          }}
+          onProgressClick={() => {
+            setActivePage("progress");
+            setMenuOpen(true);
+          }}
+        />
+      )}
 
-      <div className="pomodoro-footer">
-        <TaskInput onAdd={addTask} />
-        <TaskList tasks={tasks} onRemove={removeTask} />
-      </div>
+      {activePage === "home" && (
+        <>
+          <div className="pomodoro-body">
+            <ModeTabs mode={mode} onChangeMode={changeMode} />
+            <TimerDisplay mode={mode} timeLeft={timeLeft} />
+            <StartButton
+              running={running}
+              onToggle={() => setRunning((r) => !r)}
+            />
+          </div>
+
+          <div className="pomodoro-footer">
+            <TaskInput onAdd={addTask} />
+            <TaskList tasks={tasks} onRemove={removeTask} />
+          </div>
+        </>
+      )}
+
+      {activePage === "progress" && (
+        <>
+          <div>
+            <ProgressPage />
+          </div>
+        </>
+      )}
 
       <audio ref={audioRef} src="/sounds/kitchen-timer.wav" preload="auto" />
     </main>

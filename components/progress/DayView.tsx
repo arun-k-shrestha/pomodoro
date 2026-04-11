@@ -5,7 +5,7 @@ import {
   SESSION_DATA,
   generateHeatmap,
 } from "@/lib/progressData";
-import styles from "@/app/(dashboard)/progress/progress.module.css";
+import styles from "./progress.module.css";
 import HeatmapGrid from "./charts/HeatmapGrid";
 import FocusTimeline from "./charts/Timeline";
 import RecentSessions from "./charts/RecentSessions";

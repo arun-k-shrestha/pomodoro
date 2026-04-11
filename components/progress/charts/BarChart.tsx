@@ -1,4 +1,4 @@
-import styles from "@/components/progress.module.css";
+import styles from "../progress.module.css";
 
 type BarData = { label: string; hours: number };
 

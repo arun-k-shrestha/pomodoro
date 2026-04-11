@@ -1,4 +1,4 @@
-import styles from "@/app/(dashboard)/progress/progress.module.css";
+import styles from "../progress.module.css";
 
 type DayData = {
   day: string;

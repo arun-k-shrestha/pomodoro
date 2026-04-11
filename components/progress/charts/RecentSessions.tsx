@@ -1,4 +1,4 @@
-import styles from "@/app/(dashboard)/progress/progress.module.css";
+import styles from "../progress.module.css";
 
 type SessionType = "focus" | "break";
 
@@ -57,7 +57,9 @@ export default function RecentSessions({ sessions, onViewAll }: Props) {
                 {s.durationMin}m
               </td>
               <td className={styles.sessionsTd}>
-                <span className={`${styles.badge} ${styles[TYPE_BADGE_CLASS[s.type]]}`}>
+                <span
+                  className={`${styles.badge} ${styles[TYPE_BADGE_CLASS[s.type]]}`}
+                >
                   {TYPE_LABEL[s.type]}
                 </span>
               </td>

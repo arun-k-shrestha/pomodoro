@@ -1,6 +1,6 @@
 import BarChart from "./charts/BarChart";
 import { MONTH_DATA } from "@/lib/progressData";
-import styles from "@/app/(dashboard)/progress/progress.module.css";
+import styles from "./progress.module.css";
 
 export default function MonthView() {
   const maxHours = Math.min(24, Math.max(...MONTH_DATA.map((d) => d.hours)));

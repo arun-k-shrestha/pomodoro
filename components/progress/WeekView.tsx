@@ -1,8 +1,7 @@
 import BarChart from "./charts/BarChart";
 import DayBreakdown from "./charts/DayBreakDown";
 import { WEEK_DATA, DAY_BREAKDOWN_DATA } from "@/lib/progressData";
-import styles from "@/app/(dashboard)/progress/progress.module.css";
-
+import styles from "./progress.module.css";
 export default function WeekView() {
   const maxHours = Math.min(24, Math.max(...WEEK_DATA.map((d) => d.hours)));
   return (

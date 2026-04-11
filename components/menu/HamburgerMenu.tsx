@@ -1,17 +1,21 @@
 "use client";
 
+import { access } from "fs";
 import styles from "./HamburgerMenu.module.css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 type MenuPageProps = {
   onClose: () => void;
+  onProgressClick: () => void;
   variant?: "overlay" | "sidebar";
 };
 
-export default function MenuPage({ onClose, variant = "overlay",}: MenuPageProps) 
-
-{
+export default function MenuPage({
+  onClose,
+  onProgressClick,
+  variant = "overlay",
+}: MenuPageProps) {
   const isSidebar = variant === "sidebar";
   const pathname = usePathname();
 
@@ -37,11 +41,11 @@ export default function MenuPage({ onClose, variant = "overlay",}: MenuPageProps
       <nav className={styles.nav}>
         <ul>
           {[
-            { label: "Progress", icon: "▧", href: "/progress" },
+            { label: "Progress", icon: "▧", action: onProgressClick },
             { label: "Settings", icon: "⚙", href: "/settings" },
             { label: "About", icon: "◎", href: undefined },
             { label: "Login", icon: "⇥", href: undefined },
-          ].map(({ label, icon, href }) => {
+          ].map(({ label, icon, href, action }) => {
             // Strip query string to compare just the pathname
             const hrefPathname = href?.split("?")[0];
             const isCurrentPage = !!hrefPathname && pathname === hrefPathname;
@@ -60,11 +64,15 @@ export default function MenuPage({ onClose, variant = "overlay",}: MenuPageProps
                     <span className={styles.navArrow}>›</span>
                   </Link>
                 ) : (
-                  <a href="#" className={styles.navItem} onClick={onClose}>
+                  <button
+                    type="button"
+                    className={styles.navItem}
+                    onClick={action}
+                  >
                     <span className={styles.navIcon}>{icon}</span>
                     <span className={styles.navLabel}>{label}</span>
                     <span className={styles.navArrow}>›</span>
-                  </a>
+                  </button>
                 )}
               </li>
             );

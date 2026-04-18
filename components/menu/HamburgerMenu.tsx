@@ -3,6 +3,7 @@
 import { useState } from "react";
 import styles from "./HamburgerMenu.module.css";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 
 type MenuPageProps = {
   onClose: () => void;
@@ -21,7 +22,24 @@ export default function MenuPage({
 }: MenuPageProps) {
   const isSidebar = variant === "sidebar";
   const isFullscreen = variant === "fullscreen";
+  const { status } = useSession();
   const [activeItem, setactiveItem] = useState<string | null>(null);
+
+  const navItems = [
+    { label: "Progress", icon: "▧", action: onProgressClick },
+    { label: "Settings", icon: "⚙", action: onSettingsClick },
+    { label: "About", icon: "◎", action: onAboutClick },
+    status === "authenticated"
+      ? {
+          label: "Logout",
+          icon: "⇤",
+          action: () => {
+            onClose();
+            void signOut({ callbackUrl: "/" });
+          },
+        }
+      : { label: "Login", icon: "⇥", href: "/login" },
+  ];
 
   const content = (
     <div
@@ -41,12 +59,7 @@ export default function MenuPage({
 
       <nav className={styles.nav}>
         <ul>
-          {[
-            { label: "Progress", icon: "▧", action: onProgressClick },
-            { label: "Settings", icon: "⚙", action: onSettingsClick },
-            { label: "About", icon: "◎", action: onAboutClick },
-            { label: "Login", icon: "⇥", href: "/login" },
-          ].map(({ label, icon, href, action }) => {
+          {navItems.map(({ label, icon, href, action }) => {
             const className = `${styles.navItem} ${
               activeItem === label ? styles.active : ""
             }`;
@@ -54,7 +67,14 @@ export default function MenuPage({
             return (
               <li key={label}>
                 {href ? (
-                  <Link href={href} className={className}>
+                  <Link
+                    href={href}
+                    className={className}
+                    onClick={() => {
+                      setactiveItem(label);
+                      onClose();
+                    }}
+                  >
                     <span className={styles.navIcon}>{icon}</span>
                     <span className={styles.navLabel}>{label}</span>
                     <span className={styles.navArrow}>›</span>

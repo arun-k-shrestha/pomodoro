@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { BG_COLORS } from "@/lib/constants";
 import { useTimer } from "@/hooks/useTimer";
 import { useTasks } from "@/hooks/useTasks";
@@ -23,6 +25,8 @@ export function PomodoroApp() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [soundRepeats, setSoundRepeats] = useState(1);
 
+  const router = useRouter();
+  const { status } = useSession();
   const { isNarrow, isVeryNarrow, isMenuOverLay } = useViewport();
   const { tasks, addTask, removeTask } = useTasks();
   const { mode, timeLeft, running, audioRef, changeMode, toggleRunning } =
@@ -34,6 +38,12 @@ export function PomodoroApp() {
   };
 
   const handleProgressClick = () => {
+    if (status !== "authenticated") {
+      setMenuOpen(false);
+      router.push("/login");
+      return;
+    }
+
     setActivePage("progress");
     setMenuOpen(!isVeryNarrow);
   };

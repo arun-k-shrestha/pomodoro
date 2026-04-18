@@ -1,15 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import styles from "./progress.module.css";
-import MenuPage from "@/components/menu/HamburgerMenu";
 import DayView from "./DayView";
 import WeekView from "./WeekView";
 import MonthView from "./MonthView";
 import YearView from "./YearView";
 
-type AppView = "timer" | "progress";
 type TabKey = "day" | "week" | "month" | "year";
 
 export default function ProgressPage() {

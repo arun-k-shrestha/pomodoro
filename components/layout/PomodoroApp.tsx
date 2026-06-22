@@ -242,7 +242,11 @@ export function PomodoroApp() {
         {activePage === "about" && <AboutPage />}
       </AppLayout>
 
-      <audio ref={audioRef} src="/sounds/kitchen-timer.wav" preload="auto" />
+      <audio
+        ref={audioRef}
+        src="/assets/sounds/kitchen-timer.wav"
+        preload="auto"
+      />
     </main>
   );
 }

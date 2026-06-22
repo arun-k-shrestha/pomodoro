@@ -89,7 +89,7 @@ export default function LoginPage() {
             }
           >
             <Image
-              src="/google-logo.svg"
+              src="/assets/google-logo.svg"
               alt=""
               width={18}
               height={18}

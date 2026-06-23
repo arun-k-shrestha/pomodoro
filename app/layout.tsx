@@ -15,9 +15,17 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Pomodoro",
-  description: "A focused pomodoro timer and task tracker.",
+  description:
+    "Stay on task with an ADHD-friendly Pomodoro timer built for focus sessions, breaks, task tracking, and better daily productivity.",
   icons: {
     icon: "/assets/favicon.ico",
+  },
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

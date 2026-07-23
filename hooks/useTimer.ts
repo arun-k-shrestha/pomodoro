@@ -49,30 +49,33 @@ export function useTimer(soundRepeats: number, onComplete?: () => void) {
 
   // Timer countdown
   useEffect(() => {
-    if (running) {
-      intervalRef.current = setInterval(() => {
-        setTimeLeft((t) => {
-          if (t <= 1) {
-            clearInterval(intervalRef.current!);
-            setRunning(false);
-            onComplete?.();
-            if (audioRef.current) {
-              remainingSoundRepeatsRef.current = soundRepeats;
-              audioRef.current.currentTime = 0;
-              audioRef.current.play().catch(console.error);
-            }
-            const nextMode: Mode =
-              mode === "pomodoro" ? "shortBreak" : "pomodoro";
-            setMode(nextMode);
-            setTimeLeft(MODES[nextMode].duration);
-            return MODES[nextMode].duration;
-          }
-          return t - 1;
-        });
-      }, 1000);
-    } else {
+    if (!running) {
       clearInterval(intervalRef.current!);
+      return;
     }
+
+    const endTime = Date.now() + timeLeft * 1000;
+
+    intervalRef.current = setInterval(() => {
+      const secondsLeft = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+
+      if (secondsLeft <= 0) {
+        clearInterval(intervalRef.current!);
+        setRunning(false);
+        onComplete?.();
+        if (audioRef.current) {
+          remainingSoundRepeatsRef.current = soundRepeats;
+          audioRef.current.currentTime = 0;
+          audioRef.current.play().catch(console.error);
+        }
+        const nextMode: Mode = mode === "pomodoro" ? "shortBreak" : "pomodoro";
+        setMode(nextMode);
+        setTimeLeft(MODES[nextMode].duration);
+        return;
+      }
+
+      setTimeLeft(secondsLeft);
+    }, 250);
     return () => clearInterval(intervalRef.current!);
   }, [running, mode, soundRepeats]);
 

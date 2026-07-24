@@ -64,7 +64,7 @@ export default function YearView({ data }: YearViewProp) {
       </div>
       <div className={styles.chartsRow}>
         <div className={styles.chartCard}>
-          <h2 className={styles.chartTitle}>HOURS BY DAY</h2>
+          <h2 className={styles.chartTitle}>HOURS BY MONTH</h2>
           <BarChart
             data={data.yearData.map((d) => ({
               label: d.label,

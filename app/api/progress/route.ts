@@ -167,11 +167,23 @@ export async function GET() {
     "Saturday",
   ];
 
+  const now = new Date();
+  const startOfThisWeek = new Date(now);
+  startOfThisWeek.setHours(0, 0, 0, 0);
+  startOfThisWeek.setDate(now.getDate() - now.getDay());
+
+  const startOfNextWeek = new Date(startOfThisWeek);
+  startOfNextWeek.setDate(startOfThisWeek.getDate() + 7);
+
+  const startOfLastWeek = new Date(startOfThisWeek);
+  startOfLastWeek.setDate(startOfThisWeek.getDate() - 7);
+
   const weekData = weekDays.map((label, dayIndex) => {
     const seconds = sessions.reduce((sum, s) => {
       const startedAt = new Date(s.started_at);
-
       if (s.type !== "focus") return sum;
+      if (startedAt < startOfThisWeek) return sum;
+      if (startedAt >= startOfNextWeek) return sum;
       if (startedAt.getDay() !== dayIndex) return sum;
 
       return sum + (s.actual_duration_seconds ?? 0);
@@ -181,16 +193,6 @@ export async function GET() {
       hours: hoursFromSeconds(seconds),
     };
   });
-
-  // last week data extraction
-
-  const now = new Date();
-  const startOfThisWeek = new Date(now);
-  startOfThisWeek.setHours(0, 0, 0, 0);
-  startOfThisWeek.setDate(now.getDate() - now.getDay());
-
-  const startOfLastWeek = new Date(startOfThisWeek);
-  startOfLastWeek.setDate(startOfThisWeek.getDate() - 7);
 
   const lastWeekSeconds = sessions.reduce((sum, s) => {
     const startedAt = new Date(s.started_at);

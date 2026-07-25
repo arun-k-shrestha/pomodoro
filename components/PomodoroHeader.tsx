@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 type PomodoroHeaderProps = {
   onMenuClick: () => void;
@@ -9,6 +10,12 @@ export default function PomodoroHeader({
   onMenuClick,
   menuOpen,
 }: PomodoroHeaderProps) {
+  const [showAccount, setShowAccount] = useState(false);
+
+  const handleAccountClick = () => {
+    setShowAccount((current) => !current);
+  };
+
   const { data: session, status } = useSession();
   const firstInitial =
     session?.user?.name?.trim().charAt(0).toUpperCase() ?? "?";
@@ -25,7 +32,7 @@ export default function PomodoroHeader({
       )}
 
       <span className="brand-name"></span>
-      {status != "authenticated" && (
+      {/* {status != "authenticated" && (
         <button className="icon-btn" aria-label="Settings">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <circle
@@ -43,24 +50,36 @@ export default function PomodoroHeader({
             />
           </svg>
         </button>
-      )}
+      )} */}
 
       {status === "authenticated" && (
-        <div className="icon-btn" aria-label="Settings">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <text
-              x="8"
-              y="10"
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fontSize="20"
-              fill="#5f5959ff"
-              fontFamily='"Helvetica Neue", Helvetica, Arial, sans-serif'
-              fontWeight="bold"
-            >
-              {firstInitial}
-            </text>
-          </svg>
+        <div className="account-container">
+          <div
+            className="icon-btn"
+            aria-label="Account"
+            onClick={handleAccountClick}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <text
+                x="8"
+                y="10"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fontSize="20"
+                fill="#5f5959ff"
+                fontFamily='"Helvetica Neue", Helvetica, Arial, sans-serif'
+                fontWeight="bold"
+              >
+                {firstInitial}
+              </text>
+            </svg>
+          </div>
+          {showAccount && (
+            <div className="account-popup">
+              <p>{session.user?.name}</p>
+              <p>{session.user?.email}</p>
+            </div>
+          )}
         </div>
       )}
     </header>

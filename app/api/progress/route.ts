@@ -107,11 +107,27 @@ function countLongestStreakForYear(
   return longestStreak;
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // CHANGE: Use the browser's local-day boundaries instead of the server's timezone.
+  const { searchParams } = new URL(request.url);
+  const dayStart = new Date(searchParams.get("dayStart") ?? "");
+  const dayEnd = new Date(searchParams.get("dayEnd") ?? "");
+
+  if (
+    Number.isNaN(dayStart.getTime()) ||
+    Number.isNaN(dayEnd.getTime()) ||
+    dayEnd <= dayStart
+  ) {
+    return Response.json(
+      { error: "Invalid local-day boundaries" },
+      { status: 400 },
+    );
   }
 
   const result = await db.query<PomodoroSessionRow>(
@@ -124,11 +140,11 @@ export async function GET() {
 
   const sessions = result.rows;
   const streakDays = countPomodoroStreak(sessions);
-  const today = new Date();
-  const todayKey = today.toDateString();
 
+  // CHANGE: The half-open range avoids counting a midnight session twice.
   const todaySessions = sessions.filter((s) => {
-    return new Date(s.started_at).toDateString() === todayKey;
+    const startedAt = new Date(s.started_at);
+    return startedAt >= dayStart && startedAt < dayEnd;
   });
 
   const todayFocusSessions = todaySessions.filter((s) => s.type === "focus");
@@ -224,11 +240,11 @@ export async function GET() {
 
   // monthly extraction
 
-  const currentYear = today.getFullYear();
+  const currentYear = now.getFullYear();
 
   const longestYearStreak = countLongestStreakForYear(sessions, currentYear); // for yearly data
 
-  const currentMonth = today.getMonth();
+  const currentMonth = now.getMonth();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
   const monthData = Array.from({ length: daysInMonth }, (_, i) => {

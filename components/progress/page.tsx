@@ -187,7 +187,19 @@ export default function ProgressPage() {
 
   useEffect(() => {
     async function loadProgress() {
-      const response = await fetch("/api/progress");
+      // CHANGE: Send the browser's local-day boundaries as UTC timestamps.
+      const dayStart = new Date();
+      dayStart.setHours(0, 0, 0, 0);
+
+      const dayEnd = new Date(dayStart);
+      dayEnd.setDate(dayEnd.getDate() + 1);
+
+      const params = new URLSearchParams({
+        dayStart: dayStart.toISOString(),
+        dayEnd: dayEnd.toISOString(),
+      });
+
+      const response = await fetch(`/api/progress?${params.toString()}`);
 
       if (!response.ok) {
         console.error("Failed to load progress data");

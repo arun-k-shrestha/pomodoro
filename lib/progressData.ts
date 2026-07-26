@@ -57,22 +57,22 @@ export const TIMELINE_DATA: TimelineSegment[] = [
 
 export const SESSION_DATA: Session[] = [
   {
-    startTime: "4:00 PM",
-    endTime: "4:25 PM",
+    startedAt: "2026-07-24T20:00:00.000Z",
+    endedAt: "2026-07-24T20:25:00.000Z",
     task: "Project Proposal",
     durationMin: 25,
     type: "focus",
   },
   {
-    startTime: "3:30 PM",
-    endTime: "3:55 PM",
+    startedAt: "2026-07-24T19:30:00.000Z",
+    endedAt: "2026-07-24T19:55:00.000Z",
     task: "Code Review",
     durationMin: 25,
     type: "focus",
   },
   {
-    startTime: "2:30 PM",
-    endTime: "2:55 PM",
+    startedAt: "2026-07-24T18:30:00.000Z",
+    endedAt: "2026-07-24T18:55:00.000Z",
     task: "Study: Algorithms. Testing Testing Testing",
     durationMin: 25,
     type: "focus",

@@ -78,13 +78,11 @@
 }
 
 /* CHANGE SOUND: This is for the drop-down select options */
-/* CHANGE: Custom alarm dropdown container. */
 .alarmSelect {
   position: relative;
   width: 190px;
 }
 
-/* The closed dropdown button. */
 .alarmSelectButton {
   width: 100%;
   display: flex;
@@ -119,7 +117,6 @@
   font-size: 16px;
 }
 
-/* CHANGE: The displayed options list. */
 .alarmOptions {
   position: absolute;
   top: calc(100% + 8px);
@@ -135,7 +132,6 @@
   box-shadow: 0 12px 30px rgba(80, 50, 45, 0.15);
 }
 
-/* Each alarm option. */
 .alarmOption {
   width: 100%;
   display: flex;
@@ -156,14 +152,9 @@
   background: rgba(197, 97, 74, 0.1);
 }
 
-/* Currently selected alarm. */
 .alarmOptionSelected {
   color: var(--accent);
   background: rgba(197, 97, 74, 0.08);
-}
-
-.checkmark {
-  font-weight: 600;
 }
 
 /* REPEAT SOUND: This is for the repeating sounds */
@@ -218,7 +209,8 @@
     align-items: flex-start;
   }
 
-  .select {
-    width: 100%;
+  .alarmOptions {
+    left: 0;
+    right: auto;
   }
 }

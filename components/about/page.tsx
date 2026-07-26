@@ -7,7 +7,7 @@ export default function AboutPage() {
         <section className={styles.card}>
           <div className={styles.copy}>
             <p>
-              Hi, I am Arun. Pomodoro technique really seems to help me finish
+              Hi, I am Aru. Pomodoro technique really seems to help me finish
               tasks.
             </p>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./settings.module.css";
 
 const alarmOptions = [
@@ -17,11 +17,60 @@ type AlarmSelectProps = {
 
 export default function AlarmSelect({ value, onChange }: AlarmSelectProps) {
   const [open, setOpen] = useState(false);
+  const [isPreviewing, setIsPreviewing] = useState(false);
+
+  const previewRef = useRef<HTMLAudioElement | null>(null);
 
   const selectedAlarm =
     alarmOptions.find((option) => option.value === value) ?? alarmOptions[0];
 
+  // stops and resets the preview
+  const stopPreview = () => {
+    if (!previewRef.current) return;
+
+    previewRef.current.pause();
+    previewRef.current.currentTime = 0;
+    previewRef.current = null;
+    setIsPreviewing(false);
+  };
+
+  // the next click anywhere stops the preview
+  useEffect(() => {
+    if (!isPreviewing) return;
+
+    document.addEventListener("click", stopPreview, { once: true });
+
+    return () => {
+      document.removeEventListener("click", stopPreview);
+    };
+  }, [isPreviewing]);
+
   const selectAlarm = (alarm: string) => {
+    // Stop any previous preview
+    stopPreview();
+    previewRef.current?.pause();
+
+    const preview = new Audio(`/assets/sounds/${alarm}`);
+
+    previewRef.current = preview;
+
+    // Stop listening automatically when the sound finishes
+    preview.addEventListener(
+      "ended",
+      () => {
+        previewRef.current = null;
+        setIsPreviewing(false);
+      },
+      { once: true },
+    );
+
+    preview
+      .play()
+      .then(() => setIsPreviewing(true))
+      .catch((error) => {
+        previewRef.current = null;
+        console.error(error);
+      });
     onChange(alarm);
     setOpen(false);
   };
@@ -58,12 +107,6 @@ export default function AlarmSelect({ value, onChange }: AlarmSelectProps) {
                 onClick={() => selectAlarm(option.value)}
               >
                 <span>{option.label}</span>
-
-                {selected && (
-                  <span className={styles.checkmark} aria-hidden="true">
-                    ✓
-                  </span>
-                )}
               </button>
             );
           })}

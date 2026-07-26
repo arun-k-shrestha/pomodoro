@@ -30,6 +30,7 @@ button {
   align-items: center;
   justify-content: space-between;
   padding: 22px 28px;
+  min-height: 82px;
 }
 
 .brand-name {
@@ -69,7 +70,7 @@ button {
   transition: all 0.25s ease;
 }
 
-/* CHANGE: Account details dropdown shown when the user clicks their initial. */
+/* Account details dropdown shown when the user clicks their initial. */
 .account-container {
   position: relative;
 }
@@ -79,13 +80,12 @@ button {
   top: 48px;
   right: 0;
   z-index: 30;
-  min-width: 220px;
+  min-width: 200px;
   padding: 16px 18px;
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
   box-shadow: 0 12px 30px rgba(70, 60, 55, 0.12);
 }
 
@@ -105,8 +105,9 @@ button {
 .account-popup p:last-child {
   margin-top: 5px;
   color: #77706c;
-  font-size: 12px;
+  font-size: 14px;
 }
+/* End of the account details */
 
 .pomodoro-body {
   display: flex;

@@ -14,8 +14,8 @@ type DayViewProps = {
       type: "focus" | "break";
     }[];
     recentSessions: {
-      startTime: string;
-      endTime: string;
+      startedAt: string;
+      endedAt: string | null;
       task: string;
       durationMin: number;
       type: "focus" | "break";

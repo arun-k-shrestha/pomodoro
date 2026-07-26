@@ -3,8 +3,8 @@ import styles from "../progress.module.css";
 type SessionType = "focus" | "break";
 
 export type Session = {
-  startTime: string;
-  endTime: string;
+  startedAt: string;
+  endedAt: string | null;
   task: string;
   durationMin: number;
   type: SessionType;
@@ -25,6 +25,14 @@ const TYPE_BADGE_CLASS: Record<SessionType, string> = {
   break: "badgeBreak",
 };
 
+function formatLocalTime(timestamp: string | null) {
+  if (!timestamp) return "--";
+
+  return new Intl.DateTimeFormat(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(timestamp));
+}
 export default function RecentSessions({ sessions, onViewAll }: Props) {
   return (
     <div className={styles.sessionsWrapper}>
@@ -49,7 +57,9 @@ export default function RecentSessions({ sessions, onViewAll }: Props) {
           {sessions.map((s, i) => (
             <tr key={i} className={styles.sessionsTr}>
               <td className={styles.sessionsTd}>
-                {s.startTime} – {s.endTime}
+                {formatLocalTime(s.startedAt)}
+                {" – "}
+                {formatLocalTime(s.endedAt)}
               </td>
               <td className={styles.sessionsTd}>{s.task}</td>
               <td className={`${styles.sessionsTd} ${styles.sessionsDuration}`}>

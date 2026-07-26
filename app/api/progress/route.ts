@@ -15,23 +15,23 @@ function hoursFromSeconds(seconds: number) {
   return Number((seconds / 3600).toFixed(1));
 }
 
-function formatTime(value: string | null) {
-  if (!value) return "--";
+// function formatTime(value: string | null) {
+//   if (!value) return "--";
 
-  return new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(value));
-}
+//   return new Intl.DateTimeFormat("en-US", {
+//     hour: "numeric",
+//     minute: "2-digit",
+//   }).format(new Date(value));
+// }
 
-// View all sessions: keep session date formatting in the API response.
-function formatSessionDate(value: string) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(value));
-}
+// // View all sessions: keep session date formatting in the API response.
+// function formatSessionDate(value: string) {
+//   return new Intl.DateTimeFormat("en-US", {
+//     month: "short",
+//     day: "numeric",
+//     year: "numeric",
+//   }).format(new Date(value));
+// }
 
 function dateKey(value: Date) {
   const year = value.getFullYear();
@@ -137,14 +137,24 @@ export async function GET() {
   }, 0);
 
   // View all sessions: share the same simple shape for recent and paginated lists.
-  const allSessions = sessions.map((s) => ({
-    date: formatSessionDate(s.started_at),
-    startTime: formatTime(s.started_at),
-    endTime: formatTime(s.ended_at),
-    task: s.task ?? "Untitled session",
-    durationMin: Math.round((s.actual_duration_seconds ?? 0) / 60),
-    type: s.type,
+  // const allSessions = sessions.map((s) => ({
+  //   date: formatSessionDate(s.started_at),
+  //   startTime: formatTime(s.started_at),
+  //   endTime: formatTime(s.ended_at),
+  //   task: s.task ?? "Untitled session",
+  //   durationMin: Math.round((s.actual_duration_seconds ?? 0) / 60),
+  //   type: s.type,
+  // }));
+
+  const allSessions = sessions.map((session) => ({
+    // CHANGE: Return UTC ISO timestamps and let the browser format them.
+    startedAt: new Date(session.started_at).toISOString(),
+    endedAt: session.ended_at ? new Date(session.ended_at).toISOString() : null,
+    task: session.task ?? "Untitled session",
+    durationMin: Math.round((session.actual_duration_seconds ?? 0) / 60),
+    type: session.type,
   }));
+
   const recentSessions = allSessions.slice(0, 5);
 
   const timeLine = todaySessions.map((s) => {

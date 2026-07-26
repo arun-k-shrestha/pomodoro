@@ -10,9 +10,8 @@ import YearView from "./YearView";
 type TabKey = "day" | "week" | "month" | "year";
 
 type ProgressSession = {
-  date: string;
-  startTime: string;
-  endTime: string;
+  startedAt: string;
+  endedAt: string | null;
   task: string;
   durationMin: number;
   type: "focus" | "break";
@@ -29,14 +28,7 @@ type ProgressData = {
       durationMin: number;
       type: "focus" | "break";
     }[];
-    recentSessions: {
-      date?: string;
-      startTime: string;
-      endTime: string;
-      task: string;
-      durationMin: number;
-      type: "focus" | "break";
-    }[];
+    recentSessions: ProgressSession[];
     allSessions: ProgressSession[];
   };
   week: {
@@ -65,6 +57,23 @@ type ProgressData = {
 
 const SESSIONS_PER_PAGE = 8;
 
+function formatLocalDate(timestamp: string) {
+  return new Intl.DateTimeFormat(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(new Date(timestamp));
+}
+
+function formatLocalTime(timestamp: string | null) {
+  if (!timestamp) return "--";
+
+  return new Intl.DateTimeFormat(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(timestamp));
+}
+
 function AllSessionsView({
   sessions,
   onClose,
@@ -73,7 +82,10 @@ function AllSessionsView({
   onClose: () => void;
 }) {
   const [page, setPage] = useState(1);
-  const totalPages = Math.max(1, Math.ceil(sessions.length / SESSIONS_PER_PAGE));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(sessions.length / SESSIONS_PER_PAGE),
+  );
   const startIndex = (page - 1) * SESSIONS_PER_PAGE;
   const visibleSessions = sessions.slice(
     startIndex,
@@ -117,12 +129,16 @@ function AllSessionsView({
           ) : (
             visibleSessions.map((session, index) => (
               <tr
-                key={`${session.date}-${session.startTime}-${index}`}
+                key={`${session.startedAt}-${index}`}
                 className={styles.sessionsTr}
               >
-                <td className={styles.sessionsTd}>{session.date}</td>
                 <td className={styles.sessionsTd}>
-                  {session.startTime} – {session.endTime}
+                  {formatLocalDate(session.startedAt)}
+                </td>
+                <td className={styles.sessionsTd}>
+                  {formatLocalTime(session.startedAt)}
+                  {" – "}
+                  {formatLocalTime(session.endedAt)}
                 </td>
                 <td className={styles.sessionsTd}>{session.task}</td>
                 <td className={styles.sessionsTd}>

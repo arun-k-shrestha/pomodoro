@@ -157,16 +157,23 @@ export async function GET() {
 
   const recentSessions = allSessions.slice(0, 5);
 
-  const timeLine = todaySessions.map((s) => {
-    const start = new Date(s.started_at);
-    const startHour = start.getHours() + start.getMinutes() / 60;
+  // const timeLine = todaySessions.map((s) => {
+  //   const start = new Date(s.started_at);
+  //   const startHour = start.getHours() + start.getMinutes() / 60;
 
-    return {
-      startHour,
-      durationMin: Math.round((s.actual_duration_seconds ?? 0) / 60),
-      type: s.type,
-    };
-  });
+  //   return {
+  //     startHour,
+  //     durationMin: Math.round((s.actual_duration_seconds ?? 0) / 60),
+  //     type: s.type,
+  //   };
+  // });
+
+  const timeLine = todaySessions.map((session) => ({
+    startedAt: new Date(session.started_at).toISOString(),
+    durationMin: Math.round((session.actual_duration_seconds ?? 0) / 60),
+    type: session.type,
+  }));
+
   const weekDays = [
     "Sunday",
     "Monday",

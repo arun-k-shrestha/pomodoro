@@ -9,7 +9,7 @@ type DayViewProps = {
     averageSessionMinutes: number;
     streakDays: number;
     timeLine: {
-      startHour: number;
+      startedAt: string;
       durationMin: number;
       type: "focus" | "break";
     }[];
@@ -33,6 +33,15 @@ function formatDuration(seconds: number) {
 }
 
 export default function DayView({ data, onViewAllSessions }: DayViewProps) {
+  const localTimeline = data.timeLine.map((segment) => {
+    const localStart = new Date(segment.startedAt);
+
+    return {
+      startHour: localStart.getHours() + localStart.getMinutes() / 60,
+      durationMin: segment.durationMin,
+      type: segment.type,
+    };
+  });
   return (
     <>
       <div className={styles.statsGrid}>
@@ -69,7 +78,7 @@ export default function DayView({ data, onViewAllSessions }: DayViewProps) {
       <div className={styles.chartsRow}>
         <div className={styles.chartCardWide}>
           <FocusTimeline
-            segments={data.timeLine}
+            segments={localTimeline}
             startHour={0}
             endHour={24}
             period="Today"

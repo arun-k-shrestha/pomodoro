@@ -24,7 +24,7 @@ type ProgressData = {
     averageSessionMinutes: number;
     streakDays: number;
     timeLine: {
-      startHour: number;
+      startedAt: string;
       durationMin: number;
       type: "focus" | "break";
     }[];

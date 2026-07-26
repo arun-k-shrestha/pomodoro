@@ -33,6 +33,11 @@
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
   box-shadow: var(--shadow-inset), var(--shadow-soft);
+
+  /* Space between settings rows. */
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
 }
 
 .eyebrow {
@@ -72,6 +77,96 @@
   color: var(--muted);
 }
 
+/* CHANGE SOUND: This is for the drop-down select options */
+/* CHANGE: Custom alarm dropdown container. */
+.alarmSelect {
+  position: relative;
+  width: 190px;
+}
+
+/* The closed dropdown button. */
+.alarmSelectButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 14px 11px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow-inset);
+}
+
+.alarmSelectButton:hover {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.alarmSelectButton:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow:
+    var(--shadow-inset),
+    0 0 0 3px rgba(197, 97, 74, 0.15);
+}
+
+.chevron {
+  color: var(--accent);
+  font-size: 16px;
+}
+
+/* CHANGE: The displayed options list. */
+.alarmOptions {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  background: rgba(255, 248, 245, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 12px 30px rgba(80, 50, 45, 0.15);
+}
+
+/* Each alarm option. */
+.alarmOption {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.alarmOption:hover {
+  background: rgba(197, 97, 74, 0.1);
+}
+
+/* Currently selected alarm. */
+.alarmOptionSelected {
+  color: var(--accent);
+  background: rgba(197, 97, 74, 0.08);
+}
+
+.checkmark {
+  font-weight: 600;
+}
+
+/* REPEAT SOUND: This is for the repeating sounds */
 .stepper {
   display: inline-flex;
   align-items: center;
@@ -115,10 +210,15 @@
   .card {
     padding: 22px 18px;
     border-radius: 22px;
+    gap: 24px;
   }
 
   .row {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .select {
+    width: 100%;
   }
 }

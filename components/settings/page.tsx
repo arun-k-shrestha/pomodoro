@@ -1,4 +1,5 @@
 import styles from "./settings.module.css";
+import AlarmSelect from "./AlarmSelect";
 
 type SettingPageProps = {
   soundRepeats: number;
@@ -26,16 +27,7 @@ export default function SettingPage({
               </p>
             </div>
 
-            <select
-              value={alarmSound}
-              onChange={(event) => onAlarmSoundChange(event.target.value)}
-              aria-label="Alarm sound"
-            >
-              <option value="morning-alarm-short.wav">Morning alarm</option>
-              <option value="calm-elegant.wav">Calm</option>
-              <option value="kitchen-timer.wav">Kitchen timer</option>
-              <option value="school-bell.wav">School bell</option>
-            </select>
+            <AlarmSelect value={alarmSound} onChange={onAlarmSoundChange} />
           </div>
 
           {/* Allow the user to REPEAT alarm sound. */}

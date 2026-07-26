@@ -73,6 +73,7 @@ button {
 /* Account details dropdown shown when the user clicks their initial. */
 .account-container {
   position: relative;
+  margin-left: auto;
 }
 
 .account-popup {

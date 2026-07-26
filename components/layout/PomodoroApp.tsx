@@ -24,6 +24,7 @@ export function PomodoroApp() {
   const [activePage, setActivePage] = useState<ActivePage>("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [soundRepeats, setSoundRepeats] = useState(1);
+  const [alarmSound, setAlarmSound] = useState("morning-alarm-short.wav");
 
   const sessionIdRef = useRef<string | null>(null); // DB row id from POST
   const timerStartedAtRef = useRef<string | null>(null); // first start time for this timer
@@ -52,14 +53,6 @@ export function PomodoroApp() {
     return MODES.pomodoro.duration - timeLeft;
   }, [mode, timeLeft]);
 
-  // const stopAlarm = () => {
-  //   const audio = audioRef.current;
-
-  //   if (audio && !audio.paused) {
-  //     audio.pause();
-  //     audio.currentTime = 0;
-  //   }
-  // };
   const { tasks, addTask, completeTask, removeTask } = useTasks(
     isAuthenticated,
     getPomodoroElapsedSeconds,
@@ -256,6 +249,8 @@ export function PomodoroApp() {
           <SettingPage
             soundRepeats={soundRepeats}
             onSoundRepeatsChange={setSoundRepeats}
+            alarmSound={alarmSound}
+            onAlarmSoundChange={setAlarmSound}
           />
         )}
         {activePage === "about" && <AboutPage />}
@@ -263,7 +258,7 @@ export function PomodoroApp() {
 
       <audio
         ref={audioRef}
-        src="/assets/sounds/morning-alarm-short.wav"
+        src={`/assets/sounds/${alarmSound}`}
         preload="auto"
       />
     </main>

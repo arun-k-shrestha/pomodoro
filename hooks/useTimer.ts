@@ -88,5 +88,25 @@ export function useTimer(soundRepeats: number, onComplete?: () => void) {
 
   const toggleRunning = () => setRunning((r) => !r);
 
-  return { mode, timeLeft, running, audioRef, changeMode, toggleRunning };
+  // This will stop the current alarm and cancels its remaining repeats
+  // It is needed when the user wants to stop the alarm mid way by clicking anywhere on the screen
+
+  const stopAlarm = () => {
+    remainingSoundRepeatsRef.current = 0;
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
+
+  return {
+    mode,
+    timeLeft,
+    running,
+    audioRef,
+    changeMode,
+    toggleRunning,
+    stopAlarm,
+  };
 }

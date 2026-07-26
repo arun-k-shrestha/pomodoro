@@ -23,7 +23,7 @@ type ActivePage = "home" | "progress" | "settings" | "about";
 export function PomodoroApp() {
   const [activePage, setActivePage] = useState<ActivePage>("home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [soundRepeats, setSoundRepeats] = useState(2);
+  const [soundRepeats, setSoundRepeats] = useState(1);
 
   const sessionIdRef = useRef<string | null>(null); // DB row id from POST
   const timerStartedAtRef = useRef<string | null>(null); // first start time for this timer
@@ -37,14 +37,29 @@ export function PomodoroApp() {
   const isAuthenticated = status === "authenticated";
   const { isNarrow, isVeryNarrow, isMenuOverLay } = useViewport();
 
-  const { mode, timeLeft, running, audioRef, changeMode, toggleRunning } =
-    useTimer(soundRepeats, () => onCompleteRef.current?.());
+  const {
+    mode,
+    timeLeft,
+    running,
+    audioRef,
+    changeMode,
+    toggleRunning,
+    stopAlarm,
+  } = useTimer(soundRepeats, () => onCompleteRef.current?.());
 
   const getPomodoroElapsedSeconds = useCallback(() => {
     if (mode !== "pomodoro") return 0;
     return MODES.pomodoro.duration - timeLeft;
   }, [mode, timeLeft]);
 
+  // const stopAlarm = () => {
+  //   const audio = audioRef.current;
+
+  //   if (audio && !audio.paused) {
+  //     audio.pause();
+  //     audio.currentTime = 0;
+  //   }
+  // };
   const { tasks, addTask, completeTask, removeTask } = useTasks(
     isAuthenticated,
     getPomodoroElapsedSeconds,
@@ -190,7 +205,11 @@ export function PomodoroApp() {
   }, [createSessionIfEligible, running, timeLeft]);
 
   return (
-    <main className="pomodoro-app" style={{ backgroundColor: BG_COLORS[mode] }}>
+    <main
+      className="pomodoro-app"
+      style={{ backgroundColor: BG_COLORS[mode] }}
+      onClick={stopAlarm}
+    >
       <AppLayout
         menuOpen={menuOpen}
         isNarrow={isNarrow}
@@ -244,7 +263,7 @@ export function PomodoroApp() {
 
       <audio
         ref={audioRef}
-        src="/assets/sounds/kitchen-timer.wav"
+        src="/assets/sounds/morning-alarm-short.wav"
         preload="auto"
       />
     </main>

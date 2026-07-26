@@ -1,6 +1,6 @@
 export const MODES = {
   pomodoro: { label: "POMODORO", duration: 25 * 60 },
-  shortBreak: { label: "SHORT BREAK", duration: 5 * 60 },
+  shortBreak: { label: "SHORT BREAK", duration: 3 * 1 },
   longBreak: { label: "LONG BREAK", duration: 15 * 60 },
 } as const;
 
